@@ -17,5 +17,5 @@ under a BSD license. See the accompanying license file for details.
 [StringTemplate]: http://www.stringtemplate.org/
 [Scalasti home page]: http://bmc.github.com/scalasti
 [Scalasti]: http://bmc.github.com/scalasti
-[Brian M. Clapper][]: mailto:bmc@clapper.org
+[Brian M. Clapper]: mailto:bmc@clapper.org
 

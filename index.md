@@ -175,6 +175,11 @@ In addition, you can generate your own version with:
 
     sbt doc
 
+### Additional Documentation
+
+Consult the [StringTemplate documentation][] for complete details on creating,
+deploying, and using StringTemplate templates.
+
 ## Author
 
 [Brian M. Clapper][]
@@ -194,6 +199,7 @@ Scalasti is copyright &copy; 2010 Brian M. Clapper and is released under a
 [BSD License]: license.html
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
+[StringTemplate documentation]: http://www.antlr.org/wiki/display/ST/StringTemplate+Documentation
 [Scalasti]: http://bmc.github.com/scalasti
 [Scalasti home page]: http://bmc.github.com/scalasti
 [Scalasti repository]: http://github.com/bmc/scalasti

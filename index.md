@@ -50,6 +50,11 @@ wrote, in his paper
 > template instead of having the data model do the logic and passing in the
 > boolean result, thereby, decoupling the view from the model.
 
+Allowing arbitrary and powerful code in a template just invites disaster.
+I want a powerful template language that is free of side-effects and that
+reduces or eliminates the temptation to put business logic in the template.
+StringTemplate fits the bill.
+
 I wanted to use StringTemplate from Scala, which is eminently feasible, since
 there's a Java version of StringTemplate. However, StringTemplate relies
 on `java.util.Collection` classes, such as `Map` and `List`; these classes
@@ -110,7 +115,60 @@ depends. After that step, build the library with:
 
 The resulting jar file will be in the top-level `target` directory.
 
-## API Documentation
+## Using Scalasti
+
+The Scalasti API provides simple wrappers around the most common classes in
+the StringTemplate API. For various reasons, subclassing the StringTemplate
+classes is non-trivial, so Scalasti's classes are wrappers that delegate
+their operations to the wrapped object. Since Scalasti does not provide the
+full suite of capabilities available in the actual StringTemplate classes,
+you can, at any point, retrieve a copy of the actual underlying object from
+the StringTemplate API; you can interact directly with that object via the
+Java StringTemplate API.
+
+### Simple Examples
+
+Create a template group that will read templates from a directory:
+
+    val group = new StringTemplateGroup("mygroup", new File("/tmp"))
+    val template = group.template("mytemplate")
+    
+Create a template group that will load templates from the CLASSPATH:
+
+    val grp = new StringTemplateGroup("mygroup")
+    val template = group.template("org/clapper/templates/mytemplate")
+
+Set attribute values one by one:
+
+    // A single-valued attribute:
+    template.setAttribute("title", "Employees")
+    
+    // A multi-valued attribute:
+    template.setAttribute("employees", "Moe", "Larry", "Curley")
+
+Set attribute values all at once:
+
+    template.setAttributes(Map("title" -> "Employees",
+                               "employees" -> List("Moe", "Larry", "Curley")))
+
+Change how an attribute is rendered:
+
+    class HexValue(l: long)
+    class HexValueRenderer extends AttributeRenderer[HexValue]
+    {
+        def toString(v: HexValue) = "0x" + v.toHexString
+    }
+
+    val memoryLocation: Long = ...
+    template.setAttribute("hexidecimal address", new HexValue(memoryLocation))
+    template.setAttribute("decimal address", memoryLocation)
+    template.registerRenderer(new HexValueRenderer)
+
+Render a template with its current set of attributes:
+
+    println(template.toString)
+
+### API Documentation
 
 The Scaladoc-generated the [API documentation][] is available locally.
 In addition, you can generate your own version with:

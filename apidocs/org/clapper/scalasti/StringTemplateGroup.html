@@ -50,7 +50,27 @@
         
         <div class="members" id="values">
               <h3>Value Members</h3>
-              <ol><li name="scala.AnyRef#equals">
+              <ol><li name="org.clapper.scalasti.StringTemplateGroup#defineTemplate">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">defineTemplate</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="contents">contents: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="StringTemplate.html" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create a new template and associate it with the specified name
+within the group</p><div class="fullcomment">
+      <div class="comment cmt"><p>Create a new template and associate it with the specified name
+within the group. If the group already contains a template with the
+same name, this new template replaces the existing template.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the template name</p></dd><dt class="param">contents</dt><dd class="cmt"><p>the template's contents (i.e., the template string)
+</p></dd><dt>returns</dt><dd class="cmt"><p>the template object</p></dd></dl>
+      
+      
+      
+      
+    </div>
+    </li><li name="scala.AnyRef#equals">
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
@@ -94,14 +114,38 @@ hash to the same <a href="Int.html"><code>Int</code></a>
       
       
     </div>
-    </li><li name="org.clapper.scalasti.StringTemplateGroup#group">
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#errorListener">
       <h4 class="signature">
-      <span class="kind">val</span>
+      <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">group</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplateGroup">StringTemplateGroup</span></span>
+        <span class="name">errorListener</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplateErrorListener">StringTemplateErrorListener</span></span>
       </span>
       </h4>
+      <p class="shortcomment cmt">Get the current error listener, which is notified when errors occur</p><div class="fullcomment">
+      <div class="comment cmt"><p>Get the current error listener, which is notified when errors occur.
+</p></div>
       
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#errorListener_=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">errorListener_=</span><span class="params">(<span name="listener">listener: <a href="StringTemplateErrorListener.html" class="extype" name="org.clapper.scalasti.StringTemplateErrorListener">StringTemplateErrorListener</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Set the current error listener, which is notified when errors occur</p><div class="fullcomment">
+      <div class="comment cmt"><p>Set the current error listener, which is notified when errors occur.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">listener</dt><dd class="cmt"><p>the error listener</p></dd></dl>
+      
+      
+      
+      
+    </div>
     </li><li name="scala.AnyRef#hashCode">
       <h4 class="signature">
       <span class="kind">def</span>
@@ -130,11 +174,120 @@ consistent with the <code>equals</code> method.
       
       
     </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#isDefined">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">isDefined</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Determine whether this group contains a template with a given name</p><div class="fullcomment">
+      <div class="comment cmt"><p>Determine whether this group contains a template with a given name.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the template name to check
+</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if a template exists by that name, <code>false</code> if not</p></dd></dl>
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#nativeTemplateGroup">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">nativeTemplateGroup</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplateGroup">StringTemplateGroup</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns a copy of the underlying (wrapped) StringTemplate API object</p><div class="fullcomment">
+      <div class="comment cmt"><p>Returns a copy of the underlying (wrapped) StringTemplate API object.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#newEmptyTemplate">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">newEmptyTemplate</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplate">StringTemplate</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Create an empty template within this group</p><div class="fullcomment">
+      <div class="comment cmt"><p>Create an empty template within this group. This method corresponds
+to the underlying API's <code>createStringTemplate()</code> method.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#refreshInterval">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">refreshInterval</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the refresh interval, which defines how often templates are
+refreshed from disk</p><div class="fullcomment">
+      <div class="comment cmt"><p>Get the refresh interval, which defines how often templates are
+refreshed from disk. An interval of 0 means there's no caching, and
+templates are loaded every time they are retrieved; any other value
+represents how long, in milliseconds, to cache templates in memory
+before checking disk again to see if they've changed.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#refreshInterval_=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">refreshInterval_=</span><span class="params">(<span name="interval">interval: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Set the refresh interval, which defines how often templates are
+refreshed from disk</p><div class="fullcomment">
+      <div class="comment cmt"><p>Set the refresh interval, which defines how often templates are
+refreshed from disk. An interval of 0 means there's no caching, and
+templates are loaded every time they are retrieved; any other value
+represents how long, in milliseconds, to cache templates in memory
+before checking disk again to see if they've changed.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">interval</dt><dd class="cmt"><p>the new refresh interval</p></dd></dl>
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplateGroup#registerRenderer">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">registerRenderer</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrRenderer">attrRenderer: <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[T]</span>)</span><span class="params">(<span name="mT">mT: <span class="extype" name="scala.reflect.Manifest">Manifest</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Register an attribute renderer for a specific type</p><div class="fullcomment">
+      <div class="comment cmt"><p>Register an attribute renderer for a specific type. The
+attribute renderer object must implement the <code>AttributeRenderer</code>trait for the specific type.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">attrRenderer</dt><dd class="cmt"><p>the attribute renderer to use for values of type <code>T</code></p></dd></dl>
+      
+      
+      
+      
+    </div>
     </li><li name="org.clapper.scalasti.StringTemplateGroup#template">
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">template</span><span class="params">(<span name="templateName">templateName: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="StringTemplate.html" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a>]</span>
+        <span class="name">template</span><span class="params">(<span name="templateName">templateName: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="StringTemplate.html" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Equivalent to the String Template library's <code>getInstanceOf()</code> method,
@@ -144,7 +297,8 @@ the template if found, or <code>None</code> if not</p><div class="fullcomment">
 this method returns the template with the specified name, returning
 the template if found, or <code>None</code> if not.
 </p></div>
-      <dl class="paramcmts block"><dt class="param">templateName</dt><dd class="cmt"><p>the template name</p></dd></dl>
+      <dl class="paramcmts block"><dt class="param">templateName</dt><dd class="cmt"><p>the template name
+</p></dd><dt>returns</dt><dd class="cmt"><p>the template. Throws an exception if the template isn't found.</p></dd></dl>
       
       
       

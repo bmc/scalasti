@@ -61,7 +61,23 @@ values in an attribute map:</p><p>- A Scala <code>Seq</code> (which includes lis
         
         <div class="members" id="values">
               <h3>Value Members</h3>
-              <ol><li name="org.clapper.scalasti.StringTemplate#attributes">
+              <ol><li name="org.clapper.scalasti.StringTemplate#ID">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">ID</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the template's internally assigned ID</p><div class="fullcomment">
+      <div class="comment cmt"><p>Get the template's internally assigned ID.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#attributes">
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
@@ -121,6 +137,38 @@ hash to the same <a href="Int.html"><code>Int</code></a>
       
       
     </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#errorListener">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">errorListener</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplateErrorListener">StringTemplateErrorListener</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the current error listener, which is notified when errors occur</p><div class="fullcomment">
+      <div class="comment cmt"><p>Get the current error listener, which is notified when errors occur.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#errorListener_=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">errorListener_=</span><span class="params">(<span name="listener">listener: <a href="StringTemplateErrorListener.html" class="extype" name="org.clapper.scalasti.StringTemplateErrorListener">StringTemplateErrorListener</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Set the current error listener, which is notified when errors occur</p><div class="fullcomment">
+      <div class="comment cmt"><p>Set the current error listener, which is notified when errors occur.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">listener</dt><dd class="cmt"><p>the error listener</p></dd></dl>
+      
+      
+      
+      
+    </div>
     </li><li name="org.clapper.scalasti.StringTemplate#group">
       <h4 class="signature">
       <span class="kind">val</span>
@@ -166,6 +214,57 @@ consistent with the <code>equals</code> method.
       </h4>
       <p class="shortcomment cmt">Set the <code>isRegion</code> flag</p><div class="fullcomment">
       <div class="comment cmt"><p>Set the <code>isRegion</code> flag.</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#name">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">name</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the template's name, if any</p><div class="fullcomment">
+      <div class="comment cmt"><p>Get the template's name, if any.
+</p></div>
+      
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#name_=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">name_=</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Set or change the template's name</p><div class="fullcomment">
+      <div class="comment cmt"><p>Set or change the template's name.
+</p></div>
+      <dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the new name. Must not be null.</p></dd></dl>
+      
+      
+      
+      
+    </div>
+    </li><li name="org.clapper.scalasti.StringTemplate#nativeTemplate">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">nativeTemplate</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplate">StringTemplate</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns a copy of the underlying (wrapped) StringTemplate API object</p><div class="fullcomment">
+      <div class="comment cmt"><p>Returns a copy of the underlying (wrapped) StringTemplate API object.
+Unlike <code>StringTemplate.getInstanceOf()</code>, this method copies the
+current set of attributes and the enclosing instance reference (if any)
+to the returned copy.
+</p></div>
       
       
       
@@ -260,14 +359,6 @@ sequences and iterators, as described in the class documentation.
       
       
     </div>
-    </li><li name="org.clapper.scalasti.StringTemplate#template">
-      <h4 class="signature">
-      <span class="kind">val</span>
-      <span class="symbol">
-        <span class="name">template</span><span class="result">: <span class="extype" name="org.antlr.stringtemplate.StringTemplate">StringTemplate</span></span>
-      </span>
-      </h4>
-      
     </li><li name="org.clapper.scalasti.StringTemplate#toString">
       <h4 class="signature">
       <span class="kind">def</span>

@@ -211,6 +211,50 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     }
 
     /**
+     * Get the current error listener, which is notified when errors occur.
+     *
+     * @return the error listener
+     */
+    def errorListener = template.getErrorListener
+
+    /**
+     * Set the current error listener, which is notified when errors occur.
+     *
+     * @param listener  the error listener
+     */
+    def errorListener_=(listener: StringTemplateErrorListener) =
+        template.setErrorListener(listener)
+
+    /**
+     * Get the template's name, if any.
+     *
+     * @return the name, or `None`
+     */
+    def name = template.getName match
+    {
+        case null      => None
+        case s: String => Some(s)
+    }
+
+    /**
+     * Set or change the template's name.
+     *
+     * @param name  the new name. Must not be null.
+     */
+    def name_=(name: String) =
+    {
+        require(name != null)
+        template.setName(name)
+    }
+
+    /**
+     * Get the template's internally assigned ID.
+     *
+     * @return the ID
+     */
+    def ID = template.getTemplateID
+
+    /**
      * Render the template with the current attributes.
      *
      * @return the rendered template.

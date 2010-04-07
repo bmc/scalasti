@@ -167,4 +167,34 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      */
     def template(templateName: String): StringTemplate =
         new StringTemplate(Some(this), group.getInstanceOf(templateName))
+
+    /**
+     * Register an attribute renderer for a specific type. The
+     * attribute renderer object must implement the `AttributeRenderer`
+     * trait for the specific type.
+     *
+     * @param attrRenderer the attribute renderer to use for values of type `T`
+     */
+    def registerRenderer[T](attrRenderer: AttributeRenderer[T])
+                           (implicit mT: scala.reflect.Manifest[T]) =
+
+    {
+        group.registerRenderer(mT.erasure, attrRenderer.stRenderer)
+    }
+
+    /**
+     * Get the current error listener, which is notified when errors occur.
+     *
+     * @return the error listener
+     */
+    def errorListener = group.getErrorListener
+
+    /**
+     * Set the current error listener, which is notified when errors occur.
+     *
+     * @param listener  the error listener
+     */
+    def errorListener_=(listener: StringTemplateErrorListener) =
+        group.setErrorListener(listener)
+
 }

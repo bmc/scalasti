@@ -4,7 +4,7 @@ import org.clapper.sbtplugins.MarkdownPlugin
 
 import grizzled.file.implicits._
 
-class StringTemplateProject(info: ProjectInfo)
+class ScalastiProject(info: ProjectInfo)
 extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 {
     /* ---------------------------------------------------------------------- *\

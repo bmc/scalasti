@@ -35,7 +35,7 @@
   ---------------------------------------------------------------------------
 */
 
-package org.clapper.stringtemplate
+package org.clapper.scalasti
 
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}

@@ -35,12 +35,47 @@
   ---------------------------------------------------------------------------
 */
 
-package org.clapper.stringtemplate
+package org.clapper.scalasti
 
-import org.antlr.stringtemplate.{StringTemplateErrorListener => ST_Listener}
+import org.antlr.stringtemplate.{AttributeRenderer => ST_AttributeRenderer}
+import scalaj.collection.Imports._
+import scala.collection.mutable.{Map => MutableMap}
+
+import java.io.File
 
 /**
- * A Scala version of the String Template library's
- * `StringTemplateErrorListener` class.
+ * A more Scala-like StringTemplate attribute renderer. Objects that
+ * implement this trait can be registered as attribute renderers with
+ * a `StringTemplate`. `T` is the type (class) for which the renderer
+ * can render values.
  */
-trait StringTemplateErrorListener extends ST_Listener
+trait AttributeRenderer[T]
+{
+    private val self = this
+
+    // The actual Java renderer used by StringTemplate.
+    private[scalasti] val stRenderer = new ST_AttributeRenderer
+    {
+        def toString(o: java.lang.Object): String =
+            self.toString(o.asInstanceOf[T])
+
+        def toString(o: java.lang.Object, formatName: String): String =
+            self.toString(o.asInstanceOf[T], formatName)
+    }
+
+    /**
+     * Converts an object of type `T` to a string, for inclusion in a template.
+     *
+     * @param o  the object
+     */
+    def toString(o: T): String
+
+    /**
+     * Converts an object of type `T` to a string, according to a specific
+     * format name, for inclusion in a template.
+     *
+     * @param o           the object
+     * @param formatName  the format name
+     */
+    def toString(o: T, formatName: String): String = toString(o)
+}

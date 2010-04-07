@@ -75,7 +75,7 @@ import java.util.{List => JList,
  * @param template  the real, underlying String Template
  */
 class StringTemplate(val group: Option[StringTemplateGroup],
-                     val template: ST_StringTemplate)
+                     private val template: ST_StringTemplate)
 {
     private val attributeMap = MutableMap.empty[String, AnyRef]
 
@@ -188,6 +188,26 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
     {
         template.registerRenderer(mT.erasure, attrRenderer.stRenderer)
+    }
+
+    /**
+     * Returns a copy of the underlying (wrapped) StringTemplate API object.
+     * Unlike `StringTemplate.getInstanceOf()`, this method copies the
+     * current set of attributes and the enclosing instance reference (if any)
+     * to the returned copy.
+     *
+     * @return a copy of the underlying StringTemplate object.
+     */
+    def nativeTemplate =
+    {
+        val copy = template.getInstanceOf
+        val enclosingInstance = template.getEnclosingInstance
+
+        if (enclosingInstance != null)
+            copy.setEnclosingInstance(enclosingInstance)
+
+        copy.setAttributes(mapToJavaMap(attributes))
+        copy
     }
 
     /**

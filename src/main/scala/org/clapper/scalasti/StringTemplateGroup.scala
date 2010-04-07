@@ -51,7 +51,7 @@ import grizzled.io.SourceReader
  *
  * @param group the actual, underlying String Template library group object.
  */
-class StringTemplateGroup(val group: ST_StringTemplateGroup)
+class StringTemplateGroup(private val group: ST_StringTemplateGroup)
 {
     /**
      * Alternate constructor that creates a template group manager for
@@ -93,23 +93,78 @@ class StringTemplateGroup(val group: ST_StringTemplateGroup)
         this(new ST_StringTemplateGroup(SourceReader(source), errorListener))
 
     /**
+     * Returns a copy of the underlying (wrapped) StringTemplate API object.
+     *
+     * @return a copy of the underlying StringTemplateGroup object.
+     */
+    def nativeTemplateGroup =
+    {
+        // Doesn't actually return a copy in this case.
+
+        group
+    }
+
+    /**
+     * Determine whether this group contains a template with a given name.
+     *
+     * @param name  the template name to check
+     *
+     * @return `true` if a template exists by that name, `false` if not
+     */
+    def isDefined(name: String) = group.isDefined(name)
+
+    /**
+     * Get the refresh interval, which defines how often templates are
+     * refreshed from disk. An interval of 0 means there's no caching, and
+     * templates are loaded every time they are retrieved; any other value
+     * represents how long, in milliseconds, to cache templates in memory
+     * before checking disk again to see if they've changed.
+     *
+     * @return the refresh interval
+     */
+    def refreshInterval = group.getRefreshInterval
+
+    /**
+     * Set the refresh interval, which defines how often templates are
+     * refreshed from disk. An interval of 0 means there's no caching, and
+     * templates are loaded every time they are retrieved; any other value
+     * represents how long, in milliseconds, to cache templates in memory
+     * before checking disk again to see if they've changed.
+     *
+     * @param interval  the new refresh interval
+     */
+    def refreshInterval_=(interval: Int) = group.setRefreshInterval(interval)
+
+    /**
+     * Create an empty template within this group. This method corresponds
+     * to the underlying API's `createStringTemplate()` method.
+     *
+     * @return the empty template
+     */
+    def newEmptyTemplate = group.createStringTemplate()
+
+    /**
+     * Create a new template and associate it with the specified name
+     * within the group. If the group already contains a template with the
+     * same name, this new template replaces the existing template.
+     *
+     * @param name     the template name
+     * @param contents the template's contents (i.e., the template string)
+     *
+     * @return the template object
+     */
+    def defineTemplate(name: String, contents: String): StringTemplate =
+        new StringTemplate(Some(this), group.defineTemplate(name, contents))
+
+    /**
      * Equivalent to the String Template library's `getInstanceOf()` method,
      * this method returns the template with the specified name, returning
      * the template if found, or `None` if not.
      *
      * @param templateName the template name
+     *
+     * @return the template. Throws an exception if the template isn't found.
      */
-    def template(templateName: String): Option[StringTemplate] =
-    {
-        try
-        {
-            Some(new StringTemplate(Some(this),
-                                    group.getInstanceOf(templateName)))
-        }
-
-        catch
-        {
-            case e: IllegalArgumentException => None
-        }
-    }
+    def template(templateName: String): StringTemplate =
+        new StringTemplate(Some(this), group.getInstanceOf(templateName))
 }

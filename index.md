@@ -11,15 +11,15 @@ Java template library. It provides a subset of the features of
 
 ## Rationale
 
-[StringTemplate][] is one of many Java-based template engines; other
-examples include [Google's Closure Templates][], [FreeMarker][] and
-[Velocity][]. There are also Scala-based template engines, such as
-[Scalate][], a powerful template language that bills itself as being
-"like JSP without the crap, but with added Scala coolness."
+[StringTemplate][] is a Java-based template engines, comparable in
+functionality to APIs like [Google's Closure Templates][], [FreeMarker][]
+and [Velocity][]. There are also Scala-based template engines, such as
+[Scalate][] (a powerful template language that bills itself as being "like
+JSP without the crap, but with added Scala coolness.")
 
 The problem with most template languages, though, is that they're a little
-(or a lot) *too* powerful. As Terence Parr, creator of StringTemplate,
-wrote, in his paper
+(or a lot) too powerful. As Terence Parr, creator of StringTemplate, wrote,
+in his paper
 [*Enforcing Strict Model-View Separation in Template Engines*][]:
 
 > The mantra of every experienced web application developer is the same:
@@ -50,23 +50,27 @@ wrote, in his paper
 > template instead of having the data model do the logic and passing in the
 > boolean result, thereby, decoupling the view from the model.
 
-Allowing arbitrary and powerful code in a template just invites disaster.
-I want a powerful template language that is free of side-effects and that
-reduces or eliminates the temptation to put business logic in the template.
-StringTemplate fits the bill.
+Allowing arbitrary and powerful code in a template just invites disaster. I
+want a solid template language that is:
 
-I wanted to use StringTemplate from Scala, which is eminently feasible, since
-there's a Java version of StringTemplate. However, StringTemplate relies
-on `java.util.Collection` classes, such as `Map` and `List`; these classes
-are clumsy to use in Scala, compared to their Scala counterparts. So,
-I created the Scalasti wrapper interface, which exposes StringTemplate
-capabilities in a more Scala-friendly way.
+* free of side-effects, and
+* reduces or eliminates the temptation to put business logic in the
+  template.
+
+StringTemplate fits the bill nicely.
+
+I want to use StringTemplate from Scala, which is eminently feasible, since
+there's a Java version of StringTemplate. However, StringTemplate relies on
+`java.util.Collection` classes, such as `java.util.Map` and
+`java.util.List`; these classes are clumsy to use in Scala, compared to
+their Scala counterparts. I created the Scalasti wrapper interface to
+expose StringTemplate capabilities in a more Scala-friendly way.
 
 ## Installation
 
-The easiest way to install the Scalasti library is to download a
-pre-compiled jar from the [*clapper.org* Maven repository][]. However, you
-can also get certain build tools to download it for you.
+The simplest way to install the Scalasti library is to download a
+pre-compiled jar from the [*clapper.org* Maven repository][]. You can get
+certain build tools to do the heavy lifting for you.
 
 ### Installing for Maven
 
@@ -79,32 +83,36 @@ If you're using [Maven][], you can get the Scalasti library from the
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
-Creating the appropriate Maven configuration items is left as an exercise
-for the reader. (One of the things I like about using [SBT][] is that I
-never have to look at Maven XML.)
+Conjuring the appropriate Maven XML is left as an exercise for the reader.
+(I use [SBT][], which means I rarely have to look at Maven XML.)
 
 ### Using with SBT
 
-If you're using [SBT][] (the Simple Build Tool) to compile your code, you
-can place the following lines in your project file (i.e., the Scala file in
-your `project/build/` directory):
+If you're using [SBT][] to build your code, place the following lines in
+your project file (i.e., the Scala file in your `project/build/`
+directory):
 
-    val orgClapperRepo = "clapper.org Maven Repository" at
-        "http://maven.clapper.org"
+    val clapperOrgRepo = "clapper.org Maven Repository" at "http://maven.clapper.org"
     val scalasti = "org.clapper" % "scalasti" % "0.1"
 
-## Source Code Repository
+## Building from Source
+
+### Source Code Repository
 
 The source code for the Scalasti library is maintained on [GitHub][]. To
 clone the repository, run this command:
 
     git clone git://github.com/bmc/scalasti.git
 
-## Building from Source
+### Build Requirements
 
 Building the Scalasti library requires [SBT][]. Install SBT, as described
-at the SBT web site. Then, assuming you have an `sbt` shell script (or .BAT
-file, for Windows), run:
+at the SBT web site.
+
+### Building Scalasti
+
+Assuming you have an `sbt` shell script (or .BAT file, for *\[shudder\]*
+Windows), first run:
 
     sbt update
 
@@ -118,13 +126,13 @@ The resulting jar file will be in the top-level `target` directory.
 ## Using Scalasti
 
 The Scalasti API provides simple wrappers around the most common classes in
-the StringTemplate API. For various reasons, subclassing the StringTemplate
-classes is non-trivial, so Scalasti's classes are wrappers that delegate
-their operations to the wrapped object. Since Scalasti does not provide the
-full suite of capabilities available in the actual StringTemplate classes,
-you can, at any point, retrieve a copy of the actual underlying object from
-the StringTemplate API; you can interact directly with that object via the
-Java StringTemplate API.
+the [StringTemplate][] API. For various reasons, subclassing the
+StringTemplate classes is non-trivial, so Scalasti's classes are wrappers
+that delegate their operations to the wrapped StringTemplate object. Since
+Scalasti does not provide the full suite of capabilities available in the
+actual StringTemplate classes, you can, at any point, retrieve a copy of
+the actual underlying StringTemplate API object, so you can interact
+directly with it.
 
 ### Simple Examples
 

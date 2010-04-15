@@ -45,7 +45,7 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     val scalatest = "org.scalatest" % "scalatest" %
         "1.0.1-for-scala-2.8.0.Beta1-with-test-interfaces-0.3-SNAPSHOT"
 
-    val scalaj_collection = "org.scalaj" %% "scalaj-collection" % "1.0.Beta2"
+    val scalaj_collection = "org.scalaj" %% "scalaj-collection" % "1.0.RC1"
 
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
 

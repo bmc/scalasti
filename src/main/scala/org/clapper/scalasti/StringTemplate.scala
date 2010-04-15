@@ -39,7 +39,6 @@ package org.clapper.scalasti
 
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}
-import scalaj.collection.Imports._
 
 import scala.collection.mutable.{Map => MutableMap}
 import scala.reflect.Manifest
@@ -110,7 +109,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
             case value :: tail =>
                 attributeMap += (attrName -> values)
-                template.setAttribute(attrName, values.asJava)
+                template.setAttribute(attrName, asJavaList(values))
 
             case _ =>
         }
@@ -126,7 +125,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     def setAttribute[T](attrName: String, values: Iterator[T]): Unit =
     {
         attributeMap += (attrName -> values)
-        template.setAttribute(attrName, values.asJava)
+        template.setAttribute(attrName, asJavaList(values.toSeq))
     }
 
     /**
@@ -331,5 +330,19 @@ class StringTemplate(val group: Option[StringTemplateGroup],
             case null =>
                 None
         }
+    }
+
+    /**
+     * Convert a Scala sequence to a Java list.
+     *
+     * @param seq  the sequence
+     *
+     * @param list the list
+     */
+    private def asJavaList[T](seq: Seq[T]): java.util.List[java.lang.Object] =
+    {
+        val result = new java.util.ArrayList[java.lang.Object]
+        for (item <- seq) result.add(item.asInstanceOf[java.lang.Object])
+        result
     }
 }

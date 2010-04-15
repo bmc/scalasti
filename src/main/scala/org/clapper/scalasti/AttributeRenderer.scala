@@ -38,9 +38,7 @@
 package org.clapper.scalasti
 
 import org.antlr.stringtemplate.{AttributeRenderer => ST_AttributeRenderer}
-import scalaj.collection.Imports._
 import scala.collection.mutable.{Map => MutableMap}
-
 import java.io.File
 
 /**

@@ -12,9 +12,6 @@ class Plugins(info: ProjectInfo) extends PluginDefinition(info)
 
     val clapperMavenRepo = "clapper.org Maven Repo" at
         "http://maven.clapper.org/"
-
     val markdown = "org.clapper" % "sbt-markdown-plugin" % "0.2.1"
-
-    val grizzled = "org.clapper" % "grizzled-scala" % "0.2" from
-    "http://www.clapper.org/software/scala/grizzled-scala/grizzled-scala-0.2.jar"
+    val grizzled = "org.clapper" % "grizzled-scala" % "0.2"
 }

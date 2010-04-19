@@ -1,4 +1,6 @@
 * Updated to build with Scala 2.8.0.RC1
 * Removed dependency on [scalaj-collection][].
+* Corrected SBT build's retrieval of 2.7.7 (old) Grizzled-Scala, needed for
+  SBT build file to compile.
 
 [scalaj-collection]: http://github.com/scalaj/scalaj-collection

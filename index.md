@@ -203,6 +203,16 @@ changes, and send me a pull request.
 Scalasti is copyright &copy; 2010 Brian M. Clapper and is released under a
 [BSD License][].
 
+## Patches
+
+I gladly accept patches from their original authors. Feel free to email
+patches to me or to fork the [Scalasti repository][] and send me a pull
+request. Along with any patch you send:
+
+* Please state that the patch is your original work.
+* Please indicate that you license the work to the Scalasti project
+  under a [BSD License][].
+
 [API documentation]: apidocs/
 [BSD License]: license.html
 [Scala]: http://www.scala-lang.org/

@@ -14,6 +14,12 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     override def compileOptions = Unchecked :: super.compileOptions.toList
     override def parallelExecution = true // why not?
 
+    // Specialization causes problems with inner classes. Disabling it, for
+    // now, allows the tests to run. It can be re-enabled when compiler
+    // bugs are fixed.
+    override def testCompileOptions = super.testCompileOptions ++
+        Seq(CompileOption("-no-specialization"))
+
     // Disable cross-paths, since we're only building under one version.
     // This simplifies publishing and importing. See
     // http://groups.google.com/group/simple-build-tool/browse_thread/thread/973b5a2956b5ecbe
@@ -43,7 +49,7 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
     val scalatest = "org.scalatest" % "scalatest" %
-        "1.0.1-for-scala-2.8.0.Beta1-with-test-interfaces-0.3-SNAPSHOT"
+        "1.0.1-for-scala-2.8.0.RC1-SNAPSHOT"
 
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
 

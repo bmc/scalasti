@@ -78,13 +78,18 @@ If you're using [Maven][], you can get the Scalasti library from the
 [*clapper.org* Maven Repository][]. The relevant pieces of information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `scalasti`
+* Artifact ID: `scalasti_`*scala-version*
 * Version: `0.1`
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
-Conjuring the appropriate Maven XML is left as an exercise for the reader.
-(I use [SBT][], which means I rarely have to look at Maven XML.)
+Substitute either "2.8.0.RC1" or "2.8.0.RC2" for *scala-version*. For example:
+
+    <dependency>
+      <groupId>org.clapper</groupId>
+      <artifactId>scalasti_2.8.0.RC2</artifactId>
+      <version>0.2.1</version>
+    </dependency>
 
 ### Using with SBT
 
@@ -93,7 +98,13 @@ your project file (i.e., the Scala file in your `project/build/`
 directory):
 
     val clapperOrgRepo = "clapper.org Maven Repository" at "http://maven.clapper.org"
-    val scalasti = "org.clapper" % "scalasti" % "0.1"
+    val scalasti = "org.clapper" %% "scalasti" % "0.2.1"
+
+**NOTE:** The first doubled percent is *not* a typo. It tells SBT to treat
+Scalasti as a cross-built library and automatically inserts the Scala
+version you're using into the artifact ID. It will *only* work if you are
+building with Scala 2.8.0.RC1 or Scala 2.8.0.RC2. See the
+[SBT cross-building][] page for details.
 
 ## Building from Source
 
@@ -213,7 +224,7 @@ request. Along with any patch you send:
 * Please indicate that you license the work to the Scalasti project
   under a [BSD License][].
 
-[API documentation]: apidocs/
+[API documentation]: api/
 [BSD License]: license.html
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
@@ -232,3 +243,4 @@ request. Along with any patch you send:
 [Maven]: http://maven.apache.org/
 [GitHub repository]: http://github.com/bmc/scalasti
 [GitHub]: http://github.com/bmc/
+[SBT cross-building]: http://code.google.com/p/simple-build-tool/wiki/CrossBuild

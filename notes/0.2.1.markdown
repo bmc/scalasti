@@ -1,0 +1,6 @@
+* Updated to build with Scala 2.8.0.RC2, as well as Scala 2.8.0.RC1.
+* Maven artifact now includes Scala version (e.g., `scalasti_2.8.0.RC2`,
+  instead of `scalasti`).
+* Enhanced Scaladocs a bit.
+
+[scalaj-collection]: http://github.com/scalaj/scalaj-collection

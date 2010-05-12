@@ -44,8 +44,9 @@ import java.io.File
 /**
  * A more Scala-like StringTemplate attribute renderer. Objects that
  * implement this trait can be registered as attribute renderers with
- * a `StringTemplate`. `T` is the type (class) for which the renderer
- * can render values.
+ * a StringTemplate.
+ *
+ * @tparam T  the type (class) for which the renderer can render values.
  */
 trait AttributeRenderer[T]
 {

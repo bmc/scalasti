@@ -64,11 +64,10 @@ import java.util.{List => JList,
  * Note that this class explicitly handles mapping the following types of
  * values in an attribute map:
  *
- * - A Scala `Seq` (which includes lists and array buffers) is mapped to
- *   a `java.util.List`, so it's treated as a multivalued attribute by the
- *   underlying StringTemplate library.
- * - A Scala iterator is also mapped to a `java.util.List`.
- * - Anything else is treated as a single-valued object.
+ * A Scala `Seq` (which includes lists and array buffers) is mapped to
+ * a `java.util.List`, so it's treated as a multivalued attribute by the
+ * underlying StringTemplate library. A Scala iterator is also mapped to a
+ * `java.util.List`. Anything else is treated as a single-valued object.
  *
  * @param group     the StringTemplateGroup in which the template resides
  * @param template  the real, underlying String Template
@@ -91,10 +90,12 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * Internally, a single value is stored as is, and multiple values are
      * coalesced into a `java.util.List` of type `T`. To pass a Scala list
      * (or sequence) in, use this syntax:
+     *
      * {{{
      * template.setAttribute("name", List(1, 2, 3): _*)
      * }}}
      *
+     * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    one or more values to associate with the attribute
      */
@@ -119,6 +120,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * Set attribute named `attrName` to many different values. Internally,
      * the values are coalesced into a `java.util.List` of type `T`.
      *
+     * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    the values to associate with the attribute
      */
@@ -133,7 +135,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * specified map. Multivalued attributes are supported via Scala
      * sequences and iterators, as described in the class documentation.
      *
-     * @param newAttrs  the new attributes
+     * @param newAttrs  the map of new attributes
      */
     def setAttributes(newAttrs: Map[String, AnyRef]) =
     {
@@ -165,6 +167,8 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
     /**
      * Set the `isRegion` flag.
+     *
+     * @param flag `true` to set the flag, `false` to clear it.
      */
     def isRegion(flag: Boolean): Unit = template.setIsRegion(flag)
 
@@ -180,13 +184,13 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * attribute renderer object must implement the `AttributeRenderer`
      * trait for the specific type.
      *
-     * @param attrRenderer the attribute renderer to use for values of type `T`
+     * @tparam T         the type of attribute that the renderer can render
+     * @param  renderer  the attribute renderer to use for values of type `T`
      */
-    def registerRenderer[T](attrRenderer: AttributeRenderer[T])
+    def registerRenderer[T](renderer: AttributeRenderer[T])
                            (implicit mT: scala.reflect.Manifest[T]) =
-
     {
-        template.registerRenderer(mT.erasure, attrRenderer.stRenderer)
+        template.registerRenderer(mT.erasure, renderer.stRenderer)
     }
 
     /**
@@ -260,6 +264,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      */
     override def toString = template.toString
 
+    /* ---------------------------------------------------------------------- *\
+                             Protected Methods
+    \* ---------------------------------------------------------------------- */
+
     /**
      * Maps a Scala map of attributes into a Java map of attributes. The
      * Scala map is converted to a `java.util.HashMap`. The keys are
@@ -313,6 +321,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * the value for a key (if any) only if it conforms to a specific type.
      * Otherwise, return None.
      *
+     * @tparam T  the type to which the result must conform
      * @param map the map
      * @param key the key
      */
@@ -331,6 +340,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
                 None
         }
     }
+
+    /* ---------------------------------------------------------------------- *\
+                              Private Methods
+    \* ---------------------------------------------------------------------- */
 
     /**
      * Convert a Scala sequence to a Java list.

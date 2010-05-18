@@ -1,6 +1,8 @@
 * Updated to version 0.6.1 of [Grizzled Scala][].
 * Added support for [automatic aggregate creation][], via the new
   `StringTemplate.setAggregate()` method.
+* Changed `StringTemplate` interface to support `Any`, not just `AnyRef`
+  attribute values.
 
 [Grizzled Scala]: http://bmc.github.com/grizzled-scala/
 [automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation

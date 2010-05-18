@@ -77,7 +77,7 @@ import java.util.{List => JList,
 class StringTemplate(val group: Option[StringTemplateGroup],
                      private val template: ScalastiStringTemplate)
 {
-    private val attributeMap = MutableMap.empty[String, AnyRef]
+    private val attributeMap = MutableMap.empty[String, Any]
 
     /**
      * Alternate constructor that takes an unnamed, ungrouped template, as
@@ -107,7 +107,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
         values.toList match
         {
             case value :: Nil =>
-                val valueAny = value.asInstanceOf[AnyRef]
+                val valueAny = value.asInstanceOf[Any]
                 attributeMap += attrName -> valueAny
                 template.setAttribute(attrName, valueAny)
 
@@ -140,7 +140,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @param newAttrs  the map of new attributes
      */
-    def setAttributes(newAttrs: Map[String, AnyRef]) =
+    def setAttributes(newAttrs: Map[String, Any]) =
     {
         attributeMap.clear()
         attributeMap ++= newAttrs
@@ -178,24 +178,25 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * @param values    one or more values. The values are treated as discrete;
      *                  that is, lists are not supported.
      */
-    def setAggregate(aggrSpec: String, values: AnyRef*): Unit =
+    def setAggregate(aggrSpec: String, values: Any*): Unit =
     {
-        def isOfType[T](v: AnyRef)(implicit man: Manifest[T]): Boolean =
-            man >:> Manifest.classType(v.getClass)
+        def isOfType[T](v: Any)(implicit man: Manifest[T]): Boolean =
+            man >:> Manifest.classType(v.asInstanceOf[AnyRef].getClass)
 
-        def transform(v: AnyRef) =
+        def transform(v: Any) =
         {
             if (isOfType[Seq[Any]](v))
                 toJavaList(v.asInstanceOf[Seq[Any]])
 
-            else if (isOfType[Iterator[AnyRef]](v))
+            else if (isOfType[Iterator[Any]](v))
                 toJavaList(v.asInstanceOf[Iterator[Any]].toList)
 
             else
                 v
         }
 
-        template.setAggregate(aggrSpec, values.map(transform(_)).toArray)
+        val valuesAsObjects = values.map(transform(_).asInstanceOf[Object])
+        template.setAggregate(aggrSpec, valuesAsObjects.toArray)
     }
 
     /**
@@ -231,7 +232,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @return a read-only map of attributes.
      */
-    def attributes = Map.empty[String, AnyRef] ++ attributeMap
+    def attributes = Map.empty[String, Any] ++ attributeMap
 
     /**
      * Register an attribute renderer for a specific type. The
@@ -339,27 +340,28 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @return the Java map
      */
-    protected def mapToJavaMap(map: Map[String, AnyRef]): JMap[String, Object] =
+    protected def mapToJavaMap(map: Map[String, Any]): JMap[String, Object] =
     {
-        val result = new JHashMap[String, AnyRef]
+        val result = new JHashMap[String, Object]
 
         // Adapted from
         // http://fupeg.blogspot.com/2009/10/scala-manifests-ftw.html
 
-        for ((k, v) <- map)
+        def transform(k: String, v: Any) =
         {
             if (getType[Seq[Any]](map, k) != None)
                 // Found a sequence. Use an ArrayList.
-                result.put(k, toJavaList(v.asInstanceOf[Seq[Any]]))
+                toJavaList(v.asInstanceOf[Seq[Any]])
 
-            else if (getType[Iterator[AnyRef]](map, k) != None)
+            else if (getType[Iterator[Any]](map, k) != None)
                 // Found an iterator. Use an ArrayList.
-                result.put(k, toJavaList(v.asInstanceOf[Iterator[Any]].toList))
+                toJavaList(v.asInstanceOf[Iterator[Any]].toList)
 
             else
-                result.put(k, v)
+                v.asInstanceOf[Object]
         }
 
+        map.foreach(kv => result.put(kv._1, transform(kv._1, kv._2)))
         result
     }
 
@@ -377,9 +379,9 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     {
         map.getOrElse(key, null) match
         {
-            case value: AnyRef =>
-                if (man >:> Manifest.classType(value.getClass))
-                    Some(value.asInstanceOf[T])
+            case v: Any =>
+                if (man >:> Manifest.classType(v.asInstanceOf[AnyRef].getClass))
+                    Some(v.asInstanceOf[T])
                 else
                     None
 

@@ -63,6 +63,25 @@ class StringTemplateTest extends ScalastiFunSuite
             }
     }
 
+    test("render template #2")
+    {
+        val template = """This is a $test$ template: $many; separator=", "$"""
+
+        val data = List(
+            (Map("test" -> true,
+                 "many" -> List("a", "b", "c")),
+             """This is a true template: a, b, c""")
+        )
+
+        for((attributes, expected) <- data)
+            expect(expected, "render template on: " + attributes)
+            {
+                val st = new StringTemplate(template)
+                st.setAttributes(attributes)
+                st.toString
+            }
+    }
+
     test("ValueRenderer")
     {
         val template = """This is a $test$ template"""

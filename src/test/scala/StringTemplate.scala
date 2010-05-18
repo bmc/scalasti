@@ -81,4 +81,30 @@ class StringTemplateTest extends ScalastiFunSuite
             st.toString
         }
     }
+
+    test("Automatic aggregates")
+    {
+        val template = """$if (page.title)$$page.title$$else$No title$endif$
+                       |$page.categories; separator=", "$""".stripMargin
+
+        val data = List(
+            ("No title\nfoo, bar",
+             "page.{categories}",
+             List(List("foo", "bar"))),
+
+            ("Foo\nmoe, larry, curley", 
+             "page.{title, categories}",
+             List("Foo", List("moe", "larry", "curley")))
+        )
+
+        for ((expected, aggrSpec, args) <- data)
+        {
+            expect(expected, "aggregate")
+            {
+                val st = new StringTemplate(template)
+                st.setAggregate(aggrSpec, args: _*)
+                st.toString
+            }
+        }
+    }
 }

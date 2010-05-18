@@ -37,6 +37,8 @@
 
 package org.clapper.scalasti
 
+import org.clapper.scalasti.adapter.ScalastiStringTemplate
+
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}
 
@@ -73,7 +75,7 @@ import java.util.{List => JList,
  * @param template  the real, underlying String Template
  */
 class StringTemplate(val group: Option[StringTemplateGroup],
-                     private val template: ST_StringTemplate)
+                     private val template: ScalastiStringTemplate)
 {
     private val attributeMap = MutableMap.empty[String, AnyRef]
 
@@ -83,7 +85,8 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @param template  the contents of the template
      */
-    def this(template: String) = this(None, new ST_StringTemplate(template))
+    def this(template: String) =
+        this(None, new ScalastiStringTemplate(template))
 
     /**
      * Set attribute named `attrName` to one or many different values.
@@ -110,7 +113,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
             case value :: tail =>
                 attributeMap += (attrName -> values)
-                template.setAttribute(attrName, asJavaList(values))
+                template.setAttribute(attrName, toJavaList(values))
 
             case _ =>
         }
@@ -127,7 +130,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     def setAttribute[T](attrName: String, values: Iterator[T]): Unit =
     {
         attributeMap += (attrName -> values)
-        template.setAttribute(attrName, asJavaList(values.toSeq))
+        template.setAttribute(attrName, toJavaList(values.toSeq))
     }
 
     /**
@@ -142,6 +145,57 @@ class StringTemplate(val group: Option[StringTemplateGroup],
         attributeMap.clear()
         attributeMap ++= newAttrs
         template.setAttributes(mapToJavaMap(attributes))
+    }
+
+    /**
+     * Set an aggregate from the specified arguments. An aggregate looks
+     * like an object from within a template, but it isn't backed by a
+     * bean. Instead, you specify the aggregate with a special syntax. For
+     * instance, the following code defines an aggregate attribute called
+     * `name`, with two fields, `first` and `last`. Those fields can be
+     * interpolated within a template via `$item.first$` and `$item.last$`.
+     *
+     * {{{
+     * val st = new StringTemplate( ... )
+     * st.setAttribute("name.{first,last}", "Moe", "Howard")
+     * }}}
+     *
+     * Setting the same aggregate multiple times results in a list of
+     * aggregates:
+     *
+     * {{{
+     * val st = new StringTemplate( ... )
+     * st.setAttribute("name.{first,last}", "Moe", "Howard")
+     * st.setAttribute("name.{first,last}", "Larry", "Fine")
+     * st.setAttribute("name.{first,last}", "Curley", "Howard")
+     * }}}
+     *
+     * See
+     * http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
+     * for more information.
+     *
+     * @param aggrSpec  the spec, as described above
+     * @param values    one or more values. The values are treated as discrete;
+     *                  that is, lists are not supported.
+     */
+    def setAggregate(aggrSpec: String, values: AnyRef*): Unit =
+    {
+        def isOfType[T](v: AnyRef)(implicit man: Manifest[T]): Boolean =
+            man >:> Manifest.classType(v.getClass)
+
+        def transform(v: AnyRef) =
+        {
+            if (isOfType[Seq[Any]](v))
+                toJavaList(v.asInstanceOf[Seq[Any]])
+
+            else if (isOfType[Iterator[AnyRef]](v))
+                toJavaList(v.asInstanceOf[Iterator[Any]].toList)
+
+            else
+                v
+        }
+
+        template.setAggregate(aggrSpec, values.map(transform(_)).toArray)
     }
 
     /**
@@ -201,7 +255,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @return a copy of the underlying StringTemplate object.
      */
-    def nativeTemplate =
+    def nativeTemplate: ST_StringTemplate =
     {
         val copy = template.getInstanceOf
         val enclosingInstance = template.getEnclosingInstance
@@ -292,22 +346,15 @@ class StringTemplate(val group: Option[StringTemplateGroup],
         // Adapted from
         // http://fupeg.blogspot.com/2009/10/scala-manifests-ftw.html
 
-        def toJList(seq: Seq[Any]): JList[Any] =
-        {
-            val list = new JArrayList[Any]
-            seq.foreach(list.add(_))
-            list
-        }
-
         for ((k, v) <- map)
         {
             if (getType[Seq[Any]](map, k) != None)
                 // Found a sequence. Use an ArrayList.
-                result.put(k, toJList(v.asInstanceOf[Seq[Any]]))
+                result.put(k, toJavaList(v.asInstanceOf[Seq[Any]]))
 
             else if (getType[Iterator[AnyRef]](map, k) != None)
                 // Found an iterator. Use an ArrayList.
-                result.put(k, toJList(v.asInstanceOf[Iterator[Any]].toList))
+                result.put(k, toJavaList(v.asInstanceOf[Iterator[Any]].toList))
 
             else
                 result.put(k, v)
@@ -352,10 +399,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @param list the list
      */
-    private def asJavaList[T](seq: Seq[T]): java.util.List[java.lang.Object] =
+    private def toJavaList[T](seq: Seq[T]): JList[T] =
     {
-        val result = new java.util.ArrayList[java.lang.Object]
-        for (item <- seq) result.add(item.asInstanceOf[java.lang.Object])
-        result
+        val list = new JArrayList[T]
+        seq.foreach(list.add(_))
+        list
     }
 }

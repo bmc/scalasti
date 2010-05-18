@@ -37,6 +37,8 @@
 
 package org.clapper.scalasti
 
+import org.clapper.scalasti.adapter._
+
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup}
 
 import java.io.File
@@ -61,7 +63,7 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @param directory  the directory containing the templates
      */
     def this(groupName: String, directory: File) =
-        this(new ST_StringTemplateGroup(groupName, directory.getPath))
+        this(new ScalastiStringTemplateGroup(groupName, directory.getPath))
         
     /**
      * Alternate constructor that creates a template group manager for
@@ -70,7 +72,7 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @param groupName  the group's name
      */
     def this(groupName: String) =
-        this(new ST_StringTemplateGroup(groupName))
+        this(new ScalastiStringTemplateGroup(groupName))
 
     /**
      * Alternate constructor that creates a template group from the group
@@ -80,7 +82,7 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @param errorListener an optional error listener to receive errors
      */
     def this(source: Source) = 
-        this(new ST_StringTemplateGroup(SourceReader(source)))
+        this(new ScalastiStringTemplateGroup(SourceReader(source)))
 
     /**
      * Alternate constructor that creates a template group from the group
@@ -90,7 +92,8 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @param errorListener an error listener to receive errors
      */
     def this(source: Source, errorListener: StringTemplateErrorListener) =
-        this(new ST_StringTemplateGroup(SourceReader(source), errorListener))
+        this(new ScalastiStringTemplateGroup(SourceReader(source),
+                                             errorListener))
 
     /**
      * Returns a copy of the underlying (wrapped) StringTemplate API object.
@@ -154,7 +157,11 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @return the template object
      */
     def defineTemplate(name: String, contents: String): StringTemplate =
-        new StringTemplate(Some(this), group.defineTemplate(name, contents))
+    {
+        val template = group.defineTemplate(name, contents)
+        new StringTemplate(Some(this), 
+                           template.asInstanceOf[ScalastiStringTemplate])
+    }
 
     /**
      * Equivalent to the String Template library's `getInstanceOf()` method,
@@ -166,7 +173,11 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup)
      * @return the template. Throws an exception if the template isn't found.
      */
     def template(templateName: String): StringTemplate =
-        new StringTemplate(Some(this), group.getInstanceOf(templateName))
+    {
+        val template = group.getInstanceOf(templateName)
+        new StringTemplate(Some(this), 
+                           template.asInstanceOf[ScalastiStringTemplate])
+    }
 
     /**
      * Register an attribute renderer for a specific type. The

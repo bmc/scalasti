@@ -3,6 +3,7 @@
   `StringTemplate.setAggregate()` methods.
 * Changed `StringTemplate` interface to support `Any`, not just `AnyRef`
   attribute values.
+* Various `set` methods in `StringTemplate` now return the template.
 
 [Grizzled Scala]: http://bmc.github.com/grizzled-scala/
 [automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation

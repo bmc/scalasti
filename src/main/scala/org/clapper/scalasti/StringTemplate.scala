@@ -101,8 +101,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    one or more values to associate with the attribute
+     *
+     * @return this object, for convenience
      */
-    def setAttribute[T](attrName: String, values: T*): Unit =
+    def setAttribute[T](attrName: String, values: T*): StringTemplate =
     {
         values.toList match
         {
@@ -117,6 +119,8 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
             case _ =>
         }
+
+        this
     }
 
     /**
@@ -126,11 +130,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    the values to associate with the attribute
+     *
+     * @return this object, for convenience
      */
-    def setAttribute[T](attrName: String, values: Iterator[T]): Unit =
+    def setAttribute[T](attrName: String, values: Iterator[T]): StringTemplate =
     {
         attributeMap += (attrName -> values)
         template.setAttribute(attrName, toJavaList(values.toSeq))
+        this
     }
 
     /**
@@ -139,12 +146,15 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * sequences and iterators, as described in the class documentation.
      *
      * @param newAttrs  the map of new attributes
+     *
+     * @return this object, for convenience
      */
-    def setAttributes(newAttrs: Map[String, Any]) =
+    def setAttributes(newAttrs: Map[String, Any]): StringTemplate =
     {
         attributeMap.clear()
         attributeMap ++= newAttrs
         template.setAttributes(mapToJavaMap(attributes))
+        this
     }
 
     /**
@@ -177,8 +187,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * @param aggrSpec  the spec, as described above
      * @param values    one or more values. The values are treated as discrete;
      *                  that is, lists are not supported.
+     *
+     * @return this object, for convenience
      */
-    def setAggregate(aggrSpec: String, values: Any*): Unit =
+    def setAggregate(aggrSpec: String, values: Any*): StringTemplate =
     {
         def isOfType[T](v: Any)(implicit man: Manifest[T]): Boolean =
             man >:> Manifest.classType(v.asInstanceOf[AnyRef].getClass)
@@ -197,6 +209,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
         val valuesAsObjects = values.map(transform(_).asInstanceOf[Object])
         template.setAggregate(aggrSpec, valuesAsObjects.toArray)
+        this
     }
 
     /**
@@ -216,8 +229,11 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @param aggrName  the aggregate name
      * @param valueMap  the map of values
+     *
+     * @return this object, for convenience
      */
-    def setAggregate(aggrName: String, valueMap: Map[String, Any]): Unit =
+    def setAggregate(aggrName: String,
+                     valueMap: Map[String, Any]): StringTemplate =
     {
         if (! valueMap.isEmpty)
         {
@@ -226,6 +242,8 @@ class StringTemplate(val group: Option[StringTemplateGroup],
             val values = keys.map(valueMap(_)).toSeq
             setAggregate(aggrSpec, values: _*)
         }
+
+        this
     }
 
     /**
@@ -233,11 +251,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * StringTemplate API's `removeAttribute()` call.
      *
      * @param attrName the name of the attribute to unset
+     *
+     * @return this object, for convenience
      */
-    def unsetAttribute(attrName: String): Unit =
+    def unsetAttribute(attrName: String): StringTemplate =
     {
         attributeMap -= attrName
         template.removeAttribute(attrName)
+        this
     }
 
     /**
@@ -270,11 +291,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * @tparam T         the type of attribute that the renderer can render
      * @param  renderer  the attribute renderer to use for values of type `T`
+     *
+     * @return this object, for convenience
      */
     def registerRenderer[T](renderer: AttributeRenderer[T])
                            (implicit mT: scala.reflect.Manifest[T]) =
     {
         template.registerRenderer(mT.erasure, renderer.stRenderer)
+        this
     }
 
     /**

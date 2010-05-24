@@ -200,6 +200,35 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     }
 
     /**
+     * Create an aggregate from a map. The map's keys are used as the
+     * fields of the aggregate. For example, given this map:
+     *
+     * {{{
+     * Map("foo" -> List(1, 2), "bar" -> "barski")
+     * }}}
+     *
+     * and the name "mystuff", this method will produce the equivalent of the
+     * following call:
+     *
+     * {{{
+     * template.setAggregate("mystuff.{foo, bar}", List(1, 2), "barski")
+     * }}}
+     *
+     * @param aggrName  the aggregate name
+     * @param valueMap  the map of values
+     */
+    def setAggregate(aggrName: String, valueMap: Map[String, Any]): Unit =
+    {
+        if (! valueMap.isEmpty)
+        {
+            val keys = valueMap.keys.toList
+            val aggrSpec = aggrName + "." + keys.mkString("{", ",", "}")
+            val values = keys.map(valueMap(_)).toSeq
+            setAggregate(aggrSpec, values: _*)
+        }
+    }
+
+    /**
      * Unset the value of the named attribute. Corresponds to the underlying
      * StringTemplate API's `removeAttribute()` call.
      *

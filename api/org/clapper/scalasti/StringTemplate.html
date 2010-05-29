@@ -26,7 +26,7 @@
         <span class="name">StringTemplate</span><span class="result"> extends AnyRef</span>
       </span>
       </h4>
-      <div class="fullcomment" id="comment"><div class="comment cmt"><p>A Scala interface to a StringTemplate template .  Note that this interface
+      <div class="fullcomment" id="comment"><div class="comment cmt"><p>A Scala interface to a StringTemplate template. Note that this interface
 does not directly expose all the underlying StringTemplate methods. In
 particular, this Scala interface is geared primarily toward reading and
 rendering external templates, not toward generating templates in code.</p><p>Because of the way the StringTemplate API instantiates templates, this
@@ -68,9 +68,9 @@ underlying StringTemplate library. A Scala iterator is also mapped to a<code>jav
       </h4>
       
             <p class="shortcomment cmt">Alternate constructor that takes an unnamed, ungrouped template, as
-contained in a string .</p>
+contained in a string.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Alternate constructor that takes an unnamed, ungrouped template, as
-contained in a string . 
+contained in a string.
 </p></div><dl class="paramcmts block"><dt class="param">template</dt><dd class="cmt"><p>the contents of the template
 </p></dd></dl>
             
@@ -83,7 +83,7 @@ contained in a string .
       <h4 class="signature">
       <span class="kind">new</span>
       <span class="symbol">
-        <span class="name">StringTemplate</span><span class="params">(<span name="group">group: <span class="extype" name="scala.Option">Option</span>[<a href="StringTemplateGroup.html" class="extype" name="org.clapper.scalasti.StringTemplateGroup">StringTemplateGroup</a>]</span>, <span name="template">template: <span class="extype" name="org.antlr.stringtemplate.StringTemplate">StringTemplate</span></span>)</span>
+        <span class="name">StringTemplate</span><span class="params">(<span name="group">group: <span class="extype" name="scala.Option">Option</span>[<a href="StringTemplateGroup.html" class="extype" name="org.clapper.scalasti.StringTemplateGroup">StringTemplateGroup</a>]</span>, <span name="template">template: <a href="adapter/ScalastiStringTemplate.html" class="extype" name="org.clapper.scalasti.adapter.ScalastiStringTemplate">ScalastiStringTemplate</a></span>)</span>
       </span>
       </h4>
       
@@ -119,7 +119,7 @@ contained in a string .
       
             <p class="shortcomment cmt"><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.</p>
             <div class="fullcomment"><div class="comment cmt"><p><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for dis-equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the receiver object is equivalent to the argument; <code>true</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the receiver object is equivalent to the argument; <code>true</code> otherwise.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: Any
@@ -185,7 +185,7 @@ contained in a string .
       
             <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.</p>
             <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -206,7 +206,7 @@ contained in a string .
       
             <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.</p>
             <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: Any
@@ -225,8 +225,8 @@ contained in a string .
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Get the template's internally assigned ID .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Get the template's internally assigned ID . 
+            <p class="shortcomment cmt">Get the template's internally assigned ID.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Get the template's internally assigned ID.
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the ID
 </p></dd></dl>
             
@@ -246,7 +246,7 @@ contained in a string .
             <p class="shortcomment cmt">This method is used to cast the receiver object to be of type <code>T0</code>.</p>
             <div class="fullcomment"><div class="comment cmt"><p>This method is used to cast the receiver object to be of type <code>T0</code>.</p><p>Note that the success of a cast at runtime is modulo Scala's erasure semantics.  Therefore the expression<code>1.asInstanceOf[String]</code> will throw a <code>ClassCastException</code> at runtime, while the expression<code>List(1).asInstanceOf[List[String]]</code> will not.  In the latter example, because the type argument is erased as
 part of compilation it is not possible to check whether the contents of the list are of the requested typed.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the receiver object .</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the receiver object.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: Any
@@ -261,13 +261,13 @@ part of compilation it is not possible to check whether the contents of the list
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">attributes</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, AnyRef]</span>
+        <span class="name">attributes</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Get a map containing all attribute names and values .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Get a map containing all attribute names and values . 
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a read-only map of attributes . 
+            <p class="shortcomment cmt">Get a map containing all attribute names and values.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Get a map containing all attribute names and values.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a read-only map of attributes.
 </p></dd></dl>
             
             
@@ -283,9 +283,9 @@ part of compilation it is not possible to check whether the contents of the list
       </span>
       </h4>
       
-            <p class="shortcomment cmt">This method creates and returns a copy of the receiver object .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>This method creates and returns a copy of the receiver object .</p><p>The default implementation of the <code>clone</code> method is platform dependent.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the receiver object .</p></dd></dl><div class="block">
+            <p class="shortcomment cmt">This method creates and returns a copy of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method creates and returns a copy of the receiver object.</p><p>The default implementation of the <code>clone</code> method is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the receiver object.</p></dd></dl><div class="block">
           attributes: protected 
         </div><div class="block">
           definition classes: AnyRef
@@ -319,7 +319,7 @@ non-null instances of <code>AnyRef</code>:
  * <code>null.eq(null)</code> returns <code>true</code>.</p><p>When overriding the <code>equals</code> or <code>hashCode</code> methods, it is important to ensure that their behavior is
 consistent with reference equality.  Therefore, if two objects are references to each other (<code>o1 eq o2</code>), they
 should be equal to each other (<code>o1 == o2</code>) and they should hash to the same value (<code>o1.hashCode == o2.hashCode</code>).
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the argument is a reference to the receiver object; <code>false</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the argument is a reference to the receiver object; <code>false</code> otherwise.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -347,10 +347,10 @@ relation]:
  * It is transitive: for any instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.equals(y)</code> returns <code>true</code> and
    <code>y.equals(z)</code> returns <code>true</code>, then <code>x.equals(z)</code> should return <code>true</code>.</p><p>If you override this method, you should verify that your implementation remains an equivalence relation.
 Additionally, when overriding this method it is often necessary to override <code>hashCode</code> to ensure that objects
-that are "equal" (<code>o1.equals(o2)</code> returns <code>true</code>) hash to the same 
+that are &quot;equal&quot; (<code>o1.equals(o2)</code> returns <code>true</code>) hash to the same 
 scala.Int
 (<code>o1.hashCode.equals(o2.hashCode)</code>).
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
           definition classes: AnyRef → Any
         </div>
             
@@ -367,8 +367,8 @@ scala.Int
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Get the current error listener, which is notified when errors occur .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Get the current error listener, which is notified when errors occur . 
+            <p class="shortcomment cmt">Get the current error listener, which is notified when errors occur.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Get the current error listener, which is notified when errors occur.
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the error listener
 </p></dd></dl>
             
@@ -385,8 +385,8 @@ scala.Int
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Set the current error listener, which is notified when errors occur .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Set the current error listener, which is notified when errors occur . 
+            <p class="shortcomment cmt">Set the current error listener, which is notified when errors occur.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set the current error listener, which is notified when errors occur.
 </p></div><dl class="paramcmts block"><dt class="param">listener</dt><dd class="cmt"><p>the error listener
 </p></dd></dl>
             
@@ -404,9 +404,9 @@ scala.Int
       </h4>
       
             <p class="shortcomment cmt">This method is called by the garbage collector on the receiver object when garbage collection determines that
-there are no more references to the object .</p>
+there are no more references to the object.</p>
             <div class="fullcomment"><div class="comment cmt"><p>This method is called by the garbage collector on the receiver object when garbage collection determines that
-there are no more references to the object .</p><p>The details of when and if the <code>finalize</code> method are invoked, as well as the interaction between <code>finalize</code>and non-local returns and exceptions, are all platform dependent.</p></div><div class="block">
+there are no more references to the object.</p><p>The details of when and if the <code>finalize</code> method are invoked, as well as the interaction between <code>finalize</code>and non-local returns and exceptions, are all platform dependent.</p></div><div class="block">
           attributes: protected 
         </div><div class="block">
           definition classes: AnyRef
@@ -425,9 +425,9 @@ there are no more references to the object .</p><p>The details of when and if th
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Returns a representation that corresponds to the dynamic class of the receiver object .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Returns a representation that corresponds to the dynamic class of the receiver object .</p><p>The nature of the representation is platform dependent.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation that corresponds to the dynamic class of the receiver object .</p></dd></dl><div class="block">
+            <p class="shortcomment cmt">Returns a representation that corresponds to the dynamic class of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a representation that corresponds to the dynamic class of the receiver object.</p><p>The nature of the representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation that corresponds to the dynamic class of the receiver object.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -447,9 +447,9 @@ there are no more references to the object .</p><p>The details of when and if th
       </h4>
       
             <p class="shortcomment cmt">Given a Scala map, with string keys and any kind of value, retrieve
-the value for a key (if any) only if it conforms to a specific type .</p>
+the value for a key (if any) only if it conforms to a specific type.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Given a Scala map, with string keys and any kind of value, retrieve
-the value for a key (if any) only if it conforms to a specific type . 
+the value for a key (if any) only if it conforms to a specific type.
 Otherwise, return None.
 </p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type to which the result must conform</p></dd><dt class="param">map</dt><dd class="cmt"><p>the map</p></dd><dt class="param">key</dt><dd class="cmt"><p>the key
 </p></dd></dl><div class="block">
@@ -477,13 +477,13 @@ Otherwise, return None.
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Returns a hash code value for the object .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Returns a hash code value for the object .</p><p>The default hashing algorithm is platform dependent.</p><p>Note that it is allowed for two objects to have identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>) yet
+            <p class="shortcomment cmt">Returns a hash code value for the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a hash code value for the object.</p><p>The default hashing algorithm is platform dependent.</p><p>Note that it is allowed for two objects to have identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>) yet
 not be equal (<code>o1.equals(o2)</code> returns <code>false</code>).  A degenerate implementation could always return <code>0</code>.
 However, it is required that if two objects are equal (<code>o1.equals(o2)</code> returns <code>true</code>) that they have
 identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>).  Therefore, when overriding this method, be sure
 to verify that the behavior is consistent with the <code>equals</code> method.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the hash code value for the object .</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the hash code value for the object.</p></dd></dl><div class="block">
           definition classes: AnyRef → Any
         </div>
             
@@ -537,11 +537,11 @@ possible to check whether the contents of the list are of the requested typed.
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">mapToJavaMap</span><span class="params">(<span name="map">map: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, AnyRef]</span>)</span><span class="result">: <span class="extype" name="java.util.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, AnyRef]</span>
+        <span class="name">mapToJavaMap</span><span class="params">(<span name="map">map: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="java.util.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, AnyRef]</span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Maps a Scala map of attributes into a Java map of attributes .</p>
+            <p class="shortcomment cmt">Maps a Scala map of attributes into a Java map of attributes.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Maps a Scala map of attributes into a Java map of attributes. The
 Scala map is converted to a <code>java.util.HashMap</code>. The keys are
 assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>Seq</code> (which includes lists and array buffers) is mapped to
@@ -549,7 +549,7 @@ assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>S
   underlying StringTemplate library.
 - A Scala iterator is also mapped to a <code>java.util.List</code>.
 - Anything else is treated as a single-valued object.</p><p>To enhance how these mappings are done, override this method.
-</p></div><dl class="paramcmts block"><dt class="param">map</dt><dd class="cmt"><p>The Scala map to convert . 
+</p></div><dl class="paramcmts block"><dt class="param">map</dt><dd class="cmt"><p>The Scala map to convert.
 </p></dd><dt>returns</dt><dd class="cmt"><p>the Java map
 </p></dd></dl><div class="block">
           attributes: protected 
@@ -568,8 +568,8 @@ assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>S
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Get the template's name, if any .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Get the template's name, if any . 
+            <p class="shortcomment cmt">Get the template's name, if any.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Get the template's name, if any.
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the name, or <code>None</code></p></dd></dl>
             
             
@@ -585,9 +585,9 @@ assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>S
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Set or change the template's name .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Set or change the template's name . 
-</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the new name .  Must not be null.
+            <p class="shortcomment cmt">Set or change the template's name.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set or change the template's name.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the new name. Must not be null.
 </p></dd></dl>
             
             
@@ -603,12 +603,12 @@ assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>S
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Returns a copy of the underlying (wrapped) StringTemplate API object .</p>
+            <p class="shortcomment cmt">Returns a copy of the underlying (wrapped) StringTemplate API object.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Returns a copy of the underlying (wrapped) StringTemplate API object.
 Unlike <code>StringTemplate.getInstanceOf()</code>, this method copies the
 current set of attributes and the enclosing instance reference (if any)
 to the returned copy.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the underlying StringTemplate object . 
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the underlying StringTemplate object.
 </p></dd></dl>
             
             
@@ -626,7 +626,7 @@ to the returned copy.
       
             <p class="shortcomment cmt"><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.</p>
             <div class="fullcomment"><div class="comment cmt"><p><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.
-</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference dis-equality .</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the argument is not a reference to the receiver object; <code>true</code> otherwise.</p></dd></dl><div class="block">
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the argument is not a reference to the receiver object; <code>true</code> otherwise.</p></dd></dl><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -645,8 +645,8 @@ to the returned copy.
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Wakes up a single thread that is waiting on the receiver object's monitor .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Wakes up a single thread that is waiting on the receiver object's monitor .</p></div><div class="block">
+            <p class="shortcomment cmt">Wakes up a single thread that is waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up a single thread that is waiting on the receiver object's monitor.</p></div><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -665,8 +665,8 @@ to the returned copy.
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Wakes up all threads that are waiting on the receiver object's monitor .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Wakes up all threads that are waiting on the receiver object's monitor .</p></div><div class="block">
+            <p class="shortcomment cmt">Wakes up all threads that are waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up all threads that are waiting on the receiver object's monitor.</p></div><div class="block">
           attributes: final 
         </div><div class="block">
           definition classes: AnyRef
@@ -681,14 +681,15 @@ to the returned copy.
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">registerRenderer</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="renderer">renderer: <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="mT">mT: <span class="extype" name="scala.reflect.Manifest">Manifest</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">registerRenderer</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="renderer">renderer: <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="mT">mT: <span class="extype" name="scala.reflect.Manifest">Manifest</span>[T]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Register an attribute renderer for a specific type .</p>
+            <p class="shortcomment cmt">Register an attribute renderer for a specific type.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Register an attribute renderer for a specific type. The
 attribute renderer object must implement the <code>AttributeRenderer</code>trait for the specific type.
-</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of attribute that the renderer can render</p></dd><dt class="param">renderer</dt><dd class="cmt"><p>the attribute renderer to use for values of type <code>T</code></p></dd></dl>
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of attribute that the renderer can render</p></dd><dt class="param">renderer</dt><dd class="cmt"><p>the attribute renderer to use for values of type <code>T</code></p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
+</p></dd></dl>
             
             
             
@@ -703,8 +704,8 @@ attribute renderer object must implement the <code>AttributeRenderer</code>trait
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Reset the template, clearing all its associated values .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Reset the template, clearing all its associated values . 
+            <p class="shortcomment cmt">Reset the template, clearing all its associated values.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Reset the template, clearing all its associated values.
 </p></div>
             
             
@@ -712,18 +713,58 @@ attribute renderer object must implement the <code>AttributeRenderer</code>trait
             
           </div>
           
-    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#setAttribute">
+    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#setAggregate">
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">setAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: <span class="extype" name="scala.collection.Iterator">Iterator</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setAggregate</span><span class="params">(<span name="aggrName">aggrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueMap">valueMap: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Set attribute named <code>attrName</code> to many different values.</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Set attribute named <code>attrName</code> to many different values. Internally,
-the values are coalesced into a <code>java.util.List</code> of type <code>T</code>.
-</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to associate with the attribute
+            <p class="shortcomment cmt">Create an aggregate from a map.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Create an aggregate from a map. The map's keys are used as the
+fields of the aggregate. For example, given this map:</p><pre>
+Map(&quot;foo&quot; -&gt; List(1, 2), &quot;bar&quot; -&gt; &quot;barski&quot;)
+</pre><p>and the name &quot;mystuff&quot;, this method will produce the equivalent of the
+following call:</p><pre>
+template.setAggregate(&quot;mystuff.{foo, bar}&quot;, List(1, 2), &quot;barski&quot;)
+</pre></div><dl class="paramcmts block"><dt class="param">aggrName</dt><dd class="cmt"><p>the aggregate name</p></dd><dt class="param">valueMap</dt><dd class="cmt"><p>the map of values
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#setAggregate">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">setAggregate</span><span class="params">(<span name="aggrSpec">aggrSpec: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: <span class="extype" name="scala.Any">Any</span>*</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Set an aggregate from the specified arguments.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set an aggregate from the specified arguments. An aggregate looks
+like an object from within a template, but it isn't backed by a
+bean. Instead, you specify the aggregate with a special syntax. For
+instance, the following code defines an aggregate attribute called<code>name</code>, with two fields, <code>first</code> and <code>last</code>. Those fields can be
+interpolated within a template via <code>$item.first$</code> and <code>$item.last$</code>.</p><pre>
+val st = new StringTemplate( ... )
+st.setAttribute(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
+</pre><p>Setting the same aggregate multiple times results in a list of
+aggregates:</p><pre>
+val st = new StringTemplate( ... )
+st.setAttribute(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
+st.setAttribute(&quot;name.{first,last}&quot;, &quot;Larry&quot;, &quot;Fine&quot;)
+st.setAttribute(&quot;name.{first,last}&quot;, &quot;Curley&quot;, &quot;Howard&quot;)
+</pre><p>See
+http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
+for more information.
+</p></div><dl class="paramcmts block"><dt class="param">aggrSpec</dt><dd class="cmt"><p>the spec, as described above</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values. The values are treated as discrete;
+                 that is, lists are not supported.
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
             
@@ -735,7 +776,27 @@ the values are coalesced into a <code>java.util.List</code> of type <code>T</cod
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">setAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: T*</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: <span class="extype" name="scala.collection.Iterator">Iterator</span>[T]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Set attribute named <code>attrName</code> to many different values.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set attribute named <code>attrName</code> to many different values. Internally,
+the values are coalesced into a <code>java.util.List</code> of type <code>T</code>.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to associate with the attribute
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#setAttribute">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">setAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: T*</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
@@ -744,8 +805,9 @@ the values are coalesced into a <code>java.util.List</code> of type <code>T</cod
 Internally, a single value is stored as is, and multiple values are
 coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a Scala list
 (or sequence) in, use this syntax:</p><pre>
-template.setAttribute("name", List(1, 2, 3): _*)
+template.setAttribute(&quot;name&quot;, List(1, 2, 3): _*)
 </pre></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values to associate with the attribute
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
             
@@ -757,16 +819,17 @@ template.setAttribute("name", List(1, 2, 3): _*)
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">setAttributes</span><span class="params">(<span name="newAttrs">newAttrs: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, AnyRef]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setAttributes</span><span class="params">(<span name="newAttrs">newAttrs: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
             <p class="shortcomment cmt">Replace the current set of attributes with the attributes in the
-specified map .</p>
+specified map.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Replace the current set of attributes with the attributes in the
-specified map .  Multivalued attributes are supported via Scala
+specified map. Multivalued attributes are supported via Scala
 sequences and iterators, as described in the class documentation.
 </p></div><dl class="paramcmts block"><dt class="param">newAttrs</dt><dd class="cmt"><p>the map of new attributes
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
             
@@ -797,9 +860,9 @@ sequences and iterators, as described in the class documentation.
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Render the template with the current attributes .</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Render the template with the current attributes . 
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the rendered template . 
+            <p class="shortcomment cmt">Render the template with the current attributes.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Render the template with the current attributes.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the rendered template.
 </p></dd></dl><div class="block">
           definition classes: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a> → AnyRef → Any
         </div>
@@ -813,14 +876,15 @@ sequences and iterators, as described in the class documentation.
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">unsetAttribute</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">unsetAttribute</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Unset the value of the named attribute .</p>
+            <p class="shortcomment cmt">Unset the value of the named attribute.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Unset the value of the named attribute. Corresponds to the underlying
 StringTemplate API's <code>removeAttribute()</code> call.
 </p></div><dl class="paramcmts block"><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute to unset
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
             

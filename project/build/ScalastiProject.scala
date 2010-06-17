@@ -17,8 +17,10 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     // Specialization causes problems with inner classes. Disabling it, for
     // now, allows the tests to run. The bug was fixed in 2.8.0.RC2. This
     // code can be removed when no longer building against 2.8.0.RC1.
+/*
     override def testCompileOptions = super.testCompileOptions ++
         Seq(CompileOption("-no-specialization"))
+*/
 
     /* ---------------------------------------------------------------------- *\
                              Various settings
@@ -43,23 +45,23 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
     val scalatest = "org.scalatest" % "scalatest" %
-        "1.0.1-for-scala-2.8.0.RC1-SNAPSHOT"
+        ("1.2-for-scala-" + buildScalaVersion + "-SNAPSHOT")
 
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
 
     val orgClapperRepo = "clapper.org Maven Repository" at
         "http://maven.clapper.org"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.2"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing
     \* ---------------------------------------------------------------------- */
 
-    // "publish" will prompt (via a Swing pop-up) for the username and
-    // password.
+    lazy val home = Path.fileProperty("user.home")
     lazy val publishTo = Resolver.sftp("clapper.org Maven Repo",
                                        "maven.clapper.org",
-                                       "/var/www/maven.clapper.org/html")
+                                       "/var/www/maven.clapper.org/html") as
+                         ("bmc", (home / ".ssh" / "id_dsa").asFile)
 
     override def managedStyle = ManagedStyle.Maven
 

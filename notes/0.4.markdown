@@ -1,0 +1,9 @@
+* Added support for [mapped aggregates][]. The
+  `StringTemplate.setAggregate(name, map)` method now converts the map to a
+  Java Bean and support nested maps. Conversion is done via the
+  [ClassUtil][] library's [MapToBean][] capability. This change introduces
+  a dependency on [ClassUtil][].
+
+[ClassUtil]: http://bmc.github.com/classutil/
+[MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
+[mapped aggregates]: http://darkroom/~bmc/mystuff/scala/scalasti/gh-pages/_site/#mapped_aggregates

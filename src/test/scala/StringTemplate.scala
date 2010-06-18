@@ -1,4 +1,5 @@
-/*---------------------------------------------------------------------------*\
+/*
+  ---------------------------------------------------------------------------
   This software is released under a BSD license, adapted from
   http://opensource.org/licenses/bsd-license.php
 
@@ -30,7 +31,8 @@
   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-\*---------------------------------------------------------------------------*/
+  ---------------------------------------------------------------------------
+*/
 
 import org.scalatest.FunSuite
 import org.clapper.scalasti._
@@ -120,10 +122,31 @@ class StringTemplateTest extends ScalastiFunSuite
         {
             expect(expected, "aggregate")
             {
-                val st = new StringTemplate(template)
-                st.setAggregate(aggrSpec, args: _*)
-                st.toString
+                new StringTemplate(template).
+                setAggregate(aggrSpec, args: _*).
+                toString
             }
+        }
+    }
+
+    test("Mapped aggregates")
+    {
+        val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
+                       "$thing.outer.x$ $thing.okay$"
+
+        val thingMap = Map("okay"  -> "OKAY",
+                           "outer" -> Map("inner" -> "an inner string",
+                                          "x"     -> "something else"))
+        val fooMap = Map("bar" -> "BARSKI",
+                         "baz" -> 42)
+
+        val expected = "an inner string BARSKI 42 something else OKAY"
+        expect(expected, "mapped attribute")
+        {
+            new StringTemplate(template).
+            setAggregate("thing", thingMap).
+            setAggregate("foo", fooMap).
+            toString
         }
     }
 }

@@ -158,16 +158,17 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     }
 
     /**
-     * Set an aggregate from the specified arguments. An aggregate looks
-     * like an object from within a template, but it isn't backed by a
-     * bean. Instead, you specify the aggregate with a special syntax. For
-     * instance, the following code defines an aggregate attribute called
-     * `name`, with two fields, `first` and `last`. Those fields can be
-     * interpolated within a template via `$item.first$` and `$item.last$`.
+     * Set an automatic aggregate from the specified arguments. An
+     * automatic aggregate looks like an object from within a template, but
+     * it isn't backed by a bean. Instead, you specify the aggregate with a
+     * special syntax. For instance, the following code defines an
+     * aggregate attribute called `name`, with two fields, `first` and
+     * `last`. Those fields can be interpolated within a template via
+     * `$item.first$` and `$item.last$`.
      *
      * {{{
      * val st = new StringTemplate( ... )
-     * st.setAttribute("name.{first,last}", "Moe", "Howard")
+     * st.setAggregate("name.{first,last}", "Moe", "Howard")
      * }}}
      *
      * Setting the same aggregate multiple times results in a list of
@@ -175,10 +176,13 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * {{{
      * val st = new StringTemplate( ... )
-     * st.setAttribute("name.{first,last}", "Moe", "Howard")
-     * st.setAttribute("name.{first,last}", "Larry", "Fine")
-     * st.setAttribute("name.{first,last}", "Curley", "Howard")
+     * st.setAggregate("name.{first,last}", "Moe", "Howard")
+     * st.setAggregate("name.{first,last}", "Larry", "Fine")
+     * st.setAggregate("name.{first,last}", "Curley", "Howard")
      * }}}
+     *
+     * Note, however, that this syntax does not support nested aggregates.
+     * Use the map version of `setAggregate()` for that.
      *
      * See
      * http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
@@ -213,8 +217,17 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     }
 
     /**
-     * Create an aggregate from a map. The map's keys are used as the
-     * fields of the aggregate. For example, given this map:
+     * Create a "mapped aggregate". The supplied map's keys are used as the
+     * fields of the aggregate. With a mapped aggregate, Scalasti actually
+     * translates the map into a Java Bean, which it then uses to set the
+     * attribute. Because Scalasti recursively converts all maps it finds
+     * (as long as they are of type `Map[String, Any]`), a mapped attribute
+     * can handle nested attribute references.
+     *
+     * The underlying StringTemplate library does _not_ support the notion
+     * of a mapped aggregate; mapped aggregates are a Scalasti add-on.
+     *
+     * For example, given this map:
      *
      * {{{
      * Map("foo" -> List(1, 2), "bar" -> "barski")
@@ -227,21 +240,35 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * template.setAggregate("mystuff.{foo, bar}", List(1, 2), "barski")
      * }}}
      *
-     * @param aggrName  the aggregate name
-     * @param valueMap  the map of values
+     * Nested maps are supported. For instance, this code fragment:
+     *
+     * {{{
+     * val attrMap = Map("foo"   -> "FOO",
+     *                   "alien" -> Map("firstName" -> "John",
+     *                                  "lastName"  -> "Smallberries"))
+     * template.setAggregate("thing", attrMap)
+     * }}}
+     *
+     * will make the following values available in a template:
+     *
+     * {{{
+     * $thing.foo$                  # expands to "FOO"
+     * $things.alien.firstName$     # expands to "John"
+     * $things.alien.lastName$      # expands to "Smallberries"
+     * }}}
+     *
+     * @param attrName  the attribute's name (i.e., the outermost name)
+     * @param valueMap  the map of attribute fields
      *
      * @return this object, for convenience
      */
-    def setAggregate(aggrName: String,
+    def setAggregate(attrName: String,
                      valueMap: Map[String, Any]): StringTemplate =
     {
+        import org.clapper.classutil.MapToBean
+
         if (! valueMap.isEmpty)
-        {
-            val keys = valueMap.keys.toList
-            val aggrSpec = aggrName + "." + keys.mkString("{", ",", "}")
-            val values = keys.map(valueMap(_)).toSeq
-            setAggregate(aggrSpec, values: _*)
-        }
+            setAttribute(attrName, MapToBean(valueMap))
 
         this
     }

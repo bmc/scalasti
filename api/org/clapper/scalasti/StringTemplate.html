@@ -717,18 +717,32 @@ attribute renderer object must implement the <code>AttributeRenderer</code>trait
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">setAggregate</span><span class="params">(<span name="aggrName">aggrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueMap">valueMap: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+        <span class="name">setAggregate</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueMap">valueMap: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Create an aggregate from a map.</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Create an aggregate from a map. The map's keys are used as the
-fields of the aggregate. For example, given this map:</p><pre>
+            <p class="shortcomment cmt">Create a &quot;mapped aggregate&quot;.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Create a &quot;mapped aggregate&quot;. The supplied map's keys are used as the
+fields of the aggregate. With a mapped aggregate, Scalasti actually
+translates the map into a Java Bean, which it then uses to set the
+attribute. Because Scalasti recursively converts all maps it finds
+(as long as they are of type <code>Map[String, Any]</code>), a mapped attribute
+can handle nested attribute references.</p><p>The underlying StringTemplate library does _not_ support the notion
+of a mapped aggregate; mapped aggregates are a Scalasti add-on.</p><p>For example, given this map:</p><pre>
 Map(&quot;foo&quot; -&gt; List(1, 2), &quot;bar&quot; -&gt; &quot;barski&quot;)
 </pre><p>and the name &quot;mystuff&quot;, this method will produce the equivalent of the
 following call:</p><pre>
 template.setAggregate(&quot;mystuff.{foo, bar}&quot;, List(1, 2), &quot;barski&quot;)
-</pre></div><dl class="paramcmts block"><dt class="param">aggrName</dt><dd class="cmt"><p>the aggregate name</p></dd><dt class="param">valueMap</dt><dd class="cmt"><p>the map of values
+</pre><p>Nested maps are supported. For instance, this code fragment:</p><pre>
+val attrMap = Map(&quot;foo&quot;   -&gt; &quot;FOO&quot;,
+                  &quot;alien&quot; -&gt; Map(&quot;firstName&quot; -&gt; &quot;John&quot;,
+                                 &quot;lastName&quot;  -&gt; &quot;Smallberries&quot;))
+template.setAggregate(&quot;thing&quot;, attrMap)
+</pre><p>will make the following values available in a template:</p><pre>
+$thing.foo$                  # expands to &quot;FOO&quot;
+$things.alien.firstName$     # expands to &quot;John&quot;
+$things.alien.lastName$      # expands to &quot;Smallberries&quot;
+</pre></div><dl class="paramcmts block"><dt class="param">attrName</dt><dd class="cmt"><p>the attribute's name (i.e., the outermost name)</p></dd><dt class="param">valueMap</dt><dd class="cmt"><p>the map of attribute fields
 </p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
@@ -745,21 +759,22 @@ template.setAggregate(&quot;mystuff.{foo, bar}&quot;, List(1, 2), &quot;barski&q
       </span>
       </h4>
       
-            <p class="shortcomment cmt">Set an aggregate from the specified arguments.</p>
-            <div class="fullcomment"><div class="comment cmt"><p>Set an aggregate from the specified arguments. An aggregate looks
-like an object from within a template, but it isn't backed by a
-bean. Instead, you specify the aggregate with a special syntax. For
-instance, the following code defines an aggregate attribute called<code>name</code>, with two fields, <code>first</code> and <code>last</code>. Those fields can be
-interpolated within a template via <code>$item.first$</code> and <code>$item.last$</code>.</p><pre>
+            <p class="shortcomment cmt">Set an automatic aggregate from the specified arguments.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set an automatic aggregate from the specified arguments. An
+automatic aggregate looks like an object from within a template, but
+it isn't backed by a bean. Instead, you specify the aggregate with a
+special syntax. For instance, the following code defines an
+aggregate attribute called <code>name</code>, with two fields, <code>first</code> and<code>last</code>. Those fields can be interpolated within a template via<code>$item.first$</code> and <code>$item.last$</code>.</p><pre>
 val st = new StringTemplate( ... )
-st.setAttribute(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
+st.setAggregate(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
 </pre><p>Setting the same aggregate multiple times results in a list of
 aggregates:</p><pre>
 val st = new StringTemplate( ... )
-st.setAttribute(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
-st.setAttribute(&quot;name.{first,last}&quot;, &quot;Larry&quot;, &quot;Fine&quot;)
-st.setAttribute(&quot;name.{first,last}&quot;, &quot;Curley&quot;, &quot;Howard&quot;)
-</pre><p>See
+st.setAggregate(&quot;name.{first,last}&quot;, &quot;Moe&quot;, &quot;Howard&quot;)
+st.setAggregate(&quot;name.{first,last}&quot;, &quot;Larry&quot;, &quot;Fine&quot;)
+st.setAggregate(&quot;name.{first,last}&quot;, &quot;Curley&quot;, &quot;Howard&quot;)
+</pre><p>Note, however, that this syntax does not support nested aggregates.
+Use the map version of <code>setAggregate()</code> for that.</p><p>See
 http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
 for more information.
 </p></div><dl class="paramcmts block"><dt class="param">aggrSpec</dt><dd class="cmt"><p>the spec, as described above</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values. The values are treated as discrete;

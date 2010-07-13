@@ -51,8 +51,8 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 
     val orgClapperRepo = "clapper.org Maven Repository" at
         "http://maven.clapper.org"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.2"
-    val classutil = "org.clapper" %% "classutil" % "0.2"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.3"
+    val classutil = "org.clapper" %% "classutil" % "0.2.1"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing

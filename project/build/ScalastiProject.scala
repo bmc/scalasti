@@ -47,8 +47,7 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 /*
     val ScalaTestVersion = buildScalaVersion
 */
-    // Until a new build of ScalaTest is released.
-    val ScalaTestVersion = "2.8.0.RC7"
+    val ScalaTestVersion = "2.8.0.final"
 
     val scalatest = "org.scalatest" % "scalatest" %
         ("1.2-for-scala-" + ScalaTestVersion + "-SNAPSHOT")
@@ -57,8 +56,8 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 
     val orgClapperRepo = "clapper.org Maven Repository" at
         "http://maven.clapper.org"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.3"
-    val classutil = "org.clapper" %% "classutil" % "0.2.1"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.4"
+    val classutil = "org.clapper" %% "classutil" % "0.2.2"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing

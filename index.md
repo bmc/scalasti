@@ -79,16 +79,16 @@ If you're using [Maven][], you can get the *Scalasti* library from the
 
 * Group ID: `clapper.org`
 * Artifact ID: `scalasti_`*scala-version*
-* Version: `0.4`
+* Version: `0.4.1`
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
-Substitute either "2.8.0.RC5" or "2.8.0.RC3" for *scala-version*. For example:
+Currently, the only legal value for *scala-version* is "2.8.0". For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.8.0.RC5</artifactId>
-      <version>0.4</version>
+      <artifactId>scalasti_2.8.0</artifactId>
+      <version>0.4.1</version>
     </dependency>
 
 ## Using with SBT
@@ -98,13 +98,13 @@ your project file (i.e., the Scala file in your `project/build/`
 directory):
 
     val clapperOrgRepo = "clapper.org Maven Repository" at "http://maven.clapper.org"
-    val scalasti = "org.clapper" %% "scalasti" % "0.4"
+    val scalasti = "org.clapper" %% "scalasti" % "0.4.1"
 
 **NOTE:** The first doubled percent is *not* a typo. It tells SBT to treat
 *Scalasti* as a cross-built library and automatically inserts the Scala
-version you're using into the artifact ID. It will *only* work if you are
-building with Scala 2.8.0.RC5 or Scala 2.8.0.RC3. See the
-[SBT cross-building][] page for details.
+*version you're using into the artifact ID. It will *only* work if you are
+*building with Scala 2.8.0. See the [SBT cross-building][] page for
+*details.
 
 # Building from Source
 

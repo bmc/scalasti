@@ -1,5 +1,5 @@
 The [Scalasti library][] is a [Scala][] interface to the [StringTemplate][]
-Java template library. It provides a subset of the features of
+Java template library. It provides most of the features of
 [StringTemplate][], plus a few capabilities not found in StringTemplate,
 using a more Scala-friendly syntax.
 

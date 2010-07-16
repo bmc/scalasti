@@ -259,7 +259,17 @@ For that capability, you need mapped aggregates. (See next section.)
 *Scalasti* adds another form of aggregate attribute called a "mapped
 aggregate". Mapped aggregates are simply aggregate attributes created from
 Scala maps. The supplied map's keys are used as the fields of the
-aggregate.
+aggregate. The mapped aggregates feature allows you to create a map, like
+this:
+
+    st.setAggregate("myfield", Map("foo" -> List(1, 2), "bar" -> "barski"))
+
+and then access it in the template like this:
+
+    $myfield.bar$
+    <ul>
+      $myfield.foo:{ item | <li>$listitem(item)$</li>$\n$}$
+    </ul>
 
 The second form of the `StringTemplate.setAggregate()` method handles
 mapped aggregates:
@@ -288,7 +298,7 @@ following call:
 However, it does so by creating a Java Bean, not by using the underlying
 StringTemplate library's automatic aggregate feature.
 
-In addition, mapped aggregates support nest maps. For instance, this code
+In addition, mapped aggregates support nested maps. For instance, this code
 fragment:
 
     val attrMap = Map("foo"   -> "FOO",

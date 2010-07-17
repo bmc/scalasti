@@ -39,6 +39,8 @@ package org.clapper.scalasti
 
 import org.clapper.scalasti.adapter.ScalastiStringTemplate
 
+import grizzled.reflect._
+
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}
 
@@ -196,9 +198,6 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      */
     def setAggregate(aggrSpec: String, values: Any*): StringTemplate =
     {
-        def isOfType[T](v: Any)(implicit man: Manifest[T]): Boolean =
-            man >:> Manifest.classType(v.asInstanceOf[AnyRef].getClass)
-
         def transform(v: Any) =
         {
             if (isOfType[Seq[Any]](v))

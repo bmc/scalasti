@@ -44,16 +44,8 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     val newReleaseToolsRepository = "Scala Tools Repository" at
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
-/*
-    val ScalaTestVersion = buildScalaVersion
-*/
-    val ScalaTestVersion = "2.8.0.final"
-
-    val scalatest = "org.scalatest" % "scalatest" %
-        ("1.2-for-scala-" + ScalaTestVersion + "-SNAPSHOT")
-
+    val scalatest = "org.scalatest" % "scalatest" % "1.2"
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
-
     val orgClapperRepo = "clapper.org Maven Repository" at
         "http://maven.clapper.org"
     val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.4"

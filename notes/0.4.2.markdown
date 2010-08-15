@@ -1,7 +1,10 @@
+* Added `makeBeanAttribute()` methods, which automatically map Scala objects
+  to Java Beans for use with StringTemplate. Addresses Scalasti [Issue #1][].
 * Moved `isOfType` method to the [ClassUtil][] library.
 * Updated to released 1.2 version of [ScalaTest][] and updated the dependency
   to be a test, rather than runtime, one.
 * Moved unit testers into package-specific subdirectories.
 
+[Issue #1]: http://github.com/bmc/scalasti/issues#issue/1
 [ScalaTest]: http://scalatest.org/
 [ClassUtil]: http://bmc.github.com/classutil/

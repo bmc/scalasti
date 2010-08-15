@@ -5,7 +5,7 @@ layout: withTOC
 
 # Introduction
 
-*Scalasti* is a [Scala][] interface to the [StringTemplate][] Java template
+Scalasti is a [Scala][] interface to the [StringTemplate][] Java template
 library. It provides a subset of the features of [StringTemplate][], using
 a more Scala-friendly syntax.
 
@@ -63,18 +63,18 @@ I want to use StringTemplate from Scala, which is eminently feasible, since
 there's a Java version of StringTemplate. However, StringTemplate relies on
 `java.util.Collection` classes, such as `java.util.Map` and
 `java.util.List`; these classes are clumsy to use in Scala, compared to
-their Scala counterparts. I created the *Scalasti* wrapper interface to
+their Scala counterparts. I created the Scalasti wrapper interface to
 expose StringTemplate capabilities in a more Scala-friendly way.
 
 # Installation
 
-The simplest way to install the *Scalasti* library is to download a
+The simplest way to install the Scalasti library is to download a
 pre-compiled jar from the [*clapper.org* Maven repository][]. You can get
 certain build tools to do the heavy lifting for you.
 
 ## Installing for Maven
 
-If you're using [Maven][], you can get the *Scalasti* library from the
+If you're using [Maven][], you can get the Scalasti library from the
 [*clapper.org* Maven Repository][]. The relevant pieces of information are:
 
 * Group ID: `clapper.org`
@@ -101,7 +101,7 @@ directory):
     val scalasti = "org.clapper" %% "scalasti" % "0.4.1"
 
 **NOTE:** The first doubled percent is *not* a typo. It tells SBT to treat
-*Scalasti* as a cross-built library and automatically inserts the Scala
+Scalasti as a cross-built library and automatically inserts the Scala
 *version you're using into the artifact ID. It will *only* work if you are
 *building with Scala 2.8.0. See the [SBT cross-building][] page for
 *details.
@@ -110,37 +110,67 @@ directory):
 
 ## Source Code Repository
 
-The source code for the *Scalasti* library is maintained on [GitHub][]. To
+The source code for the Scalasti library is maintained on [GitHub][]. To
 clone the repository, run this command:
 
     git clone git://github.com/bmc/scalasti.git
 
 ## Build Requirements
 
-Building the *Scalasti* library requires [SBT][]. Install SBT, as described
+Building the Scalasti library requires [SBT][]. Install SBT, as described
 at the SBT web site.
 
-## Building *Scalasti*
+## Building Scalasti
 
 Assuming you have an `sbt` shell script (or .BAT file, for *\[shudder\]*
 Windows), first run:
 
     sbt update
 
-That command will pull down the external jars on which the *Scalasti*
+That command will pull down the external jars on which the Scalasti
 library depends. After that step, build the library with:
 
     sbt compile test package
 
 The resulting jar file will be in the top-level `target` directory.
 
-# Using *Scalasti*
+# Runtime Requirements
 
-The *Scalasti* API provides simple wrappers around the most common classes
+Scalasti requires the following libraries to be available at runtime, for
+ some, or all, of its methods.
+ 
+* The main [ASM][] library (version 3), e.g., `asm-3.2.jar`
+* The [ASM][] commons library (version 3), e.g., `asm-commons-3.2.jar`
+* The [Grizzled Scala][] library
+* The [Grizzled SLF4J][] library, for logging
+* The [SLF4J][] API library, for logging (e.g., `slf4j-api-1.5.11.jar`)
+* An SLF4J implementation, such as [Logback][] or [AVSL][], if you want
+  logging.
+
+Maven should automatically download these libraries for you. [SBT][],
+however, will not download all of them, because some of them are transitive
+dependencies. That is, Scalasti doesn't depend on them directly, but some
+of the libraries it uses depend on them.
+
+If you want to get [SBT][] to pull them down for you, for convenience, you
+can insert the following lines in your [SBT][] build script:
+
+    val asm = "asm" % "asm" % "3.2"
+    val asmCommons = "asm" % "asm-commons" % "3.2"
+    val asmUtil = "asm" % "asm-util" % "3.2"
+
+    val orgClapperRepo = "clapper.org Maven Repository" at
+        "http://maven.clapper.org"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.4"
+    val grizzledSlf4j = "org.clapper" %% "grizzled-slf4j" % "0.2.4"
+
+# Using Scalasti
+
+The Scalasti API provides simple wrappers around the most common classes
 in the [StringTemplate][] API. For various reasons, subclassing the
-StringTemplate classes is non-trivial, so *Scalasti*'s classes are wrappers
+StringTemplate classes is non-trivial, so Scalasti's classes are wrappers
 that delegate their operations to the wrapped StringTemplate object. Since
-*Scalasti* does not provide the full suite of capabilities available in the
+Scalasti does not provide the full suite of capabilities available in the
 actual StringTemplate classes, you can, at any point, retrieve a copy of
 the actual underlying StringTemplate API object, so you can interact
 directly with it.
@@ -192,8 +222,17 @@ Render a template with its current set of attributes:
 The underlying [StringTemplate][] API supports the notion of
 aggregates--attributes that, themselves, have attributes.
 [StringTemplate][] supports aggregates via Java Bean objects and
-[automatic aggregates][]. *Scalasti* also supports Java Bean objects and
-automatic aggregates, but it adds support for mapped aggregates.
+[automatic aggregates][]. Scalasti also supports Java Bean objects and
+automatic aggregates, but it adds support for two other kinds of
+aggregates:
+
+* mapped aggregates: aggregates created, on the fly, from maps that are
+  recursively wrapped in Java Beans
+* bean attributes: Scala objects that are recursively wrapped, on the fly,
+  in Java Beans
+  
+You'll find more information on these two enhanced forms of aggregates
+further down in this document.
 
 There are two forms of the `setAggregate()` method, as described below.
 
@@ -213,8 +252,8 @@ As the StringTemplate documentation puts it:
 >        String expecting = "Smith, John\nVon Munchhausen, Baron\n";
 
 
-*Scalasti* provides support for these automatic aggregates, though, for
-clarity, *Scalasti* names the methods `setAggregate()`, instead of
+Scalasti provides support for these automatic aggregates, though, for
+clarity, Scalasti names the methods `setAggregate()`, instead of
 overloading `setAttribute()` for aggregates.
 
 The first form of `StringTemplate.setAggregate()` handles automatic
@@ -256,7 +295,7 @@ For that capability, you need mapped aggregates. (See next section.)
 
 ### Mapped Aggregates
 
-*Scalasti* adds another form of aggregate attribute called a "mapped
+Scalasti adds another form of aggregate attribute called a "mapped
 aggregate". Mapped aggregates are simply aggregate attributes created from
 Scala maps. The supplied map's keys are used as the fields of the
 aggregate. The mapped aggregates feature allows you to create a map, like
@@ -277,14 +316,14 @@ mapped aggregates:
     def setAggregate(attrName: String, valueMap: Map[String, Any]): StringTemplate
 
 With this version of `setAggregate()`, the supplied map's keys are used as
-the fields of the aggregate. With a mapped aggregate, *Scalasti* actually
+the fields of the aggregate. With a mapped aggregate, Scalasti actually
 translates the map into a Java Bean, which it then uses to set the
-attribute. Because *Scalasti* recursively converts all maps it finds (as
+attribute. Because Scalasti recursively converts all maps it finds (as
 long as they are of type `Map[String, Any]`), a mapped attribute can handle
 nested attribute references.
 
 **NOTE**: The underlying [StringTemplate][] library does *not* support the
-notion of a mapped aggregate; mapped aggregates are a *Scalasti* add-on.
+notion of a mapped aggregate; mapped aggregates are a Scalasti add-on.
 
 For example, given this map:
 
@@ -312,8 +351,57 @@ will make the following values available in a template:
     $things.alien.firstName$     # expands to "John"
     $things.alien.lastName$      # expands to "Smallberries"
 
-To convert the map to a Java Bean, *Scalasti* uses the [ClassUtil][]
+To convert the map to a Java Bean, Scalasti uses the [ClassUtil][]
 library's [`MapToBean`][MapToBean] capability.
+
+### Scala Bean Aggregates
+
+Normally, StringTemplate expects non-primitive attributes to be either
+lists or Java Beans. In Scala, you can force a class to have Java Bean
+getters and setters by marking fields with the `@BeanProperty` annotation.
+However, sometimes that's annoying or even impossible. For instance, if you
+have an instance of a final Scala class from some third party API, you
+can't necessarily change that class to add `@BeanProperty` to the fields
+you want StringTemplate to see; writing a wrapper class is usually your
+only option. Similarly, if you have a Scala case class, often expressed in
+a single line of code, extending it to multiple lines of code, just to add
+`@BeanProperty`, is annoying.
+
+To solve this problem, Scalasti provides a couple variants of a
+`makeBeanAttribute()` method, which takes a Scala object and recursively
+wraps it in a Java Bean, before passing it to StringTemplate. Here are
+the declarations for `makeBeanAttribute()`:
+
+    def makeBeanAttribute[T](attrName: String, values: T*): StringTemplate
+    def makeBeanAttribute[T](attrName: String, values: Iterator[T]): StringTemplate
+
+Unlike the `setAttribute()` methods, the `makeBeanAttribute()` methods
+automatically convert the Scala object values to Java Beans, using the
+[ClassUtil][] library's `ScalaObjectToBean` capability. Thus, using
+`makeBeanAttribute()` allows you to pass Scala objects to StringTemplate,
+without using the `@BeanProperty' annotation to generate Java Bean getters
+for StringTemplate to use.
+
+**NOTE**: This capability requires the presence of the ASM byte code
+generation library at runtime.
+
+Here's an example, adapted from the Scalasti unit tests.
+
+    case class Outer(inner: String, x: Int)
+    case class Thing(outer: Outer, okay: String)
+    case class Foo(bar: String, baz: Int)
+
+    val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
+                   "$thing.outer.x$ $thing.okay$"
+
+    val thing = Thing(Outer("an inner string", 10), "OKAY")
+    val foo = Foo("BARSKI", 42)
+
+    val st = new StringTemplate(template).makeBeanAttribute("thing", thing).
+                                          makeBeanAttribute("foo", foo)
+    println(st.toString)
+
+    // Prints: an inner string BARSKI 42 10 OKAY
 
 ## API Documentation
 
@@ -331,10 +419,10 @@ deploying, and using StringTemplate templates.
 
 [Brian M. Clapper][]
 
-# Contributing to *Scalasti*
+# Contributing to Scalasti
 
-*Scalasti* is still under development. If you have suggestions or
-contributions, feel free to fork the [*Scalasti* repository][repo], make your
+Scalasti is still under development. If you have suggestions or
+contributions, feel free to fork the [Scalasti repository][repo], make your
 changes, and send me a pull request.
 
 # Copyright and License
@@ -345,11 +433,11 @@ Scalasti is copyright &copy; 2010 Brian M. Clapper and is released under a
 # Patches
 
 I gladly accept patches from their original authors. Feel free to email
-patches to me or to fork the [*Scalasti* repository][repo] and send me a pull
+patches to me or to fork the [Scalasti repository][repo] and send me a pull
 request. Along with any patch you send:
 
 * Please state that the patch is your original work.
-* Please indicate that you license the work to the *Scalasti* project
+* Please indicate that you license the work to the Scalasti project
   under a [BSD License][].
 
 [API documentation]: api/
@@ -374,4 +462,8 @@ request. Along with any patch you send:
 [SBT cross-building]: http://code.google.com/p/simple-build-tool/wiki/CrossBuild
 [automatic aggregates]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
 [ClassUtil]: http://bmc.github.com/classutil/
+[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
 [MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
+[AVSL]: http://bmc.github.com/avsl/
+[ASM]: http://asm.ow2.org/
+[SLF4J]: http://slf4j.org/

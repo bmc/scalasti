@@ -1,5 +1,7 @@
-* Moved `isOfType` method to [Grizzled Scala][] library.
-* Updated to released 1.2 version of [ScalaTest][].
+* Moved `isOfType` method to the [ClassUtil][] library.
+* Updated to released 1.2 version of [ScalaTest][] and updated the dependency
+  to be a test, rather than runtime, one.
+* Moved unit testers into package-specific subdirectories.
 
 [ScalaTest]: http://scalatest.org/
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[ClassUtil]: http://bmc.github.com/classutil/

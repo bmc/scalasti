@@ -40,7 +40,7 @@ import org.clapper.scalasti._
 /**
  * Tests the grizzled.io functions.
  */
-class StringTemplateTest extends ScalastiFunSuite
+class StringTemplateTest extends FunSuite
 {
     test("render template #1")
     {

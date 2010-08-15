@@ -533,6 +533,70 @@ possible to check whether the contents of the list are of the requested typed.
             
           </div>
           
+    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#makeBeanAttribute">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">makeBeanAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: <span class="extype" name="scala.collection.Iterator">Iterator</span>[T]</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Set attribute named <code>attrName</code> to one or many different values.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set attribute named <code>attrName</code> to one or many different values.
+Internally, a single value is stored as is, and multiple values are
+coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a Scala list
+(or sequence) in, use this syntax:</p><pre>
+template.makeAttribute(&quot;name&quot;, List(1, 2, 3): _*)
+</pre><p>Unlike the <code>setAttribute()</code> methods, this method automatically
+converts the Scala object values to Java Beans, using the<a href="http://bmc.github.com/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
+the <code>@BeanProperty' annotation to generate Java Bean getters for
+StringTemplate to use. This is especially useful if you want to pass
+instances of case classes or instances of final, non-bean classes to
+StringTemplate.
+
+This capability requires the presence of the ASM byte code
+generation library at runtime.
+</code></p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to associate with the attribute
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate#makeBeanAttribute">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">makeBeanAttribute</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="attrName">attrName: <span class="extype" name="java.lang.String">String</span></span>, <span name="values">values: T*</span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.StringTemplate">StringTemplate</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Set attribute named <code>attrName</code> to one or many different values.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set attribute named <code>attrName</code> to one or many different values.
+Internally, a single value is stored as is, and multiple values are
+coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a Scala list
+(or sequence) in, use this syntax:</p><pre>
+template.makeAttribute(&quot;name&quot;, List(1, 2, 3): _*)
+</pre><p>Unlike the <code>setAttribute()</code> methods, this method automatically
+converts the Scala object values to Java Beans, using the<a href="http://bmc.github.com/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
+the <code>@BeanProperty' annotation to generate Java Bean getters for
+StringTemplate to use. This is especially useful if you want to pass
+instances of case classes or instances of final, non-bean classes to
+StringTemplate.
+
+This capability requires the presence of the ASM byte code
+generation library at runtime.
+</code></p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values to associate with the attribute
+</p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
     </li><li visbl="prt" name="org.clapper.scalasti.StringTemplate#mapToJavaMap">
       <h4 class="signature">
       <span class="kind">def</span>
@@ -797,7 +861,13 @@ for more information.
       
             <p class="shortcomment cmt">Set attribute named <code>attrName</code> to many different values.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Set attribute named <code>attrName</code> to many different values. Internally,
-the values are coalesced into a <code>java.util.List</code> of type <code>T</code>.
+the values are coalesced into a <code>java.util.List</code> of type <code>T</code>.</p><p>Note that StringTemplate expects the values to be Java Beans, if
+they contain fields. This method does not automatically convert the
+values, since it has no way of knowing whether or not that's what
+the caller wants. If you want to have Scalasti automatically convert
+your values from Scala objects to Java Beans (which useful for case
+classes or other classes where using <code>@BeanProperty</code> isn't possible),
+use one of the <code>makeBeanAttribute()</code> methods.
 </p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to associate with the attribute
 </p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
@@ -821,7 +891,14 @@ Internally, a single value is stored as is, and multiple values are
 coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a Scala list
 (or sequence) in, use this syntax:</p><pre>
 template.setAttribute(&quot;name&quot;, List(1, 2, 3): _*)
-</pre></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values to associate with the attribute
+</pre><p>Note that StringTemplate expects the values to be Java Beans, if
+they contain fields. This method does not automatically convert the
+values, since it has no way of knowing whether or not that's what
+the caller wants. If you want to have Scalasti automatically convert
+your values from Scala objects to Java Beans (which useful for case
+classes or other classes where using <code>@BeanProperty</code> isn't possible),
+use one of the <code>makeBeanAttribute()</code> methods.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the values to assign to the attribute</p></dd><dt class="param">attrName</dt><dd class="cmt"><p>the name of the attribute</p></dd><dt class="param">values</dt><dd class="cmt"><p>one or more values to associate with the attribute
 </p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>
             
@@ -842,7 +919,13 @@ template.setAttribute(&quot;name&quot;, List(1, 2, 3): _*)
 specified map.</p>
             <div class="fullcomment"><div class="comment cmt"><p>Replace the current set of attributes with the attributes in the
 specified map. Multivalued attributes are supported via Scala
-sequences and iterators, as described in the class documentation.
+sequences and iterators, as described in the class documentation.</p><p>Note that StringTemplate expects the values to be Java Beans, if
+they contain fields. This method does not automatically convert the
+values, since it has no way of knowing whether or not that's what
+the caller wants. If you want to have Scalasti automatically convert
+your values from Scala objects to Java Beans (which useful for case
+classes or other classes where using <code>@BeanProperty</code> isn't possible),
+use one of the <code>makeBeanAttribute()</code> methods.
 </p></div><dl class="paramcmts block"><dt class="param">newAttrs</dt><dd class="cmt"><p>the map of new attributes
 </p></dd><dt>returns</dt><dd class="cmt"><p>this object, for convenience
 </p></dd></dl>

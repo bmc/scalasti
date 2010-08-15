@@ -14,14 +14,6 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     override def compileOptions = Unchecked :: super.compileOptions.toList
     override def parallelExecution = true // why not?
 
-    // Specialization causes problems with inner classes. Disabling it, for
-    // now, allows the tests to run. The bug was fixed in 2.8.0.RC2. This
-    // code can be removed when no longer building against 2.8.0.RC1.
-/*
-    override def testCompileOptions = super.testCompileOptions ++
-        Seq(CompileOption("-no-specialization"))
-*/
-
     /* ---------------------------------------------------------------------- *\
                              Various settings
     \* ---------------------------------------------------------------------- */
@@ -44,7 +36,7 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     val newReleaseToolsRepository = "Scala Tools Repository" at
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
-    val scalatest = "org.scalatest" % "scalatest" % "1.2"
+    val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
     val orgClapperRepo = "clapper.org Maven Repository" at
         "http://maven.clapper.org"

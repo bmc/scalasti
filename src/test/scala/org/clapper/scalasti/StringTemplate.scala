@@ -149,4 +149,26 @@ class StringTemplateTest extends FunSuite
             toString
         }
     }
+
+    test("makeBeanAttribute")
+    {
+        case class Outer(inner: String, x: Int)
+        case class Thing(outer: Outer, okay: String)
+        case class Foo(bar: String, baz: Int)
+
+        val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
+                       "$thing.outer.x$ $thing.okay$"
+
+        val thing = Thing(Outer("an inner string", 10), "OKAY")
+        val foo = Foo("BARSKI", 42)
+
+        val expected = "an inner string BARSKI 42 10 OKAY"
+        expect(expected, "bean attribute")
+        {
+            new StringTemplate(template).
+            makeBeanAttribute("thing", thing).
+            makeBeanAttribute("foo", foo).
+            toString
+        }
+    }
 }

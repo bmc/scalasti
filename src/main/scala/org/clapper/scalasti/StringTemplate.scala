@@ -38,12 +38,14 @@
 package org.clapper.scalasti
 
 import org.clapper.scalasti.adapter.ScalastiStringTemplate
+import org.clapper.classutil.{MapToBean, ScalaObjectToBean}
 
 import grizzled.reflect._
 
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}
 
+import scala.annotation.tailrec
 import scala.collection.mutable.{Map => MutableMap}
 import scala.reflect.Manifest
 
@@ -100,6 +102,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * template.setAttribute("name", List(1, 2, 3): _*)
      * }}}
      *
+     * Note that StringTemplate expects the values to be Java Beans, if
+     * they contain fields. This method does not automatically convert the
+     * values, since it has no way of knowing whether or not that's what
+     * the caller wants. If you want to have Scalasti automatically convert
+     * your values from Scala objects to Java Beans (which useful for case
+     * classes or other classes where using `@BeanProperty` isn't possible),
+     * use one of the `makeBeanAttribute()` methods.
+     *
      * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    one or more values to associate with the attribute
@@ -129,6 +139,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * Set attribute named `attrName` to many different values. Internally,
      * the values are coalesced into a `java.util.List` of type `T`.
      *
+     * Note that StringTemplate expects the values to be Java Beans, if
+     * they contain fields. This method does not automatically convert the
+     * values, since it has no way of knowing whether or not that's what
+     * the caller wants. If you want to have Scalasti automatically convert
+     * your values from Scala objects to Java Beans (which useful for case
+     * classes or other classes where using `@BeanProperty` isn't possible),
+     * use one of the `makeBeanAttribute()` methods.
+     *
      * @tparam T        the type of the values to assign to the attribute
      * @param attrName  the name of the attribute
      * @param values    the values to associate with the attribute
@@ -147,6 +165,14 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      * specified map. Multivalued attributes are supported via Scala
      * sequences and iterators, as described in the class documentation.
      *
+     * Note that StringTemplate expects the values to be Java Beans, if
+     * they contain fields. This method does not automatically convert the
+     * values, since it has no way of knowing whether or not that's what
+     * the caller wants. If you want to have Scalasti automatically convert
+     * your values from Scala objects to Java Beans (which useful for case
+     * classes or other classes where using `@BeanProperty` isn't possible),
+     * use one of the `makeBeanAttribute()` methods.
+     *
      * @param newAttrs  the map of new attributes
      *
      * @return this object, for convenience
@@ -157,6 +183,73 @@ class StringTemplate(val group: Option[StringTemplateGroup],
         attributeMap ++= newAttrs
         template.setAttributes(mapToJavaMap(attributes))
         this
+    }
+
+    /**
+     * Set attribute named `attrName` to one or many different values.
+     * Internally, a single value is stored as is, and multiple values are
+     * coalesced into a `java.util.List` of type `T`. To pass a Scala list
+     * (or sequence) in, use this syntax:
+     *
+     * {{{
+     * template.makeAttribute("name", List(1, 2, 3): _*)
+     * }}}
+     *
+     * Unlike the `setAttribute()` methods, this method automatically
+     * converts the Scala object values to Java Beans, using the
+     * <a href="http://bmc.github.com/classutil/">ClassUtil</a> library's
+     * `ScalaObjectToBean` capability. Thus, using `makeBeanAttribute()`
+     * allows you to pass Scala objects to StringTemplate, without using
+     * the `@BeanProperty' annotation to generate Java Bean getters for
+     * StringTemplate to use. This is especially useful if you want to pass
+     * instances of case classes or instances of final, non-bean classes to
+     * StringTemplate.
+     *
+     * This capability requires the presence of the ASM byte code
+     * generation library at runtime.
+     *
+     * @tparam T        the type of the values to assign to the attribute
+     * @param attrName  the name of the attribute
+     * @param values    one or more values to associate with the attribute
+     *
+     * @return this object, for convenience
+     */
+    def makeBeanAttribute[T](attrName: String, values: T*): StringTemplate =
+        setAttribute(attrName, values.map(ScalaObjectToBean(_)): _*)
+
+    /**
+     * Set attribute named `attrName` to one or many different values.
+     * Internally, a single value is stored as is, and multiple values are
+     * coalesced into a `java.util.List` of type `T`. To pass a Scala list
+     * (or sequence) in, use this syntax:
+     *
+     * {{{
+     * template.makeAttribute("name", List(1, 2, 3): _*)
+     * }}}
+     *
+     * Unlike the `setAttribute()` methods, this method automatically
+     * converts the Scala object values to Java Beans, using the
+     * <a href="http://bmc.github.com/classutil/">ClassUtil</a> library's
+     * `ScalaObjectToBean` capability. Thus, using `makeBeanAttribute()`
+     * allows you to pass Scala objects to StringTemplate, without using
+     * the `@BeanProperty' annotation to generate Java Bean getters for
+     * StringTemplate to use. This is especially useful if you want to pass
+     * instances of case classes or instances of final, non-bean classes to
+     * StringTemplate.
+     *
+     * This capability requires the presence of the ASM byte code
+     * generation library at runtime.
+     *
+     * @tparam T        the type of the values to assign to the attribute
+     * @param attrName  the name of the attribute
+     * @param values    the values to associate with the attribute
+     *
+     * @return this object, for convenience
+     */
+    def makeBeanAttribute[T](attrName: String,
+                             values: Iterator[T]): StringTemplate =
+    {
+        makeBeanAttribute(attrName, values.toList)
     }
 
     /**
@@ -264,8 +357,6 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     def setAggregate(attrName: String,
                      valueMap: Map[String, Any]): StringTemplate =
     {
-        import org.clapper.classutil.MapToBean
-
         if (! valueMap.isEmpty)
             setAttribute(attrName, MapToBean(valueMap))
 

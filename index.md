@@ -394,14 +394,14 @@ Here's an example, adapted from the Scalasti unit tests.
     val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
                    "$thing.outer.x$ $thing.okay$"
 
-    val thing = Thing(Outer("an inner string", 10), "OKAY")
+    val thing = Thing(Outer("some string thing", 10), "OKAY")
     val foo = Foo("BARSKI", 42)
 
     val st = new StringTemplate(template).makeBeanAttribute("thing", thing).
                                           makeBeanAttribute("foo", foo)
     println(st.toString)
 
-    // Prints: an inner string BARSKI 42 10 OKAY
+    // Prints: some string thing BARSKI 42 10 OKAY
 
 ## API Documentation
 

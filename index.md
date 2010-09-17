@@ -267,7 +267,7 @@ underlying StringTemplate library does:
 It sets an automatic aggregate from the specified arguments, returning the
 template, for convenience. An automatic aggregate looks like an object from
 within a template, but it isn't backed by a bean. Instead, you specify the
-aggregate with a special syntax. For instance, the following code defines
+aggregate with a special syntax. For example, the following code defines
 an aggregate attribute called `name`, with two fields, `first` and `last`.
 Those fields can be interpolated within a template via `$item.first$` and
 `$item.last$`.
@@ -359,9 +359,9 @@ library's [`MapToBean`][MapToBean] capability.
 ### Scala Bean Aggregates
 
 Normally, StringTemplate expects non-primitive attributes to be either
-lists or Java Beans. In Scala, you can force a class to have Java Bean
+collections or Java Beans. In Scala, you can force a class to have Java Bean
 getters and setters by marking fields with the `@BeanProperty` annotation.
-However, sometimes that's annoying or even impossible. For instance, if you
+However, sometimes that's annoying or even impossible. For example, if you
 have an instance of a final Scala class from some third party API, you
 can't necessarily change that class to add `@BeanProperty` to the fields
 you want StringTemplate to see; writing a wrapper class is usually your
@@ -396,14 +396,14 @@ Here's an example, adapted from the Scalasti unit tests.
     val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
                    "$thing.outer.x$ $thing.okay$"
 
-    val thing = Thing(Outer("an inner string", 10), "OKAY")
+    val thing = Thing(Outer("some string thing", 10), "OKAY")
     val foo = Foo("BARSKI", 42)
 
     val st = new StringTemplate(template).makeBeanAttribute("thing", thing).
                                           makeBeanAttribute("foo", foo)
     println(st.toString)
 
-    // Prints: an inner string BARSKI 42 10 OKAY
+    // Prints: some string thing BARSKI 42 10 OKAY
 
 ## API Documentation
 

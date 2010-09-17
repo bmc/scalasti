@@ -1,0 +1,84 @@
+---
+title: Change Log for Scalasti
+layout: default
+---
+
+Version 0.5:
+
+* Added `makeBeanAttribute()` methods, which automatically map Scala objects
+  to Java Beans for use with StringTemplate. Addresses Scalasti [Issue #1][].
+* Moved `isOfType` method to the [ClassUtil][] library.
+* Updated to released 1.2 version of [ScalaTest][] and updated the dependency
+  to be a test, rather than runtime, one.
+* Moved unit testers into package-specific subdirectories.
+* Now published to the [Scala Tools Maven repository][], which [SBT][]
+  includes by default. Thus, if you're using SBT, it's longer necessary to
+  specify a custom repository to find this artifact.
+
+[Issue #1]: http://github.com/bmc/scalasti/issues#issue/1
+[ScalaTest]: http://scalatest.org/
+[ClassUtil]: http://bmc.github.com/classutil/
+[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
+[SBT]: http://code.google.com/p/simple-build-tool/
+
+Version 0.4.1:
+
+* Updated to build with Scala 2.8.0.final *only*. Dropped support for
+  Scala 2.8.0 release candidates (RCs).
+
+
+Version 0.4:
+
+* Added support for [mapped aggregates][]. The
+  `StringTemplate.setAggregate(name, map)` method now converts the map to a
+  Java Bean and support nested maps. Conversion is done via the
+  [ClassUtil][] library's [MapToBean][] capability. This change introduces
+  a dependency on [ClassUtil][].
+
+[ClassUtil]: http://bmc.github.com/classutil/
+[MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
+[mapped aggregates]: http://darkroom/~bmc/mystuff/scala/scalasti/gh-pages/_site/#mapped_aggregates
+
+Version 0.3.1:
+
+* Updated to version 0.7.2 of [Grizzled Scala][].
+* Now compiles with Scala 2.8.0.RC5, as well as RC3. Dropped support for RC2.
+
+[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
+
+Version 0.3:
+
+* Added support for [automatic aggregate creation][], via the new
+  `StringTemplate.setAggregate()` methods.
+* Changed `StringTemplate` interface to support `Any`, not just `AnyRef`
+  attribute values.
+* Various `set` methods in `StringTemplate` now return the template.
+* Updated to version 0.7 of [Grizzled Scala][].
+* Now compiles with Scala 2.8.0.RC3, as well as RC2. Dropped support for RC1.
+
+[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
+
+Version 0.2.1:
+
+* Updated to build with Scala 2.8.0.RC2, as well as Scala 2.8.0.RC1.
+* Maven artifact now includes Scala version (e.g., `scalasti_2.8.0.RC2`,
+  instead of `scalasti`).
+* Enhanced Scaladocs a bit.
+
+[scalaj-collection]: http://github.com/scalaj/scalaj-collection
+
+Version 0.2:
+
+* Updated to build with Scala 2.8.0.RC1
+* Updated to `posterous-sbt` plugin, version 0.1.5.
+* Removed dependency on [scalaj-collection][].
+* Corrected SBT build's retrieval of 2.7.7 (old) Grizzled-Scala, needed for
+  SBT build file to compile.
+
+[scalaj-collection]: http://github.com/scalaj/scalaj-collection
+
+Version 0.1:
+
+* Initial release

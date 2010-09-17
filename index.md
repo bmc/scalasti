@@ -68,22 +68,31 @@ expose StringTemplate capabilities in a more Scala-friendly way.
 
 # Installation
 
-The simplest way to install the Scalasti library is to download a
-pre-compiled jar from the [*clapper.org* Maven repository][]. You can get
-certain build tools to do the heavy lifting for you.
+The easiest way to install the Scalasti library is to download a
+pre-compiled jar from the [Scala Tools Maven repository][]. However, you
+can also get certain build tools to download it for you automatically.
 
 ## Installing for Maven
 
-If you're using [Maven][], you can get the Scalasti library from the
-[*clapper.org* Maven Repository][]. The relevant pieces of information are:
+If you're using [Maven][], you can simply tell Maven to get Scalasti
+from the [Scala Tools Maven repository][]. The relevant pieces of
+information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `scalasti_`*scala-version*
+* Artifact ID: `scalasti_2.8.0`
 * Version: `0.5`
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
-Currently, the only legal value for *scala-version* is "2.8.0". For example:
+Here's a sample Maven POM "dependency" snippet:
+
+    <repositories>
+      <repository>
+        <id>scala-tools.org</id>
+          <name>Scala-tools Maven2 Repository</name>
+          <url>http://scala-tools.org/repo-releases</url>
+      </repository>
+    </repositories>
 
     <dependency>
       <groupId>org.clapper</groupId>
@@ -91,20 +100,28 @@ Currently, the only legal value for *scala-version* is "2.8.0". For example:
       <version>0.5</version>
     </dependency>
 
+For more information on using Maven and Scala, see Josh Suereth's
+[Scala Maven Guide][].
+
 ## Using with SBT
 
-If you're using [SBT][] to build your code, place the following lines in
+If you're using [SBT][] to build your code, place the following line in
 your project file (i.e., the Scala file in your `project/build/`
 directory):
 
-    val clapperOrgRepo = "clapper.org Maven Repository" at "http://maven.clapper.org"
     val scalasti = "org.clapper" %% "scalasti" % "0.5"
 
-**NOTE:** The first doubled percent is *not* a typo. It tells SBT to treat
-Scalasti as a cross-built library and automatically inserts the Scala
-*version you're using into the artifact ID. It will *only* work if you are
-*building with Scala 2.8.0. See the [SBT cross-building][] page for
-*details.
+**NOTES:**
+
+1. The first doubled percent is *not* a typo. It tells SBT to treat
+   Scalasti as a cross-built library and automatically inserts the Scala
+   version you're using into the artifact ID. It will *only* work if you
+   are building with Scala 2.8.0. See the [SBT cross-building][] page for
+   details.
+2. Prior to version 0.3, you also had to specify the location of the
+   *clapper.org* custom Maven repository. With version 0.3, however,
+   ClassUtil is now being published to the
+   [Scala Tools Maven repository][], which SBT automatically searches.
 
 # Building from Source
 
@@ -147,22 +164,7 @@ Scalasti requires the following libraries to be available at runtime, for
 * An SLF4J implementation, such as [Logback][] or [AVSL][], if you want
   logging.
 
-Maven should automatically download these libraries for you. [SBT][],
-however, will not download all of them, because some of them are transitive
-dependencies. That is, Scalasti doesn't depend on them directly, but some
-of the libraries it uses depend on them.
-
-If you want to get [SBT][] to pull them down for you, for convenience, you
-can insert the following lines in your [SBT][] build script:
-
-    val asm = "asm" % "asm" % "3.2"
-    val asmCommons = "asm" % "asm-commons" % "3.2"
-    val asmUtil = "asm" % "asm-util" % "3.2"
-
-    val orgClapperRepo = "clapper.org Maven Repository" at
-        "http://maven.clapper.org"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.4"
-    val grizzledSlf4j = "org.clapper" %% "grizzled-slf4j" % "0.2.4"
+Maven and [SBT][] should automatically download these libraries for you.
 
 # Using Scalasti
 
@@ -379,7 +381,7 @@ Unlike the `setAttribute()` methods, the `makeBeanAttribute()` methods
 automatically convert the Scala object values to Java Beans, using the
 [ClassUtil][] library's `ScalaObjectToBean` capability. Thus, using
 `makeBeanAttribute()` allows you to pass Scala objects to StringTemplate,
-without using the `@BeanProperty' annotation to generate Java Bean getters
+without using the `@BeanProperty` annotation to generate Java Bean getters
 for StringTemplate to use.
 
 **NOTE**: This capability requires the presence of the ASM byte code
@@ -455,7 +457,6 @@ request. Along with any patch you send:
 [Scalate]: http://scalate.fusesource.org/
 [*Enforcing Strict Model-View Separation in Template Engines*]: http://www.cs.usfca.edu/~parrt/papers/mvc.templates.pdf
 [SBT]: http://code.google.com/p/simple-build-tool
-[*clapper.org* Maven repository]: http://maven.clapper.org/org/clapper/
 [Maven]: http://maven.apache.org/
 [GitHub repository]: http://github.com/bmc/scalasti
 [GitHub]: http://github.com/bmc/
@@ -463,7 +464,12 @@ request. Along with any patch you send:
 [automatic aggregates]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
 [ClassUtil]: http://bmc.github.com/classutil/
 [Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled SLF4J]: http://bmc.github.com/grizzled-slf4j/
 [MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
 [AVSL]: http://bmc.github.com/avsl/
 [ASM]: http://asm.ow2.org/
 [SLF4J]: http://slf4j.org/
+[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
+[Scala Maven Guide]: http://www.scala-lang.org/node/345
+[changelog]: CHANGELOG.html
+[logback]: http://logback.qos.ch/

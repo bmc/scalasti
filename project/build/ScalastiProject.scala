@@ -38,20 +38,17 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 
     val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
-    val orgClapperRepo = "clapper.org Maven Repository" at
-        "http://maven.clapper.org"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.4"
-    val classutil = "org.clapper" %% "classutil" % "0.2.2"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0"
+    val classutil = "org.clapper" %% "classutil" % "0.3"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing
     \* ---------------------------------------------------------------------- */
 
-    lazy val home = Path.fileProperty("user.home")
-    lazy val publishTo = Resolver.sftp("clapper.org Maven Repo",
-                                       "maven.clapper.org",
-                                       "/var/www/maven.clapper.org/html") as
-                         ("bmc", (home / ".ssh" / "id_dsa").asFile)
+    lazy val publishTo = "Scala Tools Nexus" at
+        "http://nexus.scala-tools.org/content/repositories/releases/"
+    Credentials(Path.userHome / "src" / "mystuff" / "scala" /
+                "nexus.scala-tools.org.properties", log)
 
     override def managedStyle = ManagedStyle.Maven
 

@@ -4,7 +4,12 @@
 * Updated to released 1.2 version of [ScalaTest][] and updated the dependency
   to be a test, rather than runtime, one.
 * Moved unit testers into package-specific subdirectories.
+* Now published to the [Scala Tools Maven repository][], which [SBT][]
+  includes by default. Thus, if you're using SBT, it's longer necessary to
+  specify a custom repository to find this artifact.
 
 [Issue #1]: http://github.com/bmc/scalasti/issues#issue/1
 [ScalaTest]: http://scalatest.org/
 [ClassUtil]: http://bmc.github.com/classutil/
+[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
+[SBT]: http://code.google.com/p/simple-build-tool/

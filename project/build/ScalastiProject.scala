@@ -38,8 +38,8 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
 
     val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0"
-    val classutil = "org.clapper" %% "classutil" % "0.3"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0.1"
+    val classutil = "org.clapper" %% "classutil" % "0.3.1"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing

@@ -80,7 +80,7 @@ information are:
 
 * Group ID: `clapper.org`
 * Artifact ID: `scalasti_2.8.0`
-* Version: `0.5`
+* Version: `0.5.1`
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
@@ -97,8 +97,10 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>scalasti_2.8.0</artifactId>
-      <version>0.5</version>
+      <version>0.5.1</version>
     </dependency>
+
+Scala 2.8.1.RC1 is also supported in version 0.5.1.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -109,7 +111,7 @@ If you're using [SBT][] to build your code, place the following line in
 your project file (i.e., the Scala file in your `project/build/`
 directory):
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5"
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.1"
 
 **NOTES:**
 

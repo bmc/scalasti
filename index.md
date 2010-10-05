@@ -82,7 +82,7 @@ information are:
 * Artifact ID: `scalasti_2.8.0`
 * Version: `0.5.1`
 * Type: `jar`
-* Repository: `http://maven.clapper.org/`
+* Repository: `http://scala-tools.org/repo-releases`
 
 Here's a sample Maven POM "dependency" snippet:
 

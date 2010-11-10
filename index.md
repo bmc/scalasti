@@ -82,7 +82,7 @@ information are:
 * Artifact ID: `scalasti_2.8.1`
 * Version: `0.5.1`
 * Type: `jar`
-* Repository: `http://maven.clapper.org/`
+* Repository: `http://scala-tools.org/repo-releases`
 
 Here's a sample Maven POM "dependency" snippet:
 
@@ -96,11 +96,11 @@ Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.8.1</artifactId>
+      <artifactId>scalasti_2.8.0</artifactId>
       <version>0.5.1</version>
     </dependency>
 
-Version 0.5.1 is available for Scala 2.8.0 and 2.8.1.
+Scala 2.8.1.RC1 is also supported in version 0.5.1.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].

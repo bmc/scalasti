@@ -79,8 +79,8 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `scalasti_2.8.0`
-* Version: `0.5`
+* Artifact ID: `scalasti_2.8.1`
+* Version: `0.5.1`
 * Type: `jar`
 * Repository: `http://maven.clapper.org/`
 
@@ -96,9 +96,11 @@ Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.8.0</artifactId>
-      <version>0.5</version>
+      <artifactId>scalasti_2.8.1</artifactId>
+      <version>0.5.1</version>
     </dependency>
+
+Version 0.5.1 is available for Scala 2.8.0 and 2.8.1.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -109,15 +111,16 @@ If you're using [SBT][] to build your code, place the following line in
 your project file (i.e., the Scala file in your `project/build/`
 directory):
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5"
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.1"
 
 **NOTES:**
 
 1. The first doubled percent is *not* a typo. It tells SBT to treat
    Scalasti as a cross-built library and automatically inserts the Scala
    version you're using into the artifact ID. It will *only* work if you
-   are building with Scala 2.8.0. See the [SBT cross-building][] page for
-   details.
+   are building with Scala 2.8.0 or 2.8.1. See the [SBT cross-building][]
+   page for details.
+
 2. Prior to version 0.3, you also had to specify the location of the
    *clapper.org* custom Maven repository. With version 0.3, however,
    ClassUtil is now being published to the

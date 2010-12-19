@@ -450,8 +450,8 @@ request. Along with any patch you send:
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
 [StringTemplate documentation]: http://www.antlr.org/wiki/display/ST/StringTemplate+Documentation
-[Scalasti]: http://bmc.github.com/scalasti
-[Scalasti home page]: http://bmc.github.com/scalasti
+[Scalasti]: http://software.clapper.org/scalasti
+[Scalasti home page]: http://software.clapper.org/scalasti
 [repo]: http://github.com/bmc/scalasti
 [Brian M. Clapper]: mailto:bmc@clapper.org
 [Google's Closure Templates]: http://code.google.com/closure/templates/index.html
@@ -465,11 +465,11 @@ request. Along with any patch you send:
 [GitHub]: http://github.com/bmc/
 [SBT cross-building]: http://code.google.com/p/simple-build-tool/wiki/CrossBuild
 [automatic aggregates]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
-[ClassUtil]: http://bmc.github.com/classutil/
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
-[Grizzled SLF4J]: http://bmc.github.com/grizzled-slf4j/
-[MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
-[AVSL]: http://bmc.github.com/avsl/
+[ClassUtil]: http://software.clapper.org/classutil/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
+[Grizzled SLF4J]: http://software.clapper.org/grizzled-slf4j/
+[MapToBean]: http://software.clapper.org/classutil/#generating_java_beans_from_scala_maps
+[AVSL]: http://software.clapper.org/avsl/
 [ASM]: http://asm.ow2.org/
 [SLF4J]: http://slf4j.org/
 [Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/

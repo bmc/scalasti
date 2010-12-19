@@ -17,7 +17,7 @@ Version 0.5:
 
 [Issue #1]: http://github.com/bmc/scalasti/issues#issue/1
 [ScalaTest]: http://scalatest.org/
-[ClassUtil]: http://bmc.github.com/classutil/
+[ClassUtil]: http://software.clapper.org/classutil/
 [Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
 [SBT]: http://code.google.com/p/simple-build-tool/
 
@@ -35,8 +35,8 @@ Version 0.4:
   [ClassUtil][] library's [MapToBean][] capability. This change introduces
   a dependency on [ClassUtil][].
 
-[ClassUtil]: http://bmc.github.com/classutil/
-[MapToBean]: http://bmc.github.com/classutil/#generating_java_beans_from_scala_maps
+[ClassUtil]: http://software.clapper.org/classutil/
+[MapToBean]: http://software.clapper.org/classutil/#generating_java_beans_from_scala_maps
 [mapped aggregates]: http://darkroom/~bmc/mystuff/scala/scalasti/gh-pages/_site/#mapped_aggregates
 
 Version 0.3.1:
@@ -44,7 +44,7 @@ Version 0.3.1:
 * Updated to version 0.7.2 of [Grizzled Scala][].
 * Now compiles with Scala 2.8.0.RC5, as well as RC3. Dropped support for RC2.
 
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
 
 Version 0.3:
@@ -57,7 +57,7 @@ Version 0.3:
 * Updated to version 0.7 of [Grizzled Scala][].
 * Now compiles with Scala 2.8.0.RC3, as well as RC2. Dropped support for RC1.
 
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation
 
 Version 0.2.1:

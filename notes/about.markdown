@@ -5,4 +5,4 @@ using a more Scala-friendly syntax.
 
 [StringTemplate]: http://www.stringtemplate.org/
 [Scala]: http://www.scala-lang.org/
-[Scalasti library]: http://bmc.github.com/scalasti/
+[Scalasti library]: http://software.clapper.org/scalasti/

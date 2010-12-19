@@ -1,5 +1,5 @@
 * Updated to version 0.7.2 of [Grizzled Scala][].
 * Now compiles with Scala 2.8.0.RC5, as well as RC3. Dropped support for RC2.
 
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [automatic aggregate creation]: http://www.antlr.org/wiki/display/ST/Expressions#Expressions-Automaticaggregatecreation

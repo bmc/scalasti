@@ -197,7 +197,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * Unlike the `setAttribute()` methods, this method automatically
      * converts the Scala object values to Java Beans, using the
-     * <a href="http://bmc.github.com/classutil/">ClassUtil</a> library's
+     * <a href="http://software.clapper.org/classutil/">ClassUtil</a> library's
      * `ScalaObjectToBean` capability. Thus, using `makeBeanAttribute()`
      * allows you to pass Scala objects to StringTemplate, without using
      * the `@BeanProperty' annotation to generate Java Bean getters for
@@ -229,7 +229,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      *
      * Unlike the `setAttribute()` methods, this method automatically
      * converts the Scala object values to Java Beans, using the
-     * <a href="http://bmc.github.com/classutil/">ClassUtil</a> library's
+     * <a href="http://software.clapper.org/classutil/">ClassUtil</a> library's
      * `ScalaObjectToBean` capability. Thus, using `makeBeanAttribute()`
      * allows you to pass Scala objects to StringTemplate, without using
      * the `@BeanProperty' annotation to generate Java Bean getters for

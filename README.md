@@ -15,7 +15,7 @@ under a BSD license. See the accompanying license file for details.
 
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
-[Scalasti home page]: http://bmc.github.com/scalasti
-[Scalasti]: http://bmc.github.com/scalasti
+[Scalasti home page]: http://software.clapper.org/scalasti
+[Scalasti]: http://software.clapper.org/scalasti
 [Brian M. Clapper]: mailto:bmc@clapper.org
 

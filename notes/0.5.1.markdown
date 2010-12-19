@@ -4,5 +4,5 @@
   class names that conflict with previously generated class names.)
 
 [Scala]: http://www.scala-lang.org/
-[ClassUtil]: http://bmc.github.com/classutil/
+[ClassUtil]: http://software.clapper.org/classutil/
 [ClassUtil Issue #1]: http://github.com/bmc/classutil/issues#issue/1

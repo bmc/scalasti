@@ -1,0 +1,3 @@
+* Updated to latest release of [ClassUtil][] library.
+
+[ClassUtil]: http://software.clapper.org/classutil/

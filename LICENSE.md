@@ -1,12 +1,12 @@
-Grizzled Scala Library License
-==============================
+Scalasti Library License
+========================
 
 This software is released under BSD license, adapted from
 <http://opensource.org/licenses/bsd-license.php>
 
 ---
 
-Copyright &copy; 2009, Brian M. Clapper.
+Copyright &copy; 2010-2011, Brian M. Clapper.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

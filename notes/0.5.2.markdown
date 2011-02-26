@@ -2,4 +2,4 @@
 * Updated to latest release of [sbt-plugins][] library.
 
 [ClassUtil]: http://software.clapper.org/classutil/
-[ClassUtil]: http://software.clapper.org/sbt-plugins/
+[sbt-plugins]: http://software.clapper.org/sbt-plugins/

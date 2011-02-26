@@ -1,3 +1,5 @@
 * Updated to latest release of [ClassUtil][] library.
+* Updated to latest release of [sbt-plugins][] library.
 
 [ClassUtil]: http://software.clapper.org/classutil/
+[ClassUtil]: http://software.clapper.org/sbt-plugins/

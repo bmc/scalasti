@@ -548,7 +548,7 @@ coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a S
 (or sequence) in, use this syntax:</p><pre>
 template.makeAttribute(&quot;name&quot;, List(1, 2, 3): _*)
 </pre><p>Unlike the <code>setAttribute()</code> methods, this method automatically
-converts the Scala object values to Java Beans, using the<a href="http://bmc.github.com/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
+converts the Scala object values to Java Beans, using the<a href="http://software.clapper.org/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
 the <code>@BeanProperty' annotation to generate Java Bean getters for
 StringTemplate to use. This is especially useful if you want to pass
 instances of case classes or instances of final, non-bean classes to
@@ -580,7 +580,7 @@ coalesced into a <code>java.util.List</code> of type <code>T</code>. To pass a S
 (or sequence) in, use this syntax:</p><pre>
 template.makeAttribute(&quot;name&quot;, List(1, 2, 3): _*)
 </pre><p>Unlike the <code>setAttribute()</code> methods, this method automatically
-converts the Scala object values to Java Beans, using the<a href="http://bmc.github.com/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
+converts the Scala object values to Java Beans, using the<a href="http://software.clapper.org/classutil/">ClassUtil</a> library's<code>ScalaObjectToBean</code> capability. Thus, using <code>makeBeanAttribute()</code>allows you to pass Scala objects to StringTemplate, without using
 the <code>@BeanProperty' annotation to generate Java Bean getters for
 StringTemplate to use. This is especially useful if you want to pass
 instances of case classes or instances of final, non-bean classes to

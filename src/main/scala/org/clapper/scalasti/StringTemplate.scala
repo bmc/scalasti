@@ -127,7 +127,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
 
             case value :: tail =>
                 attributeMap += (attrName -> values)
-                template.setAttribute(attrName, toJavaList(values))
+                template.setAttribute(attrName, toJavaList(values.toList))
 
             case _ =>
         }
@@ -156,7 +156,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     def setAttribute[T](attrName: String, values: Iterator[T]): StringTemplate =
     {
         attributeMap += (attrName -> values)
-        template.setAttribute(attrName, toJavaList(values.toSeq))
+        template.setAttribute(attrName, toJavaList(values.toList))
         this
     }
 
@@ -291,19 +291,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
      */
     def setAggregate(aggrSpec: String, values: Any*): StringTemplate =
     {
-        def transform(v: Any) =
-        {
-            if (isOfType[Seq[Any]](v))
-                toJavaList(v.asInstanceOf[Seq[Any]])
-
-            else if (isOfType[Iterator[Any]](v))
-                toJavaList(v.asInstanceOf[Iterator[Any]].toList)
-
-            else
-                v
-        }
-
-        val valuesAsObjects = values.map(transform(_).asInstanceOf[Object])
+        val valuesAsObjects = values.map(transformValue(_))
         template.setAggregate(aggrSpec, valuesAsObjects.toArray)
         this
     }
@@ -359,7 +347,6 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     {
         if (! valueMap.isEmpty)
             setAttribute(attrName, MapToBean(valueMap))
-
         this
     }
 
@@ -494,6 +481,26 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     \* ---------------------------------------------------------------------- */
 
     /**
+     * Transform a value for use in a template.
+     *
+     * @param v  the value
+     *
+     * @return a Java object, suitable for use in a template
+     */
+    def transformValue(v: Any) =
+    {
+        val v2  = v match
+        {
+            case l: List[_]     => toJavaList(l)
+            case s: Seq[_]      => toJavaList(s.toList)
+            case i: Iterator[_] => toJavaList(i.toList)
+            case _              => v
+        }
+
+        v2.asInstanceOf[Object]
+    }
+
+    /**
      * Maps a Scala map of attributes into a Java map of attributes. The
      * Scala map is converted to a `java.util.HashMap`. The keys are
      * assumed to be strings. The values are mapped as follows:
@@ -514,24 +521,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     {
         val result = new JHashMap[String, Object]
 
-        // Adapted from
-        // http://fupeg.blogspot.com/2009/10/scala-manifests-ftw.html
-
-        def transform(k: String, v: Any) =
-        {
-            if (getType[Seq[Any]](map, k) != None)
-                // Found a sequence. Use an ArrayList.
-                toJavaList(v.asInstanceOf[Seq[Any]])
-
-            else if (getType[Iterator[Any]](map, k) != None)
-                // Found an iterator. Use an ArrayList.
-                toJavaList(v.asInstanceOf[Iterator[Any]].toList)
-
-            else
-                v.asInstanceOf[Object]
-        }
-
-        map.foreach(kv => result.put(kv._1, transform(kv._1, kv._2)))
+        map.foreach(kv => result.put(kv._1, transformValue(kv._2)))
         result
     }
 
@@ -565,16 +555,17 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     \* ---------------------------------------------------------------------- */
 
     /**
-     * Convert a Scala sequence to a Java list.
+     * Convert a Scala sequence to a Java list. All elements are converted
+     * to strings.
      *
      * @param seq  the sequence
      *
      * @param list the list
      */
-    private def toJavaList[T](seq: Seq[T]): JList[T] =
+    private def toJavaList(seq: List[Any]): JList[String] =
     {
-        val list = new JArrayList[T]
-        seq.foreach(list.add(_))
+        val list = new JArrayList[String]
+        seq.foreach(a => list.add(a.toString))
         list
     }
 }

@@ -36,10 +36,18 @@ extends DefaultProject(info) with MarkdownPlugin with posterous.Publish
     val newReleaseToolsRepository = "Scala Tools Repository" at
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
-    val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
     val stringTemplate = "org.antlr" % "stringtemplate" % "3.2.1"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0.3"
-    val classutil = "org.clapper" %% "classutil" % "0.3.4"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0.6"
+    val classutil = "org.clapper" %% "classutil" % "0.3.6"
+    val (scalatestArtifact, scalatestVersion) = buildScalaVersion match
+    {
+        case "2.8.0"           => ("scalatest", "1.3")
+        case "2.8.1"           => ("scalatest", "1.3")
+        case "2.9.0"           => ("scalatest_2.9.0", "1.4.1")
+        case n                 => error("Unsupported Scala version " + n)
+    }
+
+    val scalatest = "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing

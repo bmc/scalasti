@@ -79,8 +79,8 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `scalasti_2.8.0`
-* Version: `0.5.1`
+* Artifact ID: `scalasti_2.9.0`
+* Version: `0.5.3`
 * Type: `jar`
 * Repository: `http://scala-tools.org/repo-releases`
 
@@ -96,11 +96,11 @@ Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.8.0</artifactId>
-      <version>0.5.1</version>
+      <artifactId>scalasti_2.9.0</artifactId>
+      <version>0.5.3</version>
     </dependency>
 
-Scala 2.8.1.RC1 is also supported in version 0.5.1.
+Version 0.5.3 supports Scala 2.9.0, Scala 2.8.1 and Scala 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -111,7 +111,7 @@ If you're using [SBT][] to build your code, place the following line in
 your project file (i.e., the Scala file in your `project/build/`
 directory):
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5.1"
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.3"
 
 **NOTES:**
 
@@ -431,8 +431,8 @@ changes, and send me a pull request.
 
 # Copyright and License
 
-Scalasti is copyright &copy; 2010 Brian M. Clapper and is released under a
-[BSD License][].
+Scalasti is copyright &copy; 2010-2011 Brian M. Clapper and is released
+under a [BSD License][].
 
 # Patches
 

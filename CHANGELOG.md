@@ -1,7 +1,42 @@
 ---
-title: Change Log for Scalasti
+title: Scalasti, a Scala interface to the Java StringTemplate library
 layout: default
 ---
+
+Version 0.5.3:
+
+* Now builds against Scala 2.9.0, as well as Scala 2.8.0 and 2.8.1.
+* Internal clean-up of reified type handling, used by Scalasti when setting
+  converting Scala values to Java counterparts.
+* Updated to version 1.4.1 of [ScalaTest][] for Scala 2.9.0. (Still uses
+  ScalaTest 1.3, for Scala 2.8).
+* Updated to use [SBT][] 0.7.7.
+* Updated to version 1.0.6 of the [Grizzled Scala][] library.
+* Updated to version 0.3.6 of the [ClassUtil][] library.
+
+[ScalaTest]: http://www.scalatest.org/
+[SBT]: http://code.google.com/p/simple-build-tool/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
+[ClassUtil]: http://software.clapper.org/classutil/
+
+Version 0.5.2:
+
+* Updated to latest release of [ClassUtil][] library.
+* Updated to latest release of [sbt-plugins][] library.
+
+[ClassUtil]: http://software.clapper.org/classutil/
+[sbt-plugins]: http://software.clapper.org/sbt-plugins/
+
+Version 0.5.1:
+
+* Now compiles against [Scala][] 2.8.1, as well as 2.8.0
+* Updated to version 0.3.2 of the [ClassUtil][] library, to pick up a fix
+  to [ClassUtil Issue #1][] (The ClassUtil `MapToBean` method can generate
+  class names that conflict with previously generated class names.)
+
+[Scala]: http://www.scala-lang.org/
+[ClassUtil]: http://software.clapper.org/classutil/
+[ClassUtil Issue #1]: http://github.com/bmc/classutil/issues#issue/1
 
 Version 0.5:
 

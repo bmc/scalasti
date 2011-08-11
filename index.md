@@ -79,8 +79,8 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `scalasti_2.9.0`
-* Version: `0.5.3`
+* Artifact ID: `scalasti_2.9.0-1`
+* Version: `0.5.4`
 * Type: `jar`
 * Repository: `http://scala-tools.org/repo-releases`
 
@@ -96,35 +96,33 @@ Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.9.0</artifactId>
-      <version>0.5.3</version>
+      <artifactId>scalasti_2.9.0-1</artifactId>
+      <version>0.5.4</version>
     </dependency>
 
-Version 0.5.3 supports Scala 2.9.0, Scala 2.8.1 and Scala 2.8.0.
+Version 0.5.4 supports Scala 2.9.0-1, 2.9.0, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
 ## Using with SBT
 
-If you're using [SBT][] to build your code, place the following line in
-your project file (i.e., the Scala file in your `project/build/`
-directory):
+#### 0.7.x
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5.3"
+If you're using [SBT][] 0.7.x to compile your code, you can place the
+following line in your project file (i.e., the Scala file in your
+`project/build/` directory):
 
-**NOTES:**
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.4"
 
-1. The first doubled percent is *not* a typo. It tells SBT to treat
-   Scalasti as a cross-built library and automatically inserts the Scala
-   version you're using into the artifact ID. It will *only* work if you
-   are building with Scala 2.8.0 or 2.8.1. See the [SBT cross-building][]
-   page for details.
+#### 0.10.x
 
-2. Prior to version 0.3, you also had to specify the location of the
-   *clapper.org* custom Maven repository. With version 0.3, however,
-   ClassUtil is now being published to the
-   [Scala Tools Maven repository][], which SBT automatically searches.
+If you're using [SBT][] 0.10.x to compile your code, you can use the
+following line in your `build.sbt` file (for Quick Configuration). If
+you're using an SBT 0.10.x Full Configuration, you're obviously smart
+enough to figure out what to do, on your own.
+
+    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.4"
 
 # Building from Source
 
@@ -137,18 +135,13 @@ clone the repository, run this command:
 
 ## Build Requirements
 
-Building the Scalasti library requires [SBT][]. Install SBT, as described
-at the SBT web site.
+Building the Scalasti library requires [SBT][] 0.10.1 or better. Install
+SBT, as described at the SBT web site.
 
 ## Building Scalasti
 
 Assuming you have an `sbt` shell script (or .BAT file, for *\[shudder\]*
 Windows), first run:
-
-    sbt update
-
-That command will pull down the external jars on which the Scalasti
-library depends. After that step, build the library with:
 
     sbt compile test package
 

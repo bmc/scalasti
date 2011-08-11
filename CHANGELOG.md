@@ -1,7 +1,12 @@
 ---
-title: Scalasti, a Scala interface to the Java StringTemplate library
+title: "Change Log: Scalasti, a Scala interface to the StringTemplate library"
 layout: default
 ---
+
+Version 0.5.4:
+
+* Now builds against Scala 2.9.0.1, as well as Scala 2.9.0, 2.8.1 and 2.8.0.
+* Converted to build with [SBT][] 0.10.1
 
 Version 0.5.3:
 

@@ -10,14 +10,14 @@
   modification, are permitted provided that the following conditions are
   met:
 
-  * Redistributions of source code must retain the above copyright notice,
+   * Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
 
-  * Redistributions in binary form must reproduce the above copyright
+   * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
 
-  * Neither the names "clapper.org" nor the names of its contributors may
+   * Neither the names "clapper.org" nor the names of its contributors may
     be used to endorse or promote products derived from this software
     without specific prior written permission.
 
@@ -42,39 +42,34 @@ import scala.collection.mutable.{Map => MutableMap}
 import java.io.File
 
 /**
- * A more Scala-like StringTemplate attribute renderer. Objects that
- * implement this trait can be registered as attribute renderers with
- * a StringTemplate.
- *
- * @tparam T  the type (class) for which the renderer can render values.
- */
-trait AttributeRenderer[T]
-{
-    private val self = this
+  * A more Scala-like StringTemplate attribute renderer. Objects that
+  * implement this trait can be registered as attribute renderers with
+  * a StringTemplate.
+  *
+  * @tparam T  the type (class) for which the renderer can render values.
+  */
+trait AttributeRenderer[T] {
+  private val self = this
 
-    // The actual Java renderer used by StringTemplate.
-    private[scalasti] val stRenderer = new ST_AttributeRenderer
-    {
-        def toString(o: java.lang.Object): String =
-            self.toString(o.asInstanceOf[T])
+  // The actual Java renderer used by StringTemplate.
+  private[scalasti] val stRenderer = new ST_AttributeRenderer {
+    def toString(o: java.lang.Object): String = self.toString(o.asInstanceOf[T])
 
-        def toString(o: java.lang.Object, formatName: String): String =
-            self.toString(o.asInstanceOf[T], formatName)
-    }
+    def toString(o: java.lang.Object, formatName: String): String =
+      self.toString(o.asInstanceOf[T], formatName)
+  }
 
-    /**
-     * Converts an object of type `T` to a string, for inclusion in a template.
-     *
-     * @param o  the object
-     */
-    def toString(o: T): String
+  /** Converts an object of type `T` to a string, for inclusion in a template.
+    *
+    * @param o  the object
+    */
+  def toString(o: T): String
 
-    /**
-     * Converts an object of type `T` to a string, according to a specific
-     * format name, for inclusion in a template.
-     *
-     * @param o           the object
-     * @param formatName  the format name
-     */
-    def toString(o: T, formatName: String): String = toString(o)
+  /** Converts an object of type `T` to a string, according to a specific
+    * format name, for inclusion in a template.
+    *
+    * @param o           the object
+    * @param formatName  the format name
+    */
+  def toString(o: T, formatName: String): String = toString(o)
 }

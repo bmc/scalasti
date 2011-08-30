@@ -7,7 +7,7 @@ name := "scalasti"
 
 organization := "org.clapper"
 
-version := "0.5.4"
+version := "0.5.5"
 
 scalaVersion := "2.8.1"
 

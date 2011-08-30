@@ -38,137 +38,119 @@ import org.scalatest.FunSuite
 import org.clapper.scalasti._
 
 /**
- * Tests the grizzled.io functions.
- */
-class StringTemplateTest extends FunSuite
-{
-    test("render template #1")
-    {
-        val template = """This is a $test$ template: $many; separator=", "$"""
+  * Tests the grizzled.io functions.
+  */
+class StringTemplateTest extends FunSuite {
+  test("render template #1") {
+    val template = """This is a $test$ template: $many; separator=", "$"""
 
-        val data = List(
-            (Map("test" -> "test",
-                 "many" -> List("a", "b", "c")),
-             """This is a test template: a, b, c"""),
+    val data = List(
+      (Map("test" -> "test",
+           "many" -> List("a", "b", "c")),
+       """This is a test template: a, b, c"""),
 
-            (Map("test" -> "foo",
-                 "many" -> List("moe", "larry", "curley")),
-             """This is a foo template: moe, larry, curley""")
-        )
+      (Map("test" -> "foo",
+           "many" -> List("moe", "larry", "curley")),
+       """This is a foo template: moe, larry, curley""")
+    )
 
-        for((attributes, expected) <- data)
-            expect(expected, "render template on: " + attributes)
-            {
-                val st = new StringTemplate(template)
-                st.setAttributes(attributes)
-                st.toString
-            }
+    for((attributes, expected) <- data)
+      expect(expected, "render template on: " + attributes) {
+        val st = new StringTemplate(template)
+        st.setAttributes(attributes)
+        st.toString
+      }
+  }
+
+  test("render template #2") {
+    val template = """This is a $test$ template: $many; separator=", "$"""
+
+    val data = List(
+      (Map("test" -> true,
+           "many" -> List("a", "b", "c")),
+       """This is a true template: a, b, c""")
+    )
+
+    for((attributes, expected) <- data)
+      expect(expected, "render template on: " + attributes) {
+        val st = new StringTemplate(template)
+        st.setAttributes(attributes)
+        st.toString
+      }
+  }
+
+  test("ValueRenderer") {
+    val template = """This is a $test$ template"""
+
+    class Value(val s: String)
+    class ValueRenderer extends AttributeRenderer[Value] {
+      def toString(v: Value) = "<" + v.s + ">"
     }
 
-    test("render template #2")
-    {
-        val template = """This is a $test$ template: $many; separator=", "$"""
-
-        val data = List(
-            (Map("test" -> true,
-                 "many" -> List("a", "b", "c")),
-             """This is a true template: a, b, c""")
-        )
-
-        for((attributes, expected) <- data)
-            expect(expected, "render template on: " + attributes)
-            {
-                val st = new StringTemplate(template)
-                st.setAttributes(attributes)
-                st.toString
-            }
+    expect("This is a <foo> template", "ValueRenderer") {
+      val st = new StringTemplate(template)
+      st.setAttribute("test", new Value("foo"))
+      st.registerRenderer(new ValueRenderer)
+      st.toString
     }
+  }
 
-    test("ValueRenderer")
-    {
-        val template = """This is a $test$ template"""
+  test("Automatic aggregates") {
+    val template = """$if (page.title)$$page.title$$else$No title$endif$
+    |$page.categories; separator=", "$""".stripMargin
 
-        class Value(val s: String)
-        class ValueRenderer extends AttributeRenderer[Value]
-        {
-            def toString(v: Value) = "<" + v.s + ">"
-        }
+    val data = List(
+      ("No title\nfoo, bar",
+       "page.{categories}",
+       List(List("foo", "bar"))),
 
-        expect("This is a <foo> template", "ValueRenderer")
-        {
-            val st = new StringTemplate(template)
-            st.setAttribute("test", new Value("foo"))
-            st.registerRenderer(new ValueRenderer)
-            st.toString
-        }
+      ("Foo\nmoe, larry, curley", 
+       "page.{title, categories}",
+       List("Foo", List("moe", "larry", "curley")))
+    )
+
+    for ((expected, aggrSpec, args) <- data) {
+      expect(expected, "aggregate") {
+        new StringTemplate(template).setAggregate(aggrSpec, args: _*).toString
+      }
     }
+  }
 
-    test("Automatic aggregates")
-    {
-        val template = """$if (page.title)$$page.title$$else$No title$endif$
-                       |$page.categories; separator=", "$""".stripMargin
+  test("Mapped aggregates") {
+    val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
+    "$thing.outer.x$ $thing.okay$"
 
-        val data = List(
-            ("No title\nfoo, bar",
-             "page.{categories}",
-             List(List("foo", "bar"))),
+    val thingMap = Map("okay"  -> "OKAY",
+                       "outer" -> Map("inner" -> "an inner string",
+                                      "x"     -> "something else"))
+    val fooMap = Map("bar" -> "BARSKI",
+                     "baz" -> 42)
 
-            ("Foo\nmoe, larry, curley", 
-             "page.{title, categories}",
-             List("Foo", List("moe", "larry", "curley")))
-        )
-
-        for ((expected, aggrSpec, args) <- data)
-        {
-            expect(expected, "aggregate")
-            {
-                new StringTemplate(template).
-                setAggregate(aggrSpec, args: _*).
-                toString
-            }
-        }
+    val expected = "an inner string BARSKI 42 something else OKAY"
+    expect(expected, "mapped attribute") {
+      new StringTemplate(template).setAggregate("thing", thingMap).
+                                   setAggregate("foo", fooMap).
+                                   toString
     }
+  }
 
-    test("Mapped aggregates")
-    {
-        val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
-                       "$thing.outer.x$ $thing.okay$"
+  test("makeBeanAttribute") {
+    case class Outer(inner: String, x: Int)
+    case class Thing(outer: Outer, okay: String)
+    case class Foo(bar: String, baz: Int)
 
-        val thingMap = Map("okay"  -> "OKAY",
-                           "outer" -> Map("inner" -> "an inner string",
-                                          "x"     -> "something else"))
-        val fooMap = Map("bar" -> "BARSKI",
-                         "baz" -> 42)
+    val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
+    "$thing.outer.x$ $thing.okay$"
 
-        val expected = "an inner string BARSKI 42 something else OKAY"
-        expect(expected, "mapped attribute")
-        {
-            new StringTemplate(template).
-            setAggregate("thing", thingMap).
-            setAggregate("foo", fooMap).
-            toString
-        }
+    val thing = Thing(Outer("an inner string", 10), "OKAY")
+    val foo = Foo("BARSKI", 42)
+
+    val expected = "an inner string BARSKI 42 10 OKAY"
+    expect(expected, "bean attribute") {
+      new StringTemplate(template).
+      makeBeanAttribute("thing", thing).
+      makeBeanAttribute("foo", foo).
+      toString
     }
-
-    test("makeBeanAttribute")
-    {
-        case class Outer(inner: String, x: Int)
-        case class Thing(outer: Outer, okay: String)
-        case class Foo(bar: String, baz: Int)
-
-        val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
-                       "$thing.outer.x$ $thing.okay$"
-
-        val thing = Thing(Outer("an inner string", 10), "OKAY")
-        val foo = Foo("BARSKI", 42)
-
-        val expected = "an inner string BARSKI 42 10 OKAY"
-        expect(expected, "bean attribute")
-        {
-            new StringTemplate(template).
-            makeBeanAttribute("thing", thing).
-            makeBeanAttribute("foo", foo).
-            toString
-        }
-    }
+  }
 }

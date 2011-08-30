@@ -40,7 +40,7 @@ package org.clapper.scalasti
 import org.antlr.stringtemplate.{StringTemplateErrorListener => ST_Listener}
 
 /**
- * A Scala version of the String Template library's
- * `StringTemplateErrorListener` class.
- */
+  * A Scala version of the String Template library's
+  * `StringTemplateErrorListener` class.
+  */
 trait StringTemplateErrorListener extends ST_Listener

@@ -248,7 +248,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * special syntax. For instance, the following code defines an
     * aggregate attribute called `name`, with two fields, `first` and
     * `last`. Those fields can be interpolated within a template via
-    * `$item.first$` and `$item.last$`.
+    * `\$item.first$` and `\$item.last$`.
     *
     * {{{
     * val st = new StringTemplate( ... )
@@ -319,9 +319,9 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * will make the following values available in a template:
     *
     * {{{
-    * $thing.foo$                  # expands to "FOO"
-    * $things.alien.firstName$     # expands to "John"
-    * $things.alien.lastName$      # expands to "Smallberries"
+    * \$thing.foo$                  # expands to "FOO"
+    * \$things.alien.firstName$     # expands to "John"
+    * \$things.alien.lastName$      # expands to "Smallberries"
     * }}}
     *
     * @param attrName  the attribute's name (i.e., the outermost name)

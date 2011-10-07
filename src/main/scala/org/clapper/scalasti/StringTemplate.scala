@@ -63,9 +63,10 @@ import java.util.{List => JList,
   *
   * Because of the way the StringTemplate API instantiates templates, this
   * class cannot easily subclass the real StringTemplate class. So, it wraps
-  * the underlying string template object and stores the value in the public
-  * `template` variable. You are free to call methods directly on `template`,
-  * though they will use Java semantics, rather than Scala semantics.
+  * the underlying string template object and stores it internally. You can
+  * retrieve the wrapped template object via the `nativeTemplate` method
+  * You are free to call methods directly on `template`, though they will
+  * use Java semantics, rather than Scala semantics.
   *
   * Note that this class explicitly handles mapping the following types of
   * values in an attribute map:

@@ -33,9 +33,11 @@ does not directly expose all the underlying StringTemplate methods. In
 particular, this Scala interface is geared primarily toward reading and
 rendering external templates, not toward generating templates in code.</p><p>Because of the way the StringTemplate API instantiates templates, this
 class cannot easily subclass the real StringTemplate class. So, it wraps
-the underlying string template object and stores the value in the public
-<code>template</code> variable. You are free to call methods directly on <code>template</code>,
-though they will use Java semantics, rather than Scala semantics.</p><p>Note that this class explicitly handles mapping the following types of
+the underlying string template object and stores it internally. You can
+retrieve the wrapped template object via the <code>nativeTemplate</code> method
+You are free to call methods directly on <code>template</code>, though they will
+use Java semantics, rather than Scala semantics.</p><p>NOTE: If you decide to use the native, underlying template, be aware
+that <code>nativeTemplate</code> returns a copy, so do all your Scala work first:</p><ul><li>Instantiate a Scalasti <code>StringTemplate</code> (i.e., this class).</li><li>Add values to the template via the Scalasti <code>StringTemplate</code> objct.</li><li>Call <code>nativeTemplate</code>, to get copy of the underlying (real) template.</li><li>Add to the underlying template, using Java semantics.</li><li>Render the template with native template copy.</li></ul><p>Note that this class explicitly handles mapping the following types of
 values in an attribute map:</p><p>A Scala <code>Seq</code> (which includes lists and array buffers) is mapped to
 a <code>java.util.List</code>, so it's treated as a multivalued attribute by the
 underlying StringTemplate library. A Scala iterator is also mapped to a
@@ -464,8 +466,9 @@ assumed to be strings. The values are mapped as follows:</p><p>- A Scala <code>S
       <p class="shortcomment cmt">Returns a copy of the underlying (wrapped) StringTemplate API object.</p><div class="fullcomment"><div class="comment cmt"><p>Returns a copy of the underlying (wrapped) StringTemplate API object.
 Unlike <code>StringTemplate.getInstanceOf()</code>, this method copies the
 current set of attributes and the enclosing instance reference (if any)
-to the returned copy.
-</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the underlying StringTemplate object.
+to the returned copy.</p><p>NOTE: If you decide to use the native, underlying template, be aware
+that <code>nativeTemplate</code> returns a copy, so do all your Scala work first:</p><ul><li>Instantiate a Scalasti <code>StringTemplate</code> (i.e., this class).</li><li>Add values to the template via the Scalasti <code>StringTemplate</code> objct.</li><li>Call <code>nativeTemplate</code>, to get copy of the underlying (real) template.</li><li>Add to the underlying template, using Java semantics.</li><li>Render the template with native template copy.
+</li></ul></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the underlying StringTemplate object.
 </p></dd></dl></div>
     </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
       <a id="ne(AnyRef):Boolean"></a>

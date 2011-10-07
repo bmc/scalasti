@@ -68,6 +68,15 @@ import java.util.{List => JList,
   * You are free to call methods directly on `template`, though they will
   * use Java semantics, rather than Scala semantics.
   *
+  * NOTE: If you decide to use the native, underlying template, be aware
+  * that `nativeTemplate` returns a copy, so do all your Scala work first:
+  *
+  *  - Instantiate a Scalasti `StringTemplate` (i.e., this class).
+  *  - Add values to the template via the Scalasti `StringTemplate` objct.
+  *  - Call `nativeTemplate`, to get copy of the underlying (real) template.
+  *  - Add to the underlying template, using Java semantics.
+  *  - Render the template with native template copy.
+  *
   * Note that this class explicitly handles mapping the following types of
   * values in an attribute map:
   *
@@ -388,6 +397,15 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * Unlike `StringTemplate.getInstanceOf()`, this method copies the
     * current set of attributes and the enclosing instance reference (if any)
     * to the returned copy.
+    *
+    * NOTE: If you decide to use the native, underlying template, be aware
+    * that `nativeTemplate` returns a copy, so do all your Scala work first:
+    *
+    *  - Instantiate a Scalasti `StringTemplate` (i.e., this class).
+    *  - Add values to the template via the Scalasti `StringTemplate` objct.
+    *  - Call `nativeTemplate`, to get copy of the underlying (real) template.
+    *  - Add to the underlying template, using Java semantics.
+    *  - Render the template with native template copy.
     *
     * @return a copy of the underlying StringTemplate object.
     */

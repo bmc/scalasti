@@ -201,9 +201,8 @@ Set attribute values all at once:
 Change how an attribute is rendered:
 
     class HexValue(l: long)
-    class HexValueRenderer extends AttributeRenderer[HexValue]
-    {
-        def toString(v: HexValue) = "0x" + v.toHexString
+    class HexValueRenderer extends AttributeRenderer[HexValue] {
+      def toString(v: HexValue) = "0x" + v.toHexString
     }
 
     val memoryLocation: Long = ...
@@ -400,6 +399,29 @@ Here's an example, adapted from the Scalasti unit tests.
     println(st.toString)
 
     // Prints: some string thing BARSKI 42 10 OKAY
+
+## Access to Underlying `StringTemplate`
+
+At any point, you can retrieve the underlying [StringTemplate][] API's
+`StringTemplate` object, via a call to the `nativeTemplate` method:
+
+    val st = new StringTemplate(template).makeBeanAttribute("thing", thing).
+                                          makeBeanAttribute("foo", foo)
+    ...
+    val nativeTemplate = st.nativeTemplate
+
+Once you have the native template, you can interact with it using the
+methods it exposes (i.e., the [StringTemplate][] Java API methods).
+
+For various internal reasons, the returned native template is a _copy_ of the
+underlying `StringTemplate` object. Thus, if you plan to retrieve the native
+template, do your Scala work first:
+
+* Instantiate a Scalasti `StringTemplate` object.
+* Add values to the template via the Scalasti `StringTemplate` object.
+* Call `nativeTemplate`, to get copy of the underlying (real) template.
+* Add to the underlying template, using Java semantics.
+* Render the template with native template copy.
 
 ## API Documentation
 

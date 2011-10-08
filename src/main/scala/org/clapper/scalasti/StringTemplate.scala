@@ -72,7 +72,7 @@ import java.util.{List => JList,
   * that `nativeTemplate` returns a copy, so do all your Scala work first:
   *
   *  - Instantiate a Scalasti `StringTemplate` (i.e., this class).
-  *  - Add values to the template via the Scalasti `StringTemplate` objct.
+  *  - Add values to the template via the Scalasti `StringTemplate` object.
   *  - Call `nativeTemplate`, to get copy of the underlying (real) template.
   *  - Add to the underlying template, using Java semantics.
   *  - Render the template with native template copy.
@@ -402,7 +402,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * that `nativeTemplate` returns a copy, so do all your Scala work first:
     *
     *  - Instantiate a Scalasti `StringTemplate` (i.e., this class).
-    *  - Add values to the template via the Scalasti `StringTemplate` objct.
+    *  - Add values to the template via the Scalasti `StringTemplate` object.
     *  - Call `nativeTemplate`, to get copy of the underlying (real) template.
     *  - Add to the underlying template, using Java semantics.
     *  - Render the template with native template copy.

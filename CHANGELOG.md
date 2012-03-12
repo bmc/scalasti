@@ -3,6 +3,19 @@ title: "Change Log: Scalasti, a Scala interface to the StringTemplate library"
 layout: default
 ---
 
+Version 0.5.6:
+
+* Internal change to `StringTemplate.setAttribute()` method.
+* Now compiles for Scala 2.8.2, in addition to 2.8.0, 2.8.1, 2.9.0, 2.9.0-1 and
+  2.9.1.
+* Converted to build with SBT 0.11.2.
+* Added support for `ls.implicit.ly` metadata.
+* Now publishes to `oss.sonatype.org` (and, thence, to the Maven central repo).
+* Bumped version deps for [Grizzed Scala][] and [ClassUtil][].
+
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
+[ClassUtil]: http://software.clapper.org/classutil/
+
 Version 0.5.5:
 
 * Now builds for [Scala][] 2.9.1, as well as 2.9.0-1, 2.9.0, 2.8.1, and 2.8.0.

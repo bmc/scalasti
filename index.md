@@ -68,39 +68,31 @@ expose StringTemplate capabilities in a more Scala-friendly way.
 
 # Installation
 
-The easiest way to install the Scalasti library is to download a
-pre-compiled jar from the [Scala Tools Maven repository][]. However, you
-can also get certain build tools to download it for you automatically.
+Scalasti is published to the `oss.sonatype.org` repository;  Sonatype
+automatically pushes the artifacts to the  [Maven central repository][]. You
+can get download the Scalasti library jar directly from the Maven
+repository. However, if you're using [Maven][] or [SBT][], you can just have
+those tools do the job for you.
 
 ## Installing for Maven
 
-If you're using [Maven][], you can simply tell Maven to get Scalasti
-from the [Scala Tools Maven repository][]. The relevant pieces of
-information are:
+If you're using [Maven][], just specify the artifact, and Maven will do the
+rest for you:
 
-* Group ID: `clapper.org`
-* Artifact ID: `scalasti_2.9.0-1`
-* Version: `0.5.5`
+* Group ID: `org.clapper`
+* Artifact ID: `scalasti_2.9.1`
+* Version: `0.5.6`
 * Type: `jar`
-* Repository: `http://scala-tools.org/repo-releases`
 
 Here's a sample Maven POM "dependency" snippet:
 
-    <repositories>
-      <repository>
-        <id>scala-tools.org</id>
-          <name>Scala-tools Maven2 Repository</name>
-          <url>http://scala-tools.org/repo-releases</url>
-      </repository>
-    </repositories>
-
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.9.0-1</artifactId>
-      <version>0.5.5</version>
+      <artifactId>scalasti_2.9.1</artifactId>
+      <version>0.5.6</version>
     </dependency>
 
-Version 0.5.5 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.1 and 2.8.0.
+Version 0.5.5 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -113,16 +105,22 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5.5"
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.6"
 
-#### 0.10.x
+#### 0.11.x
 
-If you're using [SBT][] 0.10.x to compile your code, you can use the
+If you're using [SBT][] 0.11.x to compile your code, you can use the
 following line in your `build.sbt` file (for Quick Configuration). If
-you're using an SBT 0.10.x Full Configuration, you're obviously smart
+you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.5"
+    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.6"
+
+Scalasti is also registered with [Doug Tangren][]'s excellent
+[ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
+Scalasti with
+
+    sbt> ls-install scalasti
 
 # Building from Source
 
@@ -154,6 +152,7 @@ Scalasti requires the following libraries to be available at runtime, for
  
 * The main [ASM][] library (version 3), e.g., `asm-3.2.jar`
 * The [ASM][] commons library (version 3), e.g., `asm-commons-3.2.jar`
+* The [ClassUtil][] library
 * The [Grizzled Scala][] library
 * The [Grizzled SLF4J][] library, for logging
 * The [SLF4J][] API library, for logging (e.g., `slf4j-api-1.5.11.jar`)
@@ -487,7 +486,8 @@ request. Along with any patch you send:
 [AVSL]: http://software.clapper.org/avsl/
 [ASM]: http://asm.ow2.org/
 [SLF4J]: http://slf4j.org/
-[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
 [changelog]: CHANGELOG.html
 [logback]: http://logback.qos.ch/
+[Maven central repository]: http://search.maven.org/
+[ls.implicit.ly]: http://ls.implicit.ly

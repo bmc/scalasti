@@ -100,7 +100,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
   def this(template: String) =
     this(None, new ScalastiStringTemplate(template))
 
-  /** Set attribute named `attrName` to one or many different values.
+ /** Set attribute named `attrName` to one or many different values.
     * Internally, a single value is stored as is, and multiple values are
     * coalesced into a `java.util.List` of type `T`. To pass a Scala list
     * (or sequence) in, use this syntax:
@@ -124,22 +124,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * @return this object, for convenience
     */
   def setAttribute[T](attrName: String, values: T*): StringTemplate = {
-    values.toList match {
-      case value :: Nil => {
-        val valueAny = value.asInstanceOf[Any]
-        attributeMap += attrName -> valueAny
-        template.setAttribute(attrName, valueAny)
-      }
-
-      case value :: tail => {
-        attributeMap += (attrName -> values)
-        template.setAttribute(attrName, toJavaList(values.toList))
-      }
-
-      case _ =>
-    }
-
-    this
+    setAttribute(attrName, values.toList)
   }
 
   /** Set attribute named `attrName` to many different values. Internally,
@@ -160,8 +145,43 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * @return this object, for convenience
     */
   def setAttribute[T](attrName: String, values: Iterator[T]): StringTemplate = {
-    attributeMap += (attrName -> values)
-    template.setAttribute(attrName, toJavaList(values.toList))
+    setAttribute(attrName, values.toList)
+  }
+
+  /** Set attribute named `attrName` to many different values. Internally,
+    * the values are coalesced into a `java.util.List` of type `T`.
+    *
+    * Note that StringTemplate expects the values to be Java Beans, if
+    * they contain fields. This method does not automatically convert the
+    * values, since it has no way of knowing whether or not that's what
+    * the caller wants. If you want to have Scalasti automatically convert
+    * your values from Scala objects to Java Beans (which useful for case
+    * classes or other classes where using `@BeanProperty` isn't possible),
+    * use one of the `makeBeanAttribute()` methods.
+    *
+    * @tparam T        the type of the values to assign to the attribute
+    * @param attrName  the name of the attribute
+    * @param values    the values to associate with the attribute
+    *
+    * @return this object, for convenience
+    */
+  def setAttribute[T](attrName: String, values: List[T]): StringTemplate = {
+    println("setting attribute " + attrName + " to " + values)
+    values match {
+      case value :: Nil => {
+        val valueAny = value.asInstanceOf[Any]
+        attributeMap += attrName -> valueAny
+        template.setAttribute(attrName, valueAny)
+      }
+
+      case value :: tail => {
+        attributeMap += (attrName -> values)
+        template.setAttribute(attrName, toJavaList(values.toList))
+      }
+
+      case _ =>
+    }
+
     this
   }
 

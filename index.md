@@ -92,7 +92,7 @@ Here's a sample Maven POM "dependency" snippet:
       <version>0.5.6</version>
     </dependency>
 
-Version 0.5.5 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
+Version 0.5.6 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].

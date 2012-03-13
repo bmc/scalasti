@@ -1,0 +1,3 @@
+* Added Scala 2.9.1-1 to the set of crossbuild versions.
+* Minor correction to the handling of multivalue template attributes.
+

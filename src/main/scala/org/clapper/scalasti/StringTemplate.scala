@@ -189,7 +189,6 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * @return this object, for convenience
     */
   def setAttribute[T](attrName: String, values: List[T]): StringTemplate = {
-    println("setting attribute " + attrName + " to " + values)
     values match {
       case value :: Nil => {
         val valueAny = value.asInstanceOf[Any]
@@ -259,8 +258,16 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     *
     * @return this object, for convenience
     */
-  def makeBeanAttribute[T](attrName: String, values: T*): StringTemplate =
-    setAttribute(attrName, values.map(ScalaObjectToBean(_)): _*)
+  def makeBeanAttribute[T](attrName: String, values: T*): StringTemplate = {
+    values.length match {
+      case 0 => 
+        this
+      case 1 =>
+        setAttribute(attrName, ScalaObjectToBean(values(0)))
+      case _ =>
+        setAttribute(attrName, transform(values.map(ScalaObjectToBean(_)).toList))
+    }
+  }
 
   /** Set attribute named `attrName` to one or many different values.
     * Internally, a single value is stored as is, and multiple values are
@@ -332,7 +339,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * @return this object, for convenience
     */
   def setAggregate(aggrSpec: String, values: Any*): StringTemplate = {
-    val valuesAsObjects = values.map(transformValue(_))
+    val valuesAsObjects = values.map(transform(_))
     template.setAggregate(aggrSpec, valuesAsObjects.toArray)
     this
   }
@@ -516,7 +523,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     *
     * @return a Java object, suitable for use in a template
     */
-  def transformValue(v: Any) = {
+  def transform(v: Any) = {
     val v2  = v match {
       case l: List[_]     => toJavaList(l)
       case s: Seq[_]      => toJavaList(s.toList)
@@ -546,7 +553,7 @@ class StringTemplate(val group: Option[StringTemplateGroup],
   protected def mapToJavaMap(map: Map[String, Any]): JMap[String, Object] = {
     val result = new JHashMap[String, Object]
 
-    map.foreach(kv => result.put(kv._1, transformValue(kv._2)))
+    map.foreach(kv => result.put(kv._1, transform(kv._2)))
     result
   }
 

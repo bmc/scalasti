@@ -171,4 +171,24 @@ class StringTemplateTest extends FunSuite {
       toString
     }
   }
+
+  test("Multivalue attribute") {
+    case class User(val firstName: String, val lastName: String) {
+      override def toString = firstName + " " + lastName
+    }
+
+    val u1 = User("Elvis", "Presley")
+    val u2 = User("Frank", "Sinatra")
+    val users = u1 :: u2 :: Nil
+
+    val t1 = "Hi, $user.firstName$ $user.lastName$."
+    expect("Hi, Elvis Presley.", "template expansion of u1") {
+      new StringTemplate(t1).makeBeanAttribute("user", u1).toString
+    }
+
+    val t2 = "$users; separator=\", \"$"
+    expect("Elvis Presley, Frank Sinatra", "multivalue") {
+      new StringTemplate(t2).makeBeanAttribute("users", users: _*).toString
+    }
+  }
 }

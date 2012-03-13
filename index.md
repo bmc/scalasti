@@ -81,7 +81,7 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `scalasti_2.9.1`
-* Version: `0.5.6`
+* Version: `0.5.7`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
@@ -89,10 +89,10 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>scalasti_2.9.1</artifactId>
-      <version>0.5.6</version>
+      <version>0.5.7</version>
     </dependency>
 
-Version 0.5.6 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
+Version 0.5.7 supports Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -105,7 +105,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val scalasti = "org.clapper" %% "scalasti" % "0.5.6"
+    val scalasti = "org.clapper" %% "scalasti" % "0.5.7"
 
 #### 0.11.x
 
@@ -114,7 +114,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.6"
+    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.7"
 
 Scalasti is also registered with [Doug Tangren][]'s excellent
 [ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install

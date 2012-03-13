@@ -3,6 +3,13 @@ title: "Change Log: Scalasti, a Scala interface to the StringTemplate library"
 layout: default
 ---
 
+Version 0.5.7:
+
+* The `StringTemplate` class now has a constructor that accepts a `Seq[Char]`,
+  which supports a `Stream[Char]`. Addresses [Issue #4][].
+
+[Issue #4]: https://github.com/bmc/scalasti/issues/4
+
 Version 0.5.6:
 
 * Internal change to `StringTemplate.setAttribute()` method.

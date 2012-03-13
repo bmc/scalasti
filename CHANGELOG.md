@@ -3,6 +3,11 @@ title: "Change Log: Scalasti, a Scala interface to the StringTemplate library"
 layout: default
 ---
 
+Version 0.5.8:
+
+* Added Scala 2.9.1-1 to the set of crossbuild versions.
+* Minor correction to the handling of multivalue template attributes.
+
 Version 0.5.7:
 
 * The `StringTemplate` class now has a constructor that accepts a `Seq[Char]`,

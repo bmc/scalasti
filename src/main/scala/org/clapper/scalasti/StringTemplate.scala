@@ -100,7 +100,30 @@ class StringTemplate(val group: Option[StringTemplateGroup],
   def this(template: String) =
     this(None, new ScalastiStringTemplate(template))
 
- /** Set attribute named `attrName` to one or many different values.
+  /** Alternate constructor that takes a `Seq` of characters containing
+    * an unnamed, ungrouped template.
+    *
+    * This constructor basically just reads the contents of the sequence into
+    * a string. While this approach makes using a lazy sequence (e.g., a
+    * `Stream`) somewhat pointless, the underlying StringTemplate API will only
+    * accept a string.
+    *
+    * This constructor can obviously be used with `Stream` objects. For 
+    * instance:
+    *
+    * {{{
+    * val t1 = new StringTemplate(Stream('a', 'b', 'c'))
+    * val t2 = new StringTemplate(Stream("abc", "def").flatMap(_.toString))
+    * }}}
+    *
+    * Don't give this constructor an infinite stream, if you want to get
+    * control back.
+    *
+    * @param template  the template, as a sequence of characters
+    */
+  def this(template: Seq[Char]) = this(template mkString "")
+
+  /** Set attribute named `attrName` to one or many different values.
     * Internally, a single value is stored as is, and multiple values are
     * coalesced into a `java.util.List` of type `T`. To pass a Scala list
     * (or sequence) in, use this syntax:

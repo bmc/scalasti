@@ -1,0 +1,4 @@
+* The `StringTemplate` class now has a constructor that accepts a `Seq[Char]`,
+  which supports a `Stream[Char]`. Addresses [Issue #4][].
+
+[Issue #4]: https://github.com/bmc/scalasti/issues/4

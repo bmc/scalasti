@@ -68,12 +68,8 @@ expose StringTemplate capabilities in a more Scala-friendly way.
 
 # Installation
 
-Scalasti is published to the `oss.sonatype.org` repository. Sonatype does *not*
-automatically push artifacts to the [Maven Central Repository][], so you have
-to pull your artifacts from Sonatype, itself. If you're using [SBT][], that's
-not a problem, since SBT automitically searches the Sonatype repository. If
-you're using [Maven][], you may have to specify the repository directly. See
-below for how to do that.
+Scalasti is published to the `oss.sonatype.org` repository and automatically
+sync'd with the [Maven Central Repository][].
 
 Version 0.5.8 supports Scala 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
 2.8.0.
@@ -89,14 +85,6 @@ rest for you:
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
-
-    <repositories>
-      <repository>
-        <id>SonatypeOSS</id>
-        <name>Sonatype OSS Repository</name>
-        <url>https://oss.sonatype.org/content/groups/public/</url>
-      </repository>
-    </repositories>
 
     <dependency>
       <groupId>org.clapper</groupId>

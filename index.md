@@ -71,8 +71,9 @@ expose StringTemplate capabilities in a more Scala-friendly way.
 Scalasti is published to the `oss.sonatype.org` repository and automatically
 sync'd with the [Maven Central Repository][].
 
-Version 0.5.8 supports Scala 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
-2.8.0.
+* Version 1.0.0 supports Scala 2.10.0-RC1
+* Version 0.5.8 supports Scala 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
+  2.8.0.
 
 ## Installing for Maven
 
@@ -80,16 +81,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `scalasti_2.9.1`
-* Version: `0.5.8`
+* Artifact ID: `scalasti_2.9.1` or `scalasti_2.10`
+* Version: `0.5.8` or `1.0.0`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.9.1</artifactId>
-      <version>0.5.8</version>
+      <artifactId>scalasti_2.10</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -107,12 +108,17 @@ following line in your project file (i.e., the Scala file in your
 
 #### 0.11.x
 
-If you're using [SBT][] 0.11.x to compile your code, you can use the
+If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
 following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "scalasti"" % "0.5.8"
+    libraryDependencies += "org.clapper" %% "scalasti" % "0.5.8"
+
+NOTE: For release candidates of Scala 2.10, you'll have to specify the version
+explicitly:
+
+    libraryDependencies += "org.clapper" % "scalasti_2.10" % "1.0.0"
 
 Scalasti is also registered with [Doug Tangren][]'s excellent
 [ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
@@ -485,7 +491,7 @@ request. Along with any patch you send:
 [ASM]: http://asm.ow2.org/
 [SLF4J]: http://slf4j.org/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
-[changelog]: CHANGELOG.html
+[changelog]: https://github.com/bmc/scalasti/blob/master/CHANGELOG.md
 [logback]: http://logback.qos.ch/
 [Maven central repository]: http://search.maven.org/
 [ls.implicit.ly]: http://ls.implicit.ly

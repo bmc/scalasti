@@ -55,7 +55,7 @@ class StringTemplateTest extends FunSuite {
     )
 
     for((attributes, expected) <- data)
-      expect(expected, "render template on: " + attributes) {
+      expectResult(expected, "render template on: " + attributes) {
         val st = new StringTemplate(template)
         st.setAttributes(attributes)
         st.toString
@@ -72,7 +72,7 @@ class StringTemplateTest extends FunSuite {
     )
 
     for((attributes, expected) <- data)
-      expect(expected, "render template on: " + attributes) {
+      expectResult(expected, "render template on: " + attributes) {
         val st = new StringTemplate(template)
         st.setAttributes(attributes)
         st.toString
@@ -89,7 +89,7 @@ class StringTemplateTest extends FunSuite {
     )
 
     for((attributes, expected) <- data)
-      expect(expected, "render template on: " + attributes) {
+      expectResult(expected, "render template on: " + attributes) {
         val st = new StringTemplate(template)
         st.setAttributes(attributes)
         st.toString
@@ -105,7 +105,7 @@ class StringTemplateTest extends FunSuite {
       def toString(v: Value) = "<" + v.s + ">"
     }
 
-    expect("This is a <foo> template", "ValueRenderer") {
+    expectResult("This is a <foo> template", "ValueRenderer") {
       val st = new StringTemplate(template)
       st.setAttribute("test", new Value("foo"))
       st.registerRenderer(new ValueRenderer)
@@ -128,7 +128,7 @@ class StringTemplateTest extends FunSuite {
     )
 
     for ((expected, aggrSpec, args) <- data) {
-      expect(expected, "aggregate") {
+      expectResult(expected, "aggregate") {
         new StringTemplate(template).setAggregate(aggrSpec, args: _*).toString
       }
     }
@@ -145,7 +145,7 @@ class StringTemplateTest extends FunSuite {
                      "baz" -> 42)
 
     val expected = "an inner string BARSKI 42 something else OKAY"
-    expect(expected, "mapped attribute") {
+    expectResult(expected, "mapped attribute") {
       new StringTemplate(template).setAggregate("thing", thingMap).
                                    setAggregate("foo", fooMap).
                                    toString
@@ -164,7 +164,7 @@ class StringTemplateTest extends FunSuite {
     val foo = Foo("BARSKI", 42)
 
     val expected = "an inner string BARSKI 42 10 OKAY"
-    expect(expected, "bean attribute") {
+    expectResult(expected, "bean attribute") {
       new StringTemplate(template).
       makeBeanAttribute("thing", thing).
       makeBeanAttribute("foo", foo).
@@ -182,12 +182,12 @@ class StringTemplateTest extends FunSuite {
     val users = u1 :: u2 :: Nil
 
     val t1 = "Hi, $user.firstName$ $user.lastName$."
-    expect("Hi, Elvis Presley.", "template expansion of u1") {
+    expectResult("Hi, Elvis Presley.", "template expansion of u1") {
       new StringTemplate(t1).makeBeanAttribute("user", u1).toString
     }
 
     val t2 = "$users; separator=\", \"$"
-    expect("Elvis Presley, Frank Sinatra", "multivalue") {
+    expectResult("Elvis Presley, Frank Sinatra", "multivalue") {
       new StringTemplate(t2).makeBeanAttribute("users", users: _*).toString
     }
   }

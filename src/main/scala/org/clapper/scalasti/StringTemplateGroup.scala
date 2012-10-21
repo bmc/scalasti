@@ -39,6 +39,9 @@ package org.clapper.scalasti
 
 import org.clapper.scalasti.adapter._
 
+import scala.reflect.Manifest
+import scala.reflect.{ClassTag, classTag}
+
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup}
 
 import java.io.File
@@ -169,9 +172,8 @@ class StringTemplateGroup(private val group: ST_StringTemplateGroup) {
     *
     * @param attrRenderer the attribute renderer to use for values of type `T`
     */
-  def registerRenderer[T](attrRenderer: AttributeRenderer[T])
-                         (implicit mT: scala.reflect.Manifest[T]) = {
-    group.registerRenderer(mT.erasure, attrRenderer.stRenderer)
+  def registerRenderer[T: ClassTag](attrRenderer: AttributeRenderer[T]) = {
+    group.registerRenderer(classTag.runtimeClass, attrRenderer.stRenderer)
   }
 
   /** Get the current error listener, which is notified when errors occur.

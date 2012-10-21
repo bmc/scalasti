@@ -1,0 +1,6 @@
+* Built for the Scala 2.10.0 series _only_ (2.10.0-RC1, initially). **This
+  version, and later versions, are 2.10-only. 2.9.x and earlier will be
+  supported via the 0.5.x release branch.** This is due to changes in the
+  Scala library between 2.9 and 2.10.
+* Updated to SBT 0.12.x.
+* Converted to use ScalaTest 2.0, which changes `expect` to `expectResult`.

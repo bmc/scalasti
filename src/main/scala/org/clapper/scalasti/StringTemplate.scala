@@ -41,6 +41,8 @@ import org.clapper.scalasti.adapter.ScalastiStringTemplate
 import org.clapper.classutil.{MapToBean, ScalaObjectToBean}
 
 import grizzled.reflect._
+import scala.reflect.Manifest
+import scala.reflect.{ClassTag, classTag}
 
 import org.antlr.stringtemplate.{StringTemplateGroup => ST_StringTemplateGroup,
                                  StringTemplate => ST_StringTemplate}
@@ -437,9 +439,8 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     *
     * @return this object, for convenience
     */
-  def registerRenderer[T](renderer: AttributeRenderer[T])
-                         (implicit mT: scala.reflect.Manifest[T]) = {
-    template.registerRenderer(mT.erasure, renderer.stRenderer)
+  def registerRenderer[T: ClassTag](renderer: AttributeRenderer[T]) = {
+    template.registerRenderer(classTag.runtimeClass, renderer.stRenderer)
     this
   }
 
@@ -565,11 +566,10 @@ class StringTemplate(val group: Option[StringTemplateGroup],
     * @param map the map
     * @param key the key
     */
-  protected def getType[T](map: Map[String, Any], key: String)
-                          (implicit man: Manifest[T]): Option[T] = {
+  protected def getType[T: ClassTag](map: Map[String, Any], key: String) = {
     map.getOrElse(key, null) match {
       case v: Any =>
-        if (man >:> Manifest.classType(v.asInstanceOf[AnyRef].getClass))
+        if (classTag.runtimeClass == v.asInstanceOf[AnyRef].getClass)
           Some(v.asInstanceOf[T])
         else
           None

@@ -1,6 +1,9 @@
 Scalasti: A Scala interface to the Java StringTemplate Library
 ==============================================================
 
+**NOTE: This branch supports versions of Scala prior to 2.10. For 2.10 and
+later, see the `master` branch.**
+
 ## Introduction
 
 This is Scalasti, a [Scala][] interface to the [StringTemplate][] Java template

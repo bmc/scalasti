@@ -43,13 +43,14 @@ import scala.collection.mutable.{Map => MutableMap}
 import scala.reflect.runtime.{universe => ru}
 import scala.reflect.runtime.universe.runtimeMirror
 
-import org.stringtemplate.v4.{ST => _ST, STWriter}
+import org.stringtemplate.v4.{ST => _ST, STWriter, STGroup => _STGroup}
 
 import java.util.{List      => JList,
                   Map       => JMap,
                   HashMap   => JHashMap,
                   ArrayList => JArrayList,
                   Locale}
+
 import scala.util.Try
 
 /** A Scala interface to a StringTemplate `ST` template. objet Note that this
@@ -479,16 +480,5 @@ object ST {
             delimiterStartChar: Char = Constants.DefaultStartChar,
             delimiterStopChar:  Char = Constants.DefaultStopChar): ST = {
     new ST(new _ST(template, delimiterStartChar, delimiterStopChar))
-  }
-
-  /** Create a template within a specific template group.
-    *
-    * @param group    the template group
-    * @param template the template string
-    *
-    * @return the template
-    */
-  def apply(group: STGroup, template: String): ST = {
-    new ST(new _ST(group.native, template))
   }
 }

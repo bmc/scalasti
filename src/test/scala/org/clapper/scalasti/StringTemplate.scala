@@ -36,7 +36,6 @@
 
 import java.io.{File, FileWriter}
 import java.util.Locale
-import scala.io.Source
 import org.scalatest.FunSuite
 import org.clapper.scalasti._
 import grizzled.io.util._

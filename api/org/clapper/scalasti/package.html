@@ -1,126 +1,296 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
-          <title>org.clapper.scalasti</title>
+          <title>scalasti - org.clapper.scalasti</title>
+          <meta name="description" content="scalasti - org.clapper.scalasti" />
+          <meta name="keywords" content="scalasti org.clapper.scalasti" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
-      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
-      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.clapper.scalasti.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
     
         </head>
         <body class="value">
       <div id="definition">
         <img src="../../../lib/package_big.png" />
-        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.clapper" class="extype" href="../package.html">clapper</a></p>
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a></p>
         <h1>scalasti</h1>
       </div>
 
-      <h4 class="signature" id="signature">
-      <span class="kind">package</span>
-      <span class="symbol"> 
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
         <span class="name">scalasti</span>
-        
-        
       </span>
       </h4>
       
-          <div class="fullcommenttop" id="comment"></div>
+          <div id="comment" class="fullcommenttop"></div>
         
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
 
       <div id="template">
-
-        <div id="mbrsel">
-          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
-          
-          
-          <div id="visbl">
-              <span class="filtertype">Visibility</span>
-              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
-            </div>
-        </div>
-
+        <div id="allMembers">
         
 
-        <div class="types members" id="types">
+        <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li visbl="pub" name="org.clapper.scalasti.AttributeRenderer" data-isabs="true">
-      <a id="AttributeRenderer:AttributeRenderer[T]"></a>
+              <ol><li name="org.clapper.scalasti.AttributeRenderer" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AttributeRenderer[T]extendsAnyRef"></a>
+      <a id="AttributeRenderer[T]:AttributeRenderer[T]"></a>
       <h4 class="signature">
-      <span class="kind">trait</span>
-      <span class="symbol"> 
-        <a href="AttributeRenderer.html"><span class="name">AttributeRenderer</span></a>
-        <span class="tparams">[<span name="T">T</span>]</span>
-        <span class="result"> extends AnyRef</span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AttributeRenderer.html"><span class="name">AttributeRenderer</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      <p class="comment cmt">A more Scala-like StringTemplate attribute renderer.</p>
-    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplate" data-isabs="false">
-      <a id="StringTemplate:StringTemplate"></a>
+      <p class="comment cmt">A more Scala-like ST attribute renderer.</p>
+    </li><li name="org.clapper.scalasti.DateRenderer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DateRendererextendsAttributeRenderer[java.util.Date]"></a>
+      <a id="DateRenderer:DateRenderer"></a>
       <h4 class="signature">
-      <span class="kind">class</span>
-      <span class="symbol"> 
-        <a href="StringTemplate.html"><span class="name">StringTemplate</span></a>
-        
-        <span class="result"> extends AnyRef</span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DateRenderer.html"><span class="name">DateRenderer</span></a><span class="result"> extends <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[<span class="extype" name="java.util.Date">Date</span>]</span>
       </span>
       </h4>
-      <p class="comment cmt">A Scala interface to a StringTemplate template.</p>
-    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplateErrorListener" data-isabs="true">
-      <a id="StringTemplateErrorListener:StringTemplateErrorListener"></a>
+      <p class="comment cmt">A Scalasti version of String Template's <code>DateRenderer</code>.</p>
+    </li><li name="org.clapper.scalasti.NumberRenderer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NumberRendererextendsAttributeRenderer[Number]"></a>
+      <a id="NumberRenderer:NumberRenderer"></a>
       <h4 class="signature">
-      <span class="kind">trait</span>
-      <span class="symbol"> 
-        <a href="StringTemplateErrorListener.html"><span class="name">StringTemplateErrorListener</span></a>
-        
-        <span class="result"> extends StringTemplateErrorListener</span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NumberRenderer.html"><span class="name">NumberRenderer</span></a><span class="result"> extends <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[<span class="extype" name="java.lang.Number">Number</span>]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Scalasti version of String Template's <code>NumberRenderer</code>.</p>
+    </li><li name="org.clapper.scalasti.ST" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STextendsAnyRef"></a>
+      <a id="ST:ST"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ST.html"><span class="name">ST</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Scala interface to a StringTemplate <code>ST</code> template.</p>
+    </li><li name="org.clapper.scalasti.STErrorListener" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="STErrorListenerextendsSTErrorListener"></a>
+      <a id="STErrorListener:STErrorListener"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="STErrorListener.html"><span class="name">STErrorListener</span></a><span class="result"> extends <span class="extype" name="org.stringtemplate.v4.STErrorListener">stringtemplate.v4.STErrorListener</span></span>
       </span>
       </h4>
       <p class="comment cmt">A Scala version of the String Template library's
 <code>StringTemplateErrorListener</code> class.</p>
-    </li><li visbl="pub" name="org.clapper.scalasti.StringTemplateGroup" data-isabs="false">
-      <a id="StringTemplateGroup:StringTemplateGroup"></a>
+    </li><li name="org.clapper.scalasti.STGroup" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupextendsAnyRef"></a>
+      <a id="STGroup:STGroup"></a>
       <h4 class="signature">
-      <span class="kind">class</span>
-      <span class="symbol"> 
-        <a href="StringTemplateGroup.html"><span class="name">StringTemplateGroup</span></a>
-        
-        <span class="result"> extends AnyRef</span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroup.html"><span class="name">STGroup</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
-      <p class="comment cmt">A Scala wrapper for the String Template library's <code>StringTemplateGroup</code>
-class.</p>
+      <p class="comment cmt">A Scala wrapper for the String Template library's <code>STGroup</code> class.</p>
+    </li><li name="org.clapper.scalasti.STGroupDir" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupDirextendsSTGroup"></a>
+      <a id="STGroupDir:STGroupDir"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupDir.html"><span class="name">STGroupDir</span></a><span class="result"> extends <a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>STGroupDir</code> wraps the StringTemplate API's <code>STGroupDir</code> class.</p>
+    </li><li name="org.clapper.scalasti.STGroupFile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupFileextendsSTGroup"></a>
+      <a id="STGroupFile:STGroupFile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupFile.html"><span class="name">STGroupFile</span></a><span class="result"> extends <a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>STGroupFile</code> wraps the StringTemplate API's <code>STGroupFile</code> class.</p>
+    </li><li name="org.clapper.scalasti.STGroupString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupStringextendsSTGroup"></a>
+      <a id="STGroupString:STGroupString"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupString.html"><span class="name">STGroupString</span></a><span class="result"> extends <a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt"><code>STGroupString</code> wraps the StringTemplate API's <code>STGroupString</code> class.</p>
     </li></ol>
             </div>
-        
+
         
 
-        <div class="values members" id="values">
+        <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li visbl="pub" name="org.clapper.scalasti.adapter" data-isabs="false">
-      <a id="adapter:adapter"></a>
+              <ol><li name="org.clapper.scalasti.Constants" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Constants"></a>
+      <a id="Constants:Constants"></a>
       <h4 class="signature">
-      <span class="kind">package</span>
-      <span class="symbol"> 
-        <a href="adapter/package.html"><span class="name">adapter</span></a>
-        
-        
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Constants$.html"><span class="name">Constants</span></a>
       </span>
       </h4>
-      
+      <p class="comment cmt">Miscellaneous shared constants.</p>
+    </li><li name="org.clapper.scalasti.ST" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ST"></a>
+      <a id="ST:ST"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ST$.html"><span class="name">ST</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the <code>ST</code> class.</p>
+    </li><li name="org.clapper.scalasti.STGroup" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroup"></a>
+      <a id="STGroup:STGroup"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroup$.html"><span class="name">STGroup</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for the <code>STGroup</code> class.</p>
+    </li><li name="org.clapper.scalasti.STGroupDir" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupDir"></a>
+      <a id="STGroupDir:STGroupDir"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupDir$.html"><span class="name">STGroupDir</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for <code>STGroupDir</code>.</p>
+    </li><li name="org.clapper.scalasti.STGroupFile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupFile"></a>
+      <a id="STGroupFile:STGroupFile"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupFile$.html"><span class="name">STGroupFile</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for <code>STGroupFile</code>.</p>
+    </li><li name="org.clapper.scalasti.STGroupString" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="STGroupString"></a>
+      <a id="STGroupString:STGroupString"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="STGroupString$.html"><span class="name">STGroupString</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Companion object for <code>STGroupString</code>.</p>
     </li></ol>
             </div>
 
         
 
         
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
 
       </div>
-      
+
       <div id="tooltip"></div>
-      
+
+      <div id="footer">  </div>
+
+
     </body>
       </html>

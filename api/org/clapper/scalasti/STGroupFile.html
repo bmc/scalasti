@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>AttributeRenderer - org.clapper.scalasti.AttributeRenderer</title>
-          <meta name="description" content="AttributeRenderer - org.clapper.scalasti.AttributeRenderer" />
-          <meta name="keywords" content="AttributeRenderer org.clapper.scalasti.AttributeRenderer" />
+          <title>STGroupFile - org.clapper.scalasti.STGroupFile</title>
+          <meta name="description" content="STGroupFile - org.clapper.scalasti.STGroupFile" />
+          <meta name="keywords" content="STGroupFile org.clapper.scalasti.STGroupFile" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
-            var hash = 'org.clapper.scalasti.AttributeRenderer';
+            var hash = 'org.clapper.scalasti.STGroupFile';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,31 +28,31 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img src="../../../lib/trait_big.png" />
+        <a href="STGroupFile$.html" title="Go to companion"><img src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a>.<a href="package.html" class="extype" name="org.clapper.scalasti">scalasti</a></p>
-        <h1>AttributeRenderer</h1>
+        <h1><a href="STGroupFile$.html" title="Go to companion">STGroupFile</a></h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">trait</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">AttributeRenderer</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">STGroupFile</span><span class="result"> extends <a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A more Scala-like ST attribute renderer. Objects that implement this
-trait can be registered as attribute renderers with an STGroupString.
-</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type (class) for which the renderer can render values.
-</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p><code>STGroupFile</code> wraps the StringTemplate API's <code>STGroupFile</code> class.
+An <code>STGroupFile</code> object reads a template group from a file. See the
+StringTemplate API documentation for details. Since <code>STGroupFile</code> a
+subclass of <code>STGroup</code>, all the methods on the parent class are available
+on this one. This class cannot be instantiated directly; use the <code>apply()</code>
+methods on the companion object.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block">
-            <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="DateRenderer.html" class="extype" name="org.clapper.scalasti.DateRenderer">DateRenderer</a>, <a href="NumberRenderer.html" class="extype" name="org.clapper.scalasti.NumberRenderer">NumberRenderer</a></div>
-          </div></div>
+          <div class="superTypes hiddenContent"><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -69,7 +69,7 @@ trait can be registered as attribute renderers with an STGroupString.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.clapper.scalasti.AttributeRenderer"><span>AttributeRenderer</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.clapper.scalasti.STGroupFile"><span>STGroupFile</span></li><li class="in" name="org.clapper.scalasti.STGroup"><span>STGroup</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -91,28 +91,10 @@ trait can be registered as attribute renderers with an STGroupString.
 
         
 
-        <div id="values" class="values members">
-              <h3>Abstract Value Members</h3>
-              <ol><li name="org.clapper.scalasti.AttributeRenderer#toString" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="toString(o:T,formatString:String,locale:java.util.Locale):String"></a>
-      <a id="toString(T,String,Locale):String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">(<span name="o">o: <span class="extype" name="org.clapper.scalasti.AttributeRenderer.T">T</span></span>, <span name="formatString">formatString: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="locale">locale: <span class="extype" name="java.util.Locale">Locale</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">Converts an object of type <code>T</code> to a string, for inclusion in a template.</p><div class="fullcomment"><div class="comment cmt"><p>Converts an object of type <code>T</code> to a string, for inclusion in a template.
-</p></div><dl class="paramcmts block"><dt class="param">o</dt><dd class="cmt"><p>the object</p></dd><dt class="param">formatString</dt><dd class="cmt"><p>format string to use</p></dd><dt class="param">locale</dt><dd class="cmt"><p>the locale
-</p></dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         <div id="values" class="values members">
-              <h3>Concrete Value Members</h3>
+              <h3>Value Members</h3>
               <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a>
       <a id="!=(Any):Boolean"></a>
@@ -210,6 +192,21 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#fileName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fileName:String"></a>
+      <a id="fileName:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fileName</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the group file name.</p><div class="fullcomment"><div class="comment cmt"><p>Get the group file name.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the file name
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -255,6 +252,40 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#instanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="instanceOf(templateName:String):scala.util.Try[org.clapper.scalasti.ST]"></a>
+      <a id="instanceOf(String):Try[ST]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">instanceOf</span><span class="params">(<span name="templateName">templateName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<a href="ST.html" class="extype" name="org.clapper.scalasti.ST">ST</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get an instance of a template defined in group.</p><div class="fullcomment"><div class="comment cmt"><p>Get an instance of a template defined in group.
+</p></div><dl class="paramcmts block"><dt class="param">templateName</dt><dd class="cmt"><p>the name of the template
+</p></dd><dt>returns</dt><dd class="cmt"><p><code>Success(ST)</code> if the template was found and loaded.
+        <code>Failure(exception)</code> if the template could not be demand-loaded.
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#isDefined" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isDefined(name:String):Boolean"></a>
+      <a id="isDefined(String):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isDefined</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Determine whether a named template is defined in this group.</p><div class="fullcomment"><div class="comment cmt"><p>Determine whether a named template is defined in this group. The names
+must be fully-qualified template paths (e.g., &quot;/g1/name&quot;)
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the template name
+</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if defined, <code>false</code> if not
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -268,6 +299,56 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#load" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="load():scala.util.Try[Unit]"></a>
+      <a id="load():Try[Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Force a load.</p><div class="fullcomment"><div class="comment cmt"><p>Force a load. Templates are normally loaded on demand; this method
+attempts to load them up front. <b>Note</b>: Even though this method
+attempts to detect failure, the underlying StringTemplate method seems
+to trap load errors and display them on standard output, <i>without</i>
+passing them up the stack. Testing for errors might not return what
+you expect.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p><code>Success(Unit)</code> on success. <code>Failure(exception)</code> on load failure.
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="name:String"></a>
+      <a id="name:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">name</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the group's name.</p><div class="fullcomment"><div class="comment cmt"><p>Get the group's name.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the group name
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#nativeGroup" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="nativeGroup:org.stringtemplate.v4.STGroup"></a>
+      <a id="nativeGroup:stringtemplate.v4.STGroup"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nativeGroup</span><span class="result">: <span class="extype" name="org.stringtemplate.v4.STGroup">stringtemplate.v4.STGroup</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the underlying Java StringTemplate <code>STGroup</code> object.</p><div class="fullcomment"><div class="comment cmt"><p>Get the underlying Java StringTemplate <code>STGroup</code> object.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the underlying <code>STGroup</code>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -307,6 +388,46 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#registerRenderer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="registerRenderer[T](r:org.clapper.scalasti.AttributeRenderer[T])(implicitevidence$1:reflect.runtime.universe.TypeTag[T]):Unit"></a>
+      <a id="registerRenderer[T](AttributeRenderer[T])(scala.reflect.api.JavaUniverse.TypeTag[T]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">registerRenderer</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="r">r: <a href="AttributeRenderer.html" class="extype" name="org.clapper.scalasti.AttributeRenderer">AttributeRenderer</a>[<span class="extype" name="org.clapper.scalasti.STGroup.registerRenderer.T">T</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.api.TypeTags.TypeTag">scala.reflect.api.JavaUniverse.TypeTag</span>[<span class="extype" name="org.clapper.scalasti.STGroup.registerRenderer.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Register a renderer for a particular type.</p><div class="fullcomment"><div class="comment cmt"><p>Register a renderer for a particular type. When the underlying
+StringTemplate API attempts to render a template, it'll use this
+renderer when it encounters values of this type.</p><p><b>NOTE</b>: By default, Scalasti automatically wraps Scala objects
+in dynamically generated Java Beans when they're added to templates,
+because the StringTemplate API uses Java Bean semantics to access
+object fields. For this reason, you cannot use an <code>AttributeRenderer</code>
+unless you add the values it is to render as raw objects. See the
+<code>ST.add()</code> method for details.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>
+</p></dd><dt class="param">r</dt><dd class="cmt"></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd><dt>See also</dt><dd><span class="cmt"><p><a href="ST.html#add(name:String,value:Any,raw:Boolean):org.clapper.scalasti.ST" class="extmbr" name="org.clapper.scalasti.ST#add">ST.add</a>
+</p></span></dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#rootDirURL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="rootDirURL:java.net.URL"></a>
+      <a id="rootDirURL:URL"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">rootDirURL</span><span class="result">: <span class="extype" name="java.net.URL">URL</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the root directory, if this is the group directory, or the group
+file, if this is a group file.</p><div class="fullcomment"><div class="comment cmt"><p>Get the root directory, if this is the group directory, or the group
+file, if this is a group file.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the root
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -320,6 +441,21 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#templateNames" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="templateNames:Set[String]"></a>
+      <a id="templateNames:Set[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">templateNames</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Get the template names defined by the group.</p><div class="fullcomment"><div class="comment cmt"><p>Get the template names defined by the group.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a set of the template names supplied by this group
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -333,6 +469,20 @@ trait can be registered as attribute renderers with an STGroupString.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.clapper.scalasti.STGroup#unload" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unload():Unit"></a>
+      <a id="unload():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">unload</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Force an unload.</p><div class="fullcomment"><div class="comment cmt"><p>Force an unload.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -399,7 +549,9 @@ trait can be registered as attribute renderers with an STGroupString.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="org.clapper.scalasti.STGroup">
+              <h3>Inherited from <a href="STGroup.html" class="extype" name="org.clapper.scalasti.STGroup">STGroup</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

@@ -9,6 +9,10 @@ Scalasti is a [Scala][] interface to the [StringTemplate][] Java template
 library. It provides a subset of the features of [StringTemplate][], using
 a more Scala-friendly syntax.
 
+**If you're upgrading from Scalasti 1.0.0 and StringTemplate 3, see the
+[Upgrading](#upgrading-from-scalasti-version-1-and-stringtemplate-3)
+section, below.
+
 # Rationale
 
 [StringTemplate][] is a Java-based template engines, comparable in

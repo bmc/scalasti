@@ -3,7 +3,7 @@
   This software is released under a BSD license, adapted from
   http://opensource.org/licenses/bsd-license.php
 
-  Copyright (c) 2010, Brian M. Clapper
+  Copyright (c) 2010-2014 Brian M. Clapper
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -37,10 +37,10 @@
 
 package org.clapper.scalasti
 
-import org.antlr.stringtemplate.{StringTemplateErrorListener => ST_Listener}
+import org.stringtemplate.v4.{STErrorListener => _STErrorListener}
 
 /**
   * A Scala version of the String Template library's
   * `StringTemplateErrorListener` class.
   */
-trait StringTemplateErrorListener extends ST_Listener
+trait STErrorListener extends _STErrorListener

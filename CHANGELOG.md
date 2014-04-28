@@ -1,5 +1,13 @@
 # Change Log: Scalasti, a Scala interface to the StringTemplate library
 
+Version 2.0.0
+
+* Reimplemented for StringTemplate v4. **NOTE**: This version is a _complete_
+  reimplementation, with a new API that closely mirrors the StringTemplate 4
+  API (which is, itself, completely different from StringTemplate 3). See the
+  [home page](http://software.clapper.org/scalasti/) for details on the changes.
+* Now built for both Scala 2.11 and 2.10.
+
 Version 1.0.0:
 
 * Built for the Scala 2.10.0 series _only_ (2.10.0-RC1, initially). **This

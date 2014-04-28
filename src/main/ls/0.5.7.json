@@ -3,9 +3,9 @@
  "organization":"org.clapper",
  "name":"scalasti",
  "version":"0.5.7",
- "description":"A Scala-friendly wrapper for Terence Parr's StringTemplate library",
+ "description":"A Scala-friendly wrapper for Terence Parr's ST library",
  "site":"http://software.clapper.org/scalasti/",
- "tags":["template","string template","StringTemplate"],
+ "tags":["template","string template","ST"],
  "docs":"",
  "licenses": [{
    "name": "BSD",

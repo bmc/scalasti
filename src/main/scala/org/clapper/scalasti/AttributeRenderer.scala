@@ -37,39 +37,65 @@
 
 package org.clapper.scalasti
 
-import org.antlr.stringtemplate.{AttributeRenderer => ST_AttributeRenderer}
+import org.stringtemplate.v4.{AttributeRenderer => _AttributeRenderer}
 import scala.collection.mutable.{Map => MutableMap}
-import java.io.File
+import scala.reflect.runtime.{universe => ru}
+import java.util.{Date, Locale}
+import java.lang.{Object => JObject}
 
 /**
-  * A more Scala-like StringTemplate attribute renderer. Objects that
-  * implement this trait can be registered as attribute renderers with
-  * a StringTemplate.
+  * A more Scala-like ST attribute renderer. Objects that implement this
+  * trait can be registered as attribute renderers with an STGroupString.
   *
   * @tparam T  the type (class) for which the renderer can render values.
   */
 trait AttributeRenderer[T] {
   private val self = this
 
-  // The actual Java renderer used by StringTemplate.
-  private[scalasti] val stRenderer = new ST_AttributeRenderer {
-    def toString(o: java.lang.Object): String = self.toString(o.asInstanceOf[T])
-
-    def toString(o: java.lang.Object, formatName: String): String =
-      self.toString(o.asInstanceOf[T], formatName)
+  // The actual Java renderer used by ST.
+  private[scalasti] val stRenderer = new _AttributeRenderer {
+    def toString(o: JObject, format: String, locale: Locale): String = {
+      self.toString(o.asInstanceOf[T], format, locale)
+    }
   }
 
   /** Converts an object of type `T` to a string, for inclusion in a template.
     *
-    * @param o  the object
+    * @param o            the object
+    * @param formatString format string to use
+    * @param locale       the locale
     */
-  def toString(o: T): String
+  def toString(o: T, formatString: String, locale: Locale): String
+}
 
-  /** Converts an object of type `T` to a string, according to a specific
-    * format name, for inclusion in a template.
+/** A Scalasti version of String Template's `NumberRenderer`.
+  */
+class NumberRenderer extends AttributeRenderer[Number] {
+  private val nr = new org.stringtemplate.v4.NumberRenderer()
+
+  /** Formats a number to a string, for inclusion in a template.
     *
-    * @param o           the object
-    * @param formatName  the format name
+    * @param n       the number
+    * @param format  format string to use
+    * @param locale  the locale
     */
-  def toString(o: T, formatName: String): String = toString(o)
+  def toString(n: Number, format: String, locale: Locale): String = {
+    nr.toString(n, format, locale)
+  }
+}
+
+/** A Scalasti version of String Template's `DateRenderer`.
+  */
+class DateRenderer extends AttributeRenderer[Date] {
+  private val dr = new org.stringtemplate.v4.DateRenderer()
+
+  /** Formats a date to a string, for inclusion in a template.
+    *
+    * @param date    the date
+    * @param format  format string to use
+    * @param locale  the locale
+    */
+  def toString(date: Date, format: String, locale: Locale): String = {
+    dr.toString(date, format, locale)
+  }
 }

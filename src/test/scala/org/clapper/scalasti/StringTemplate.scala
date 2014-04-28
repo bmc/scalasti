@@ -34,6 +34,7 @@
   ---------------------------------------------------------------------------
 */
 
+import java.util.Locale
 import org.scalatest.FunSuite
 import org.clapper.scalasti._
 
@@ -41,8 +42,12 @@ import org.clapper.scalasti._
   * Tests the grizzled.io functions.
   */
 class StringTemplateTest extends FunSuite {
+  // Type tags aren't available on nested classes (i.e., classes inside a
+  // function).
+  case class Value(s: String)
+
   test("render template #1") {
-    val template = """This is a $test$ template: $many; separator=", "$"""
+    val template = """This is a <test> template: <many; separator=", ">"""
 
     val data = List(
       (Map("test" -> "test",
@@ -55,14 +60,14 @@ class StringTemplateTest extends FunSuite {
     )
 
     for((attributes, expected) <- data)
-      expectResult(expected, "render template on: " + attributes) {
-        val st = new StringTemplate(template)
+      assertResult(expected, "render template on: " + attributes) {
+        val st = ST(template)
         st.setAttributes(attributes)
-        st.toString
+        st.render()
       }
   }
 
-  test("render template #2") {
+  test("render template #2, with '$' delimiters") {
     val template = """This is a $test$ template: $many; separator=", "$"""
 
     val data = List(
@@ -72,44 +77,35 @@ class StringTemplateTest extends FunSuite {
     )
 
     for((attributes, expected) <- data)
-      expectResult(expected, "render template on: " + attributes) {
-        val st = new StringTemplate(template)
+      assertResult(expected, "render template on: " + attributes) {
+        val st = ST(template, '$', '$')
         st.setAttributes(attributes)
-        st.toString
+        st.render()
       }
-  }
-
-  test("render with a Seq[Char]") {
-    val template = """This is a $test$ template: $many; separator=", "$""".toSeq
-
-    val data = List(
-      (Map("test" -> true,
-           "many" -> List("a", "b", "c")),
-       """This is a true template: a, b, c""")
-    )
-
-    for((attributes, expected) <- data)
-      expectResult(expected, "render template on: " + attributes) {
-        val st = new StringTemplate(template)
-        st.setAttributes(attributes)
-        st.toString
-      }
-
   }
 
   test("ValueRenderer") {
-    val template = """This is a $test$ template"""
+    val groupString =
+      """
+        |delimiters "<", ">"
+        |test(x) ::= <<This is a <x> template>>
+      """.stripMargin
 
-    class Value(val s: String)
-    class ValueRenderer extends AttributeRenderer[Value] {
-      def toString(v: Value) = "<" + v.s + ">"
+    object ValueRenderer extends AttributeRenderer[Value] {
+      def toString(v: Value, formatString: String, locale: Locale) = {
+        "<" + v.s + ">"
+      }
     }
 
-    expectResult("This is a <foo> template", "ValueRenderer") {
-      val st = new StringTemplate(template)
-      st.setAttribute("test", new Value("foo"))
-      st.registerRenderer(new ValueRenderer)
-      st.toString
+    val g = STGroupString(groupString, delimiterStartChar = '<', delimiterStopChar = '<')
+    g.registerRenderer(ValueRenderer)
+    val stTry = g.instanceOf("test")
+    assert(stTry.map(t => true).getOrElse(false))
+
+    assertResult("This is a <foo> template", "ValueRenderer") {
+      val st = stTry.get
+      st.add("x", Value("foo"), raw = true)
+      st.render()
     }
   }
 
@@ -122,21 +118,21 @@ class StringTemplateTest extends FunSuite {
        "page.{categories}",
        List(List("foo", "bar"))),
 
-      ("Foo\nmoe, larry, curley", 
+      ("Foo\nmoe, larry, curley",
        "page.{title, categories}",
        List("Foo", List("moe", "larry", "curley")))
     )
 
     for ((expected, aggrSpec, args) <- data) {
-      expectResult(expected, "aggregate") {
-        new StringTemplate(template).setAggregate(aggrSpec, args: _*).toString
+      assertResult(expected, "aggregate") {
+        ST(template, '$', '$').addAggregate(aggrSpec, args: _*).render()
       }
     }
   }
 
   test("Mapped aggregates") {
-    val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
-    "$thing.outer.x$ $thing.okay$"
+    val template = "<thing.outer.inner> <foo.bar> <foo.baz> " +
+                   "<thing.outer.x> <thing.okay>"
 
     val thingMap = Map("okay"  -> "OKAY",
                        "outer" -> Map("inner" -> "an inner string",
@@ -145,30 +141,10 @@ class StringTemplateTest extends FunSuite {
                      "baz" -> 42)
 
     val expected = "an inner string BARSKI 42 something else OKAY"
-    expectResult(expected, "mapped attribute") {
-      new StringTemplate(template).setAggregate("thing", thingMap).
-                                   setAggregate("foo", fooMap).
-                                   toString
-    }
-  }
-
-  test("makeBeanAttribute") {
-    case class Outer(inner: String, x: Int)
-    case class Thing(outer: Outer, okay: String)
-    case class Foo(bar: String, baz: Int)
-
-    val template = "$thing.outer.inner$ $foo.bar$ $foo.baz$ " +
-    "$thing.outer.x$ $thing.okay$"
-
-    val thing = Thing(Outer("an inner string", 10), "OKAY")
-    val foo = Foo("BARSKI", 42)
-
-    val expected = "an inner string BARSKI 42 10 OKAY"
-    expectResult(expected, "bean attribute") {
-      new StringTemplate(template).
-      makeBeanAttribute("thing", thing).
-      makeBeanAttribute("foo", foo).
-      toString
+    assertResult(expected, "mapped attribute") {
+      ST(template).addMappedAggregate("thing", thingMap)
+                  .addMappedAggregate("foo", fooMap)
+                  .render()
     }
   }
 
@@ -181,14 +157,60 @@ class StringTemplateTest extends FunSuite {
     val u2 = User("Frank", "Sinatra")
     val users = u1 :: u2 :: Nil
 
-    val t1 = "Hi, $user.firstName$ $user.lastName$."
-    expectResult("Hi, Elvis Presley.", "template expansion of u1") {
-      new StringTemplate(t1).makeBeanAttribute("user", u1).toString
+    val t1 = "Hi, <user.firstName> <user.lastName>."
+    assertResult("Hi, Elvis Presley.", "template expansion of u1") {
+      ST(t1).add("user", u1).render()
     }
 
-    val t2 = "$users; separator=\", \"$"
-    expectResult("Elvis Presley, Frank Sinatra", "multivalue") {
-      new StringTemplate(t2).makeBeanAttribute("users", users: _*).toString
+    val t2 = "<users; separator=\", \">"
+    assertResult("Elvis Presley, Frank Sinatra", "multivalue") {
+      ST(t2).add("users", users).render()
     }
+  }
+
+  test("Numeric typed attribute retrieval") {
+    val st = ST("Point = (<x>, <y>)")
+
+    st.add("x", 10)
+    st.add("y", 20)
+
+    assert(Some(10) === st.attribute[Int]("x"))
+    assert(Some(20) === st.attribute[Int]("y"))
+    assert(None === st.attribute[Double]("x"))
+    assert(None === st.attribute[Double]("y"))
+    assert("Point = (10, 20)" === st.render())
+  }
+
+  test("String typed attribute retrieval") {
+    val st = ST("<s>")
+    st.add("s", "foo")
+    assert(st.render() === "foo")
+    assert(Some("foo") === st.attribute[String]("s"))
+    assert(None === st.attribute[Int]("s"))
+  }
+
+  test("Custom typed attribute retrieval") {
+    val groupString =
+      """
+        |delimiters "$", "$"
+        |template(x) ::= <<This is a $x$ template>>
+      """.stripMargin
+
+    object ValueRenderer extends AttributeRenderer[Value] {
+      def toString(v: Value, formatString: String, locale: Locale) = {
+        v.s
+      }
+    }
+
+    val group = STGroupString(groupString)
+    group.registerRenderer(ValueRenderer)
+    val stTry = group.instanceOf("template")
+
+    assert(stTry.map(t => true).getOrElse(false))
+    val st = stTry.get
+    st.add("x", Value("foo"), raw=true)
+    assert(st.render() === "This is a foo template")
+
+    assert(Some(Value("foo")) === st.attribute[Value]("x"))
   }
 }

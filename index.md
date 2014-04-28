@@ -11,7 +11,7 @@ a more Scala-friendly syntax.
 
 **If you're upgrading from Scalasti 1.0.0 and StringTemplate 3, see the
 [Upgrading](#upgrading-from-scalasti-version-1-and-stringtemplate-3)
-section, below.
+section, below.**
 
 # Rationale
 

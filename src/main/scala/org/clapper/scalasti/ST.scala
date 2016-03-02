@@ -128,12 +128,9 @@ class ST private[scalasti] (private val native: _ST) {
     */
   def add(name: String, value: Any, raw: Boolean = false): ST = {
     val v = value match {
-      case seq: Seq[_]      => seqToJava(seq)
-      case it:  Iterator[_] => iterToJava(it)
-      case map: Map[_, _]   => mapToJava(map.asInstanceOf[Map[String, Any]])
-      case s: String        => value
-      case n: Number        => value
-      case o: Any           => if (raw) value else ScalaObjectToBean(value)
+      case Some(x)          => anyToJava(x, raw)
+      case None             => null
+      case x : Any          => anyToJava(x, raw)
     }
 
     attributeMap += name -> v
@@ -219,15 +216,17 @@ class ST private[scalasti] (private val native: _ST) {
     }
 
     attributeMap.get(name).flatMap { v =>
-      val tpe         = ru.typeTag[T].tpe
-      val classLoader = this.getClass.getClassLoader
-      val cls         = runtimeMirror(classLoader).runtimeClass(tpe)
-      val vClass      = mapClass(v)
+      Option(v).flatMap { o =>
+        val tpe         = ru.typeTag[T].tpe
+        val classLoader = this.getClass.getClassLoader
+        val cls         = runtimeMirror(classLoader).runtimeClass(tpe)
+        val vClass      = mapClass(v)
 
-      if (cls.isAssignableFrom(vClass))
-        Some(v.asInstanceOf[T])
-      else
-        None
+        if (cls.isAssignableFrom(vClass))
+          Some(v.asInstanceOf[T])
+        else
+          None
+      }
     }
   }
 
@@ -407,12 +406,30 @@ class ST private[scalasti] (private val native: _ST) {
   private def transform(v: Any) = {
     val v2  = v match {
       case l: List[_]     => seqToJava(l)
-      case s: Seq[_]      => seqToJava(s.toList)
-      case i: Iterator[_] => seqToJava(i.toList)
+      case s: Seq[_]      => seqToJava(s)
+      case i: Iterator[_] => iterToJava(i)
       case _              => v
     }
 
     v2.asInstanceOf[Object]
+  }
+
+  /** Converts a value to a Java object.
+    *
+    * @param v  the Scala value
+    *
+    * @return a Java object
+    */
+  private def anyToJava(v: Any, raw: Boolean = false) = {
+    v match {
+      case list: List[_]    => seqToJava(list)
+      case seq: Seq[_]      => seqToJava(seq)
+      case it:  Iterator[_] => iterToJava(it)
+      case map: Map[_, _]   => mapToJava(map.asInstanceOf[Map[String, Any]])
+      case s: String        => v
+      case n: Number        => v
+      case o: Any           => if (raw) v else ScalaObjectToBean(v)
+    }
   }
 
   /** Maps a Scala map of attributes into a Java map of attributes. The

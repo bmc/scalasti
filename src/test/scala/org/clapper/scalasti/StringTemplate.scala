@@ -38,7 +38,7 @@ import java.io.{File, FileWriter}
 import java.util.Locale
 import org.scalatest.FunSuite
 import org.clapper.scalasti._
-import grizzled.io.util._
+import grizzled.util._
 
 /**
   * Tests the grizzled.io functions.
@@ -96,7 +96,7 @@ class StringTemplateTest extends FunSuite {
 
     val temp = File.createTempFile("scalasti", ".stg")
     temp.deleteOnExit()
-    withCloseable(new FileWriter(temp)) { out =>
+    withResource(new FileWriter(temp)) { out =>
       out.write(groupString)
     }
 

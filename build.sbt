@@ -1,13 +1,9 @@
-// TO DO: Add Markdown doc processing back in.
-
 // ---------------------------------------------------------------------------
 // Basic settings
 
-name := "scalasti"
-
+name         := "scalasti"
 organization := "org.clapper"
-
-version := "2.0.0"
+version      := "2.1.0"
 
 licenses := Seq(
   "BSD" -> url("http://software.clapper.org/scalasti/license.html")
@@ -15,11 +11,9 @@ licenses := Seq(
 
 homepage := Some(url("http://software.clapper.org/scalasti/"))
 
-description := (
-  "A Scala-friendly wrapper for Terence Parr's ST library"
-)
+description := "A Scala-friendly wrapper for Terence Parr's ST library"
 
-crossScalaVersions := Seq("2.10.6", "2.11.8")
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-RC1")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -27,20 +21,8 @@ scalaVersion := crossScalaVersions.value.head
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
-
+bintrayPackageLabels := Seq("library", "string-template", "template")
 incOptions := incOptions.value.withNameHashing(true)
-
-lsSettings
-
-(LsKeys.tags in LsKeys.lsync) := Seq(
-  "template", "string template", "ST"
-)
-
-(description in LsKeys.lsync) <<= description(d => d)
-
-bintrayPackageLabels in bintray := (
-  LsKeys.tags in LsKeys.lsync
-).value
 
 // ---------------------------------------------------------------------------
 // Additional repositories
@@ -60,20 +42,13 @@ libraryDependencies ++= Seq(
 // Other dependendencies
 
 libraryDependencies ++= Seq(
-    "org.clapper" %% "grizzled-scala" % "1.2",
-    "org.clapper" %% "classutil" % "1.0.5",
-    "org.antlr" % "ST4" % "4.0.8"
+    "org.clapper"    %% "grizzled-scala" % "3.0.0",
+    "org.clapper"    %% "classutil"      % "1.0.13",
+    "org.antlr"       % "ST4"            % "4.0.8"
 )
 
 libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-  // If we're compiling on 2.11, we need to haul the reflection library
-  // in separately, since it's no longer bundled in 2.11.
-  if (sv.startsWith("2.11.")) {
-    deps :+ "org.scala-lang" % "scala-reflect" % sv
-  }
-  else {
-    deps
-  }
+  deps :+ "org.scala-lang" % "scala-reflect" % sv
 }
 
 // ---------------------------------------------------------------------------
@@ -82,9 +57,7 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
 // Don't set publishTo. The Bintray plugin does that automatically.
 
 publishMavenStyle := true
-
 publishArtifact in Test := false
-
 pomIncludeRepository := { _ => false }
 
 pomExtra := (

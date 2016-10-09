@@ -7,6 +7,7 @@ Version 2.1.0
 * Add cross-build for Scala 2.12.0-RC1.
 * Removed build dependency on SBT `ls` plugin.
 * Added Lightbend Activator, for build simplification.
+* Added Travis CI support.
 
 Version 2.0.0
 

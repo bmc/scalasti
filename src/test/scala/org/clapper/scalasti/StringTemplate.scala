@@ -225,6 +225,21 @@ class StringTemplateTest extends FunSuite {
     assert(None === st.attribute[Int]("s"))
   }
 
+  test("Optional String typed attribute retrieval") {
+    val st = ST("<s>")
+    st.add("s", Some("foo"))
+    assert(st.render() === "foo")
+    assert(Some("foo") === st.attribute[String]("s"))
+  }
+
+  test("None typed attribute retrieval") {
+    val st = ST("<s>")
+    st.add("s", None)
+    assert(st.render() === "")
+    assert(None === st.attribute[AnyRef]("s"))
+    assert(None === st.attribute[String]("s"))
+  }
+
   test("Custom typed attribute retrieval") {
     val groupString =
       """

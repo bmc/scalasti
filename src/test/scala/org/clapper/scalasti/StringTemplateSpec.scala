@@ -1,54 +1,21 @@
-/*
-  ---------------------------------------------------------------------------
-  This software is released under a BSD license, adapted from
-  http://opensource.org/licenses/bsd-license.php
-
-  Copyright (c) 2010-2014 Brian M. Clapper. All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
-
-  * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-  * Neither the names "clapper.org", "Scalasti", nor the names of its
-    contributors may be used to endorse or promote products derived from
-    this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-  IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  ---------------------------------------------------------------------------
-*/
+package org.clapper.scalasti
 
 import java.io.{File, FileWriter}
 import java.util.Locale
-import org.scalatest.FunSuite
-import org.clapper.scalasti._
+
 import grizzled.util._
+import org.clapper.scalasti._
+import org.scalatest.{FlatSpec, Matchers}
 
 /**
   * Tests the grizzled.io functions.
   */
-class StringTemplateTest extends FunSuite {
+class StringTemplateSpec extends FlatSpec with Matchers {
   // Type tags aren't available on nested classes (i.e., classes inside a
   // function).
   case class Value(s: String)
 
-  test("render template #1") {
+  "render" should "render a simple template with no substitutions" in {
     val template = """This is a <test> template: <many; separator=", ">"""
 
     val data = List(
@@ -69,7 +36,7 @@ class StringTemplateTest extends FunSuite {
       }
   }
 
-  test("render template #2, with '$' delimiters") {
+  it should "render a template with '$' delimiters" in {
     val template = """This is a $test$ template: $many; separator=", "$"""
 
     val data = List(
@@ -86,7 +53,7 @@ class StringTemplateTest extends FunSuite {
       }
   }
 
-  test("Template group from file") {
+  it should "handle a template group from a file" in {
     val groupString =
       """
         |delimiters "$", "$"
@@ -102,12 +69,12 @@ class StringTemplateTest extends FunSuite {
 
     val group = STGroupFile(temp.getAbsolutePath)
     val stTry = group.instanceOf("t1")
-    assert(stTry.map(t => true).getOrElse(false))
+    stTry.isSuccess shouldBe true
 
     val st = stTry.get
     st.add("firstName", "Curley")
     st.add("lastName", "Howard")
-    assert(st.render() === "Hello, Curley Howard")
+    st.render() shouldBe "Hello, Curley Howard"
 
     val stTry2 = group.instanceOf("t2")
     assert(stTry2.map(t => true).getOrElse(false))
@@ -115,12 +82,12 @@ class StringTemplateTest extends FunSuite {
     val st2 = stTry2.get
     st2.add("firstName", "Larry")
     st2.add("lastName", "Fine")
-    assert(st2.render() === "Fine, Larry")
+    st2.render() shouldBe "Fine, Larry"
 
     temp.delete()
   }
 
-  test("ValueRenderer") {
+  it should "allow a custom ValueRenderer" in {
     val groupString =
       """
         |delimiters "<", ">"
@@ -145,7 +112,7 @@ class StringTemplateTest extends FunSuite {
     }
   }
 
-  test("Automatic aggregates") {
+  it should "handle automatic aggregates" in {
     val template = """$if (page.title)$$page.title$$else$No title$endif$
     |$page.categories; separator=", "$""".stripMargin
 
@@ -166,7 +133,7 @@ class StringTemplateTest extends FunSuite {
     }
   }
 
-  test("Mapped aggregates") {
+  it should "handle mapped aggregates" in {
     val template = "<thing.outer.inner> <foo.bar> <foo.baz> " +
                    "<thing.outer.x> <thing.okay>"
 
@@ -184,8 +151,8 @@ class StringTemplateTest extends FunSuite {
     }
   }
 
-  test("Multivalue attribute") {
-    case class User(val firstName: String, val lastName: String) {
+  it should "handle multivalue attributes" in {
+    case class User(firstName: String, lastName: String) {
       override def toString = firstName + " " + lastName
     }
 
@@ -204,43 +171,43 @@ class StringTemplateTest extends FunSuite {
     }
   }
 
-  test("Numeric typed attribute retrieval") {
+  it should "handle numeric typed attribute retrieval" in {
     val st = ST("Point = (<x>, <y>)")
 
     st.add("x", 10)
     st.add("y", 20)
 
-    assert(Some(10) === st.attribute[Int]("x"))
-    assert(Some(20) === st.attribute[Int]("y"))
-    assert(None === st.attribute[Double]("x"))
-    assert(None === st.attribute[Double]("y"))
-    assert("Point = (10, 20)" === st.render())
+    st.attribute[Int]("x") shouldBe Some(10)
+    st.attribute[Int]("y") shouldBe Some(20)
+    st.attribute[Double]("x") shouldBe None
+    st.attribute[Double]("y") shouldBe None
+    st.render() shouldBe "Point = (10, 20)"
   }
 
-  test("String typed attribute retrieval") {
+  it should "handle string typed attribute retrieval" in {
     val st = ST("<s>")
     st.add("s", "foo")
-    assert(st.render() === "foo")
-    assert(Some("foo") === st.attribute[String]("s"))
-    assert(None === st.attribute[Int]("s"))
+    st.render() shouldBe "foo"
+    st.attribute[String]("s") shouldBe Some("foo")
+    st.attribute[Int]("s") shouldBe None
   }
 
-  test("Optional String typed attribute retrieval") {
+  it should "handle optional String typed attribute retrieval" in {
     val st = ST("<s>")
     st.add("s", Some("foo"))
-    assert(st.render() === "foo")
-    assert(Some("foo") === st.attribute[String]("s"))
+    st.render() shouldBe "foo"
+    st.attribute[String]("s") shouldBe Some("foo")
   }
 
-  test("None typed attribute retrieval") {
+  it should "handle None-typed attribute retrieval" in {
     val st = ST("<s>")
     st.add("s", None)
-    assert(st.render() === "")
-    assert(None === st.attribute[AnyRef]("s"))
-    assert(None === st.attribute[String]("s"))
+    st.render() shouldBe ""
+    st.attribute[AnyRef]("s") shouldBe None
+    st.attribute[String]("s") shouldBe None
   }
 
-  test("Custom typed attribute retrieval") {
+  it should "handle custom typed attribute retrieval" in {
     val groupString =
       """
         |delimiters "$", "$"
@@ -256,12 +223,22 @@ class StringTemplateTest extends FunSuite {
     val group = STGroupString(groupString)
     group.registerRenderer(ValueRenderer)
     val stTry = group.instanceOf("template")
+    stTry.isSuccess shouldBe true
 
-    assert(stTry.map(t => true).getOrElse(false))
     val st = stTry.get
     st.add("x", Value("foo"), raw=true)
-    assert(st.render() === "This is a foo template")
+    st.render() shouldBe "This is a foo template"
+    st.attribute[Value]("x") shouldBe Some(Value("foo"))
+  }
 
-    assert(Some(Value("foo")) === st.attribute[Value]("x"))
+  it should "properly substitute from a Some and a None" in {
+    val st = ST("x=<x>, y=<y>")
+
+    def add(label: String, o: Option[Int]) = st.add(label, o)
+
+    add("x", Some(10))
+    add("y", None)
+
+    st.render() shouldBe "x=10, y="
   }
 }

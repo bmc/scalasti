@@ -1,5 +1,10 @@
 # Change Log: Scalasti, a Scala interface to the StringTemplate library
 
+Version 2.1.1
+
+* Added unit tests for `Option` and `None`. 
+* Converted test suite to use ScalaTest's `FlatSpec`.
+
 Version 2.1.0
 
 * Added support for `Option` values (courtesy of @jalaziz).

@@ -19,7 +19,7 @@ description := (
   "A Scala-friendly wrapper for Terence Parr's ST library"
 )
 
-crossScalaVersions := Seq("2.10.4", "2.11.0")
+crossScalaVersions := Seq("2.10.6", "2.11.8")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -38,9 +38,7 @@ lsSettings
 
 (description in LsKeys.lsync) <<= description(d => d)
 
-bintraySettings
-
-bintray.Keys.packageLabels in bintray.Keys.bintray := (
+bintrayPackageLabels in bintray := (
   LsKeys.tags in LsKeys.lsync
 ).value
 
@@ -55,7 +53,7 @@ resolvers ++= Seq(
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.1.3" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
 
 // ---------------------------------------------------------------------------
@@ -71,7 +69,7 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
   // If we're compiling on 2.11, we need to haul the reflection library
   // in separately, since it's no longer bundled in 2.11.
   if (sv.startsWith("2.11.")) {
-    deps :+ "org.scala-lang" % "scala-reflect" % "2.11.0"
+    deps :+ "org.scala-lang" % "scala-reflect" % sv
   }
   else {
     deps

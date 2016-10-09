@@ -1,5 +1,13 @@
 # Change Log: Scalasti, a Scala interface to the StringTemplate library
 
+Version 2.1.0
+
+* Added support for `Option` values (courtesy of @jalaziz).
+* Updated various dependencies.
+* Add cross-build for Scala 2.12.0-RC1.
+* Removed build dependency on SBT `ls` plugin.
+* Added Lightbend Activator, for build simplification.
+
 Version 2.0.0
 
 * Reimplemented for StringTemplate v4. **NOTE**: This version is a _complete_

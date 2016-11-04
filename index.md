@@ -84,6 +84,7 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].
 
+* Versions from 2.1.0 on support Scala 2.12, 2.11 and 2.10.
 * Version 2.0.0 (for StringTemplate version 4) supports Scala 2.11 and 2.10.
 * Version 1.0.0 (for StringTemplate version 3) supports Scala 2.10.
 * Version 0.5.8 (for StringTemplate version 3) supports Scala 2.9.1-1, 2.9.1,
@@ -95,16 +96,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `scalasti_2.10` or `scalasti_2.11`
-* Version: `1.0.0` or `2.0.0`
+* Artifact ID: `scalasti_2.10`, `scalasti_2.11`, `scalasti_2.12`
+* Version: `1.0.0` or `2.1.2`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.10</artifactId>
-      <version>2.0.0</version>
+      <artifactId>scalasti_2.11</artifactId>
+      <version>2.1.2</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -112,43 +113,9 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 ## Using with SBT
 
-#### 0.11.x/0.12.x
+Just add:
 
-If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
-following line in your build.sbt file (for Quick Configuration).
-
-    repositories += "JCenter" at "http://jcenter.bintray.com/"
-
-    libraryDependencies += "org.clapper" %% "scalasti" % "2.0.0"
-
-You only need the `repositories` line if the artifact cannot be resolved (e.g.,
-has not, for some reason, been pushed to Maven Central yet).
-
-#### 0.13.x
-
-With SBT 0.13.x, you can just use [Doug Tangren's](https://github.com/softprops/)
-`bintray-sbt` plugin. In your `project/plugins.sbt` file, add:
-
-    resolvers += Resolver.url(
-      "bintray-sbt-plugin-releases",
-      url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-        Resolver.ivyStylePatterns)
-
-    addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
-
-Then, in your `build.sbt` file, add:
-
-    bintrayResolverSettings
-
-That automatically adds the appropriate Bintray repositories. Finally, add:
-
-    libraryDependencies += "org.clapper" %% "scalasti" % "2.0.0"
-
-Scalasti is also registered with [Doug Tangren][]'s excellent
-[ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
-Scalasti with
-
-    sbt> ls-install scalasti
+    libraryDependencies += "org.clapper" %% "scalasti" % "2.1.2"
 
 # Building from Source
 
@@ -173,9 +140,15 @@ Windows), first run:
 
 The resulting jar file will be in the top-level `target` directory.
 
+If you're on a Unix-like system (include Mac OS), you don't need a
+pre-installed `sbt` script. Just use `bin/activator` within the repository
+itself:
+
+    bin/activator compile test package
+
 # Runtime Requirements
 
-Scalasti 2.0.0 requires the following libraries to be available at runtime, for
+Scalasti 2.x.y requires the following libraries to be available at runtime, for
 some, or all, of its methods.
 
 * The main [ASM][] library (version 4), e.g., `asm-4.2.jar`

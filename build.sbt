@@ -13,7 +13,7 @@ homepage := Some(url("http://software.clapper.org/scalasti/"))
 
 description := "A Scala-friendly wrapper for Terence Parr's ST library"
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-RC1")
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -42,8 +42,8 @@ libraryDependencies ++= Seq(
 // Other dependendencies
 
 libraryDependencies ++= Seq(
-    "org.clapper"    %% "grizzled-scala" % "3.0.0",
-    "org.clapper"    %% "classutil"      % "1.0.13",
+    "org.clapper"    %% "grizzled-scala" % "3.1.0",
+    "org.clapper"    %% "classutil"      % "1.1.0",
     "org.antlr"       % "ST4"            % "4.0.8"
 )
 

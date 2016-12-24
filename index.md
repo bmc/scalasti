@@ -97,7 +97,7 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `scalasti_2.10`, `scalasti_2.11`, `scalasti_2.12`
-* Version: `1.0.0` or `2.1.2`
+* Version: `2.1.4`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
@@ -105,7 +105,7 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>scalasti_2.11</artifactId>
-      <version>2.1.2</version>
+      <version>2.1.4</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -115,7 +115,7 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 Just add:
 
-    libraryDependencies += "org.clapper" %% "scalasti" % "2.1.2"
+    libraryDependencies += "org.clapper" %% "scalasti" % "2.1.4"
 
 # Building from Source
 

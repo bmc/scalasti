@@ -1,5 +1,9 @@
 # Change Log: Scalasti, a Scala interface to the StringTemplate library
 
+Version 2.1.4
+
+* Fixed test that broke with upgrade to Grizzled Scala 4.2.0.
+
 Version 2.1.3
 
 * Updated Scala 2.12 cross-compile to 2.12.1.

@@ -4,6 +4,7 @@ import java.io.{File, FileWriter}
 import java.util.Locale
 
 import grizzled.util._
+import grizzled.util.CanReleaseResource.Implicits.CanReleaseAutoCloseable
 import org.clapper.scalasti._
 import org.scalatest.{FlatSpec, Matchers}
 

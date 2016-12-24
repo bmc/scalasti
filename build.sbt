@@ -3,7 +3,7 @@
 
 name         := "scalasti"
 organization := "org.clapper"
-version      := "2.1.3"
+version      := "2.1.4"
 
 licenses := Seq(
   "BSD" -> url("http://software.clapper.org/scalasti/license.html")

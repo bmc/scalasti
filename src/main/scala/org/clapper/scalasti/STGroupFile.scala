@@ -15,7 +15,6 @@ import org.stringtemplate.v4.misc.ErrorManager
 class STGroupFile private[scalasti](native: _STGroupFile)
   extends STGroup(nativeOpt = Some(native)) {
 
-
   /** Create a new underlying StringTemplate object, applying whatever
     * constructor parameters were used with the current object. Does not
     * apply the renderers.

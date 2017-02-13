@@ -11,7 +11,7 @@ class FloatWrapper(val f: Float)
   */
 class STGroupFileSpec extends BaseSpec {
 
-  val TemplateGroup1 = TemplateGroupData(
+  val TemplateGroup1 = TemplateGroupFileData(
     path = "foo.stg",
     groupString = s"""|delimiters "%", "%"
                       |import "parens.st"
@@ -32,7 +32,7 @@ class STGroupFileSpec extends BaseSpec {
     )
   )
 
-  val TemplateGroup2 = TemplateGroupData(
+  val TemplateGroup2 = TemplateGroupFileData(
     path = "bar.stg",
     groupString = """|delimiters "$", "$"
                      |import "bar.st"
@@ -47,7 +47,7 @@ class STGroupFileSpec extends BaseSpec {
     )
   )
 
-  val TemplateGroup3 = TemplateGroupData(
+  val TemplateGroup3 = TemplateGroupFileData(
     path = "baz.stg",
     groupString = """|delimiters "$", "$"
                      |import "subdir"
@@ -74,26 +74,26 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "work when pointed at a legit file" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       stGroup.load() shouldBe 'success
     }
   }
 
   it should "be immutable" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val t = stGroup.load()
       t shouldBe 'success
       val stGroup2 = t.get
-      stGroup2 should not be stGroup
-      stGroup.nativeGroup should not be stGroup2.nativeGroup
+      stGroup2 should not be theSameInstanceAs (stGroup)
+      stGroup.nativeGroup should not be theSameInstanceAs (stGroup2.nativeGroup)
     }
   }
 
   "unload()" should "be immutable" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val stGroup2 = stGroup.unload()
       stGroup2 should not be stGroup
-      stGroup.nativeGroup should not be stGroup2.nativeGroup
+      stGroup.nativeGroup should not be theSameInstanceAs (stGroup2.nativeGroup)
     }
   }
 
@@ -104,29 +104,29 @@ class STGroupFileSpec extends BaseSpec {
       }
     }
 
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val stGroup2 = stGroup.registerRenderer(newRenderer)
-      stGroup2 should not be stGroup
-      stGroup2.renderers should not be stGroup.renderers
+      stGroup2 should not be theSameInstanceAs (stGroup)
+      stGroup2.renderers should not be theSameInstanceAs (stGroup.renderers)
     }
   }
 
   "instanceOf" should "fail when attempting to find a nonexistent template" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val tTemplate = stGroup.instanceOf("bar")
       tTemplate shouldBe 'failure
     }
   }
 
   it should "succeed when attempting to find a valid template" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val tTemplate = stGroup.instanceOf("foo")
       tTemplate shouldBe 'success
     }
   }
 
   it should "properly render a template in the group" in {
-    withTemplateGroup(TemplateGroup1) { stGroup =>
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val template = stGroup.instanceOf("foo").get
       // TODO: Fix me
       template.addAttributes(Map(
@@ -139,7 +139,7 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "properly handle an alternate encoding" in {
-    withTemplateGroup(TemplateGroup2, "UTF-8") { stGroup =>
+    withTemplateGroupFile(TemplateGroup2, "UTF-8") { stGroup =>
       val template = stGroup.instanceOf("bar").get
       // TODO: Fix me
       val args = Seq("one", "two")
@@ -149,7 +149,7 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "properly handle importing from a subdirectory" in {
-    withTemplateGroup(TemplateGroup3) { stGroup =>
+    withTemplateGroupFile(TemplateGroup3) { stGroup =>
       for ((sep, name) <- Seq((" ", "quux"), ("-", "blah"))) {
         val t = stGroup.instanceOf(name)
         t shouldBe 'success

@@ -1,12 +1,8 @@
 package org.clapper.scalasti
 
-import java.io._
 import java.net.URL
 import java.util.Locale
 
-import grizzled.file.util.{joinPath, withTemporaryDirectory, dirname}
-import grizzled.util.withResource
-import grizzled.util.CanReleaseResource.Implicits.CanReleaseCloseable
 
 // Can't register renderers for primitive types.
 class FloatWrapper(val f: Float)
@@ -70,13 +66,13 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "work when pointed at a legit file" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       stGroup.load() shouldBe 'success
     }
   }
 
   it should "be immutable" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val t = stGroup.load()
       t shouldBe 'success
       val stGroup2 = t.get
@@ -86,7 +82,7 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   "unload()" should "be immutable" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val stGroup2 = stGroup.unload()
       stGroup2 should not be stGroup
       stGroup.nativeGroup should not be stGroup2.nativeGroup
@@ -100,7 +96,7 @@ class STGroupFileSpec extends BaseSpec {
       }
     }
 
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val stGroup2 = stGroup.registerRenderer(newRenderer)
       stGroup2 should not be stGroup
       stGroup2.renderers should not be stGroup.renderers
@@ -108,21 +104,21 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   "instanceOf" should "fail when attempting to find a nonexistent template" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val tTemplate = stGroup.instanceOf("bar")
       tTemplate shouldBe 'failure
     }
   }
 
   it should "succeed when attempting to find a valid template" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val tTemplate = stGroup.instanceOf("foo")
       tTemplate shouldBe 'success
     }
   }
 
   it should "properly render a template in the group" in {
-    withTemplateGroup(TemplateGroup1, Templates1) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup1, Templates1) { stGroup =>
       val template = stGroup.instanceOf("foo").get
       // TODO: Fix me
       template.addAttributes(Map(
@@ -135,7 +131,7 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "properly handle an alternate encoding" in {
-    withTemplateGroup(TemplateGroup2, Templates2, "UTF-8") { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup2, Templates2, "UTF-8") { stGroup =>
       val template = stGroup.instanceOf("bar").get
       // TODO: Fix me
       val args = Seq("one", "two")
@@ -145,7 +141,7 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   it should "properly handle importing from a subdirectory" in {
-    withTemplateGroup(TemplateGroup3, Templates3) { (_, stGroup) =>
+    withTemplateGroup(TemplateGroup3, Templates3) { stGroup =>
       for ((sep, name) <- Seq((" ", "quux"), ("-", "blah"))) {
         val t = stGroup.instanceOf(name)
         t shouldBe 'success
@@ -155,51 +151,6 @@ class STGroupFileSpec extends BaseSpec {
         template.addAttributes(Map("args" -> args))
         template.render() shouldBe args.mkString(sep)
       }
-    }
-  }
-
-  // --------------------------------------------------------------------------
-  // Private methods
-  // --------------------------------------------------------------------------
-
-  private def withTemplateGroup(group: (String, String),
-                                templates: Seq[(String, String)],
-                                encoding: String = "ASCII")
-                               (code: (File, STGroup) => Unit): Unit = {
-    withTemporaryDirectory("scalasti") { dir =>
-
-      val (pathString, groupString) = group
-      val groupPath = new File(joinPath(dir.getPath, pathString))
-
-      def makeParentDir(path: File) = {
-        val dir = dirname(path.getPath)
-        if ((dir != ".") && (dir != "..")) {
-          val fDir = new File(dir)
-          fDir.mkdirs()
-          if (! fDir.exists)
-            throw new RuntimeException(s"Can't create $dir")
-        }
-      }
-
-      def openWithEncoding(path: File, encoding: String) = {
-        makeParentDir(path)
-        new PrintWriter(
-          new OutputStreamWriter(new FileOutputStream(path), encoding)
-        )
-      }
-
-      withResource(openWithEncoding(groupPath, encoding)) { out =>
-        out.println(groupString)
-      }
-
-      for ((path, templateString) <- templates) {
-        val templatePath = new File(joinPath(dir.getPath, path))
-        withResource(openWithEncoding(templatePath, encoding)) { out =>
-          out.println(templateString)
-        }
-      }
-
-      code(groupPath, STGroupFile(groupPath.toURI.toURL))
     }
   }
 }

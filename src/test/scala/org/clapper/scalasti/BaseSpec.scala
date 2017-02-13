@@ -10,7 +10,7 @@ import grizzled.util.CanReleaseResource.Implicits.CanReleaseCloseable
 
 /** Base class for testers
   */
-class BaseSpec extends FlatSpec with Matchers {
+abstract class BaseSpec extends FlatSpec with Matchers {
 
   /** Sets up a temporary directory for a template group. In all cases, the
     * filenames can be paths, though they must not be absolute.

@@ -13,7 +13,7 @@ import org.antlr.runtime.Token
   * the companion object.
   */
 class STGroupDir private[scalasti](native: _STGroupDir)
-  extends STGroup(native)
+  extends STGroup(nativeOpt = Some(native))
 
 /** Companion object for `STGroupDir`. This object provides `apply()` methods
   * for instantiating `STGroupDir` objects.
@@ -42,7 +42,7 @@ object STGroupDir {
                                  encoding,
                                  delimiterStartChar,
                                  delimiterStopChar)
-    return new STGroupDir(native)
+    new STGroupDir(native)
   }
 
 /** Create an `STGroupDir` that reads its templates and groups from the

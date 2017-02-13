@@ -5,18 +5,16 @@ import java.util.Locale
 
 import grizzled.util._
 import grizzled.util.CanReleaseResource.Implicits.CanReleaseAutoCloseable
-import org.clapper.scalasti._
-import org.scalatest.{FlatSpec, Matchers}
 
 /**
   * Tests the grizzled.io functions.
   */
-class StringTemplateSpec extends FlatSpec with Matchers {
+class STSpec extends BaseSpec {
   // Type tags aren't available on nested classes (i.e., classes inside a
   // function).
   case class Value(s: String)
 
-  "render" should "render a simple template with no substitutions" in {
+  "render" should "render a simple template with simple substitutions" in {
     val template = """This is a <test> template: <many; separator=", ">"""
 
     val data = List(
@@ -96,7 +94,7 @@ class StringTemplateSpec extends FlatSpec with Matchers {
       """.stripMargin
 
     object ValueRenderer extends AttributeRenderer[Value] {
-      def toString(v: Value, formatString: String, locale: Locale) = {
+      def toString(v: Value, formatString: String, locale: Locale): String = {
         "<" + v.s + ">"
       }
     }
@@ -154,7 +152,7 @@ class StringTemplateSpec extends FlatSpec with Matchers {
 
   it should "handle multivalue attributes" in {
     case class User(firstName: String, lastName: String) {
-      override def toString = firstName + " " + lastName
+      override def toString: String = firstName + " " + lastName
     }
 
     val u1 = User("Elvis", "Presley")
@@ -216,7 +214,7 @@ class StringTemplateSpec extends FlatSpec with Matchers {
       """.stripMargin
 
     object ValueRenderer extends AttributeRenderer[Value] {
-      def toString(v: Value, formatString: String, locale: Locale) = {
+      def toString(v: Value, formatString: String, locale: Locale): String = {
         v.s
       }
     }

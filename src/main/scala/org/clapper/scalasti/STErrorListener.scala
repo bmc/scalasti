@@ -39,8 +39,7 @@ package org.clapper.scalasti
 
 import org.stringtemplate.v4.{STErrorListener => _STErrorListener}
 
-/**
-  * A Scala version of the String Template library's
+/** A Scala version of the String Template library's
   * `StringTemplateErrorListener` class.
   */
 trait STErrorListener extends _STErrorListener

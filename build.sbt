@@ -3,7 +3,7 @@
 
 name         := "scalasti"
 organization := "org.clapper"
-version      := "2.1.4"
+version      := "3.0.0"
 
 licenses := Seq(
   "BSD" -> url("http://software.clapper.org/scalasti/license.html")
@@ -35,7 +35,7 @@ resolvers ++= Seq(
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 )
 
 // ---------------------------------------------------------------------------

@@ -1,8 +1,9 @@
 package org.clapper.scalasti
 
-import org.stringtemplate.v4.{STGroupFile => _STGroupFile}
-
+import org.stringtemplate.v4.{STGroup => _STGroup, STGroupFile => _STGroupFile}
 import java.net.URL
+
+import org.stringtemplate.v4.misc.ErrorManager
 
 /** `STGroupFile` wraps the StringTemplate API's `STGroupFile` class.
   * An `STGroupFile` object reads a template group from a file. See the
@@ -12,7 +13,24 @@ import java.net.URL
   * methods on the companion object.
   */
 class STGroupFile private[scalasti](native: _STGroupFile)
-  extends STGroup(native)
+  extends STGroup(nativeOpt = Some(native)) {
+
+
+  /** Create a new underlying StringTemplate object, applying whatever
+    * constructor parameters were used with the current object. Does not
+    * apply the renderers.
+    *
+    * Subclasses should override this method.
+    *
+    * @return the new underlying object
+    */
+  override protected[this] def newUnderlying: _STGroup = {
+    new _STGroupFile(native.url,
+                     native.encoding,
+                     native.delimiterStartChar,
+                     native.delimiterStopChar)
+  }
+}
 
 /** Companion object for `STGroupFile`. This object provides `apply()`
   * methods for instantiating `STGroupFile` objects.

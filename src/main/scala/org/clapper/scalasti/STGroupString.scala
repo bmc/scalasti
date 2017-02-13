@@ -10,7 +10,7 @@ import org.stringtemplate.v4.{STGroupString => _STGroupString}
   * methods on the companion object.
   */
 class STGroupString private[scalasti](native: _STGroupString)
-  extends STGroup(native)
+  extends STGroup(nativeOpt = Some(native))
 
 /** Companion object for `STGroupString`. This object provides `apply()`
   * methods for instantiating `STGroupString` objects.

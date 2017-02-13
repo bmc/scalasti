@@ -37,14 +37,18 @@
 
 package org.clapper.scalasti
 
-import org.stringtemplate.v4.{STGroup => _STGroup}
-import org.antlr.runtime.Token
+import java.io.File
+
+import org.stringtemplate.v4.{AttributeRenderer => _AttributeRenderer,
+                              STGroup => _STGroup}
 
 import scala.reflect.runtime.{universe => ru}
 import scala.reflect.runtime.universe.runtimeMirror
 import scala.util.Try
 import scala.collection.JavaConverters._
 import java.net.URL
+
+import org.stringtemplate.v4.misc.ErrorManager
 
 /** A Scala wrapper for the String Template library's `STGroup` class. This
   * class provides access to most of the methods on the underlying class,
@@ -57,22 +61,42 @@ import java.net.URL
   * you can retrieve the underlying `STGroup` by calling the `nativeGroup`
   * method.
   */
-class STGroup(private[scalasti] val native: _STGroup) {
+case class STGroup(
+  delimiterStartChar: Char = Constants.DefaultStartChar,
+  delimiterStopChar:  Char = Constants.DefaultStopChar,
+  private[scalasti] val nativeOpt: Option[_STGroup] = None,
+  private[scalasti] val renderers: Map[Class[_], _AttributeRenderer] =
+    Map.empty[Class[_], _AttributeRenderer]
+) {
+
+  private val native: _STGroup = nativeOpt.map { n =>
+    applyRenderers(n)
+    n
+  }
+  .getOrElse {
+    cloneUnderlying
+  }
 
   /** Get the underlying Java StringTemplate `STGroup` object.
     *
     * @return the underlying `STGroup`
     */
-  def nativeGroup = native
+  def nativeGroup: _STGroup = native
 
-  /** Get the template names defined by the group.
+  /** Get the template names defined by the group. Note that calling
+    * this method on an object for which `prepare()` has not been called causes
+    * instantiation of a new, underlying, throwaway `STGroup` object each time,
+    * to preserve immutability.
     *
     * @return a set of the template names supplied by this group
     */
-  def templateNames: Set[String] = native.getTemplateNames().asScala.toSet
+  def templateNames: Set[String] = native.getTemplateNames.asScala.toSet
 
   /** Determine whether a named template is defined in this group. The names
-    * must be fully-qualified template paths (e.g., "/g1/name")
+    * must be fully-qualified template paths (e.g., "/g1/name"). Note that
+    * calling this method on an object for which `prepare()` has not been called
+    * causes instantiation of a new, underlying, throwaway `STGroup` object
+    * each time, to preserve immutability.
     *
     * @param name  the template name
     *
@@ -81,7 +105,10 @@ class STGroup(private[scalasti] val native: _STGroup) {
   def isDefined(name: String): Boolean = native.isDefined(name)
 
   /** Get the root directory, if this is the group directory, or the group
-    * file, if this is a group file.
+    * file, if this is a group file. Note that calling this method on an object
+    * for which `prepare()` has not been called causes instantiation of a new,
+    * underlying, throwaway `STGroup` object each time, to preserve
+    * immutability.
     *
     * @return the root
     */
@@ -91,7 +118,7 @@ class STGroup(private[scalasti] val native: _STGroup) {
     *
     * @return the group name
     */
-  def name: String = native.getName()
+  def name: String = native.getName
 
   /** Get the group file name.
     *
@@ -106,15 +133,30 @@ class STGroup(private[scalasti] val native: _STGroup) {
     * passing them up the stack. Testing for errors might not return what
     * you expect.
     *
-    * @return `Success(Unit)` on success. `Failure(exception)` on load failure.
+    * @return `Success(newSTGroup)` on success. `Failure(exception)` on load
+    *         failure.
     */
-  def load(): Try[Unit] = Try { native.load() }
+  def load(): Try[STGroup] = Try {
+    val underlying = cloneUnderlying
+    underlying.load()
+    this.copy(nativeOpt = Some(underlying))
+  }
 
-  /** Force an unload.
+  /** Force an unload. Returns a new `STGroup` with an unloaded native
+    * StringTemplate `STGroup`.
+    *
+    * @return the new object
     */
-  def unload() = native.unload()
+  def unload(): STGroup = {
+    val underlying = cloneUnderlying
+    underlying.unload()
+    this.copy(nativeOpt = Some(underlying))
+  }
 
-  /** Get an instance of a template defined in group.
+  /** Get an instance of a template defined in group.  Note that calling this
+    * method on an object for which `prepare()` has not been called causes
+    * instantiation of a new, underlying, throwaway `STGroup` object each time,
+    * to preserve immutability.
     *
     * @param templateName  the name of the template
     *
@@ -143,33 +185,71 @@ class STGroup(private[scalasti] val native: _STGroup) {
     * unless you add the values it is to render as raw objects. See the
     * `ST.add()` method for details.
     *
-    * @param r
-    * @tparam T
+    * @param r   the renderer
+    * @tparam T  the type
+    *
+    * @return a new `STGroup` object with the new renderer
     *
     * @see [[ST.add]]
     */
-  def registerRenderer[T: ru.TypeTag](r: AttributeRenderer[T]): Unit = {
+  def registerRenderer[T: ru.TypeTag](r: AttributeRenderer[T]): STGroup = {
     val tpe = ru.typeTag[T].tpe
     val cls = runtimeMirror(r.getClass.getClassLoader).runtimeClass(tpe)
 
-    native.registerRenderer(cls, r.stRenderer)
+    this.copy(renderers = this.renderers + (cls -> r.stRenderer))
   }
-}
 
-/** Companion object for the `STGroup` class. This object provides `apply()`
-  * methods for instantiating `STGroup` objects.
-  */
-object STGroup {
+  // --------------------------------------------------------------------------
+  // Protected methods
+  // --------------------------------------------------------------------------
 
-  /** Create an `STGroup` object.
+  /** Create a new underlying StringTemplate object, applying whatever
+    * constructor parameters were used with the current object. Does not
+    * apply the renderers.
     *
-    * @param delimiterStartChar starting delimiter character
-    * @param delimiterStopChar  ending delimiter character
+    * Subclasses should override this method.
     *
-    * @return the `STGroup`
+    * @return the new underlying object
     */
-  def apply(delimiterStartChar: Char = Constants.DefaultStartChar,
-            delimiterStopChar:  Char = Constants.DefaultStopChar): STGroup = {
-    new STGroup(new _STGroup(delimiterStartChar, delimiterStopChar))
+  protected[this] def newUnderlying: _STGroup = {
+    new _STGroup(delimiterStartChar, delimiterStopChar)
+  }
+
+  // --------------------------------------------------------------------------
+  // Private methods
+  // --------------------------------------------------------------------------
+
+  /** Create a new clone of the underlying StringTemplate `STGroupFile` object,
+    * applying all renderers.
+    *
+    * @return the clone
+    */
+  private def cloneUnderlying: _STGroup = {
+    val underlying = newUnderlying
+    makeErrorsExceptions(underlying)
+    applyRenderers(underlying)
+    underlying
+  }
+
+  /** Ensure that any errors that occur during template processing result
+    * in a thrown exception that can be captured in a `Try`.
+    *
+    * @param underlying the native `STGroup` object whose error handling is to
+    *                   be changed
+    */
+  private def makeErrorsExceptions(underlying: _STGroup): Unit = {
+    underlying.errMgr = new ErrorManager(new ThrowExceptionErrorListener)
+  }
+
+  /** Apply all renderers to an underlying StringTemplate `STGroup` (or
+    * derived class).
+    *
+    * @param underlying the underlying `STGroup`
+    */
+  private def applyRenderers(underlying: _STGroup): Unit = {
+    for ( (cls, renderer) <- this.renderers ) {
+      underlying.registerRenderer(cls, renderer)
+    }
   }
 }
+

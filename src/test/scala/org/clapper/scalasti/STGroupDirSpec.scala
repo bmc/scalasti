@@ -71,10 +71,4 @@ class STGroupDirSpec extends BaseSpec {
       template.render() shouldBe args.mkString("-")
     }
   }
-
-  // --------------------------------------------------------------------------
-  // Private methods
-  // --------------------------------------------------------------------------
-
-
 }

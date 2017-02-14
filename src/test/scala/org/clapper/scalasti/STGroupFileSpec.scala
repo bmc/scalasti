@@ -4,7 +4,7 @@ import java.net.URL
 import java.util.Locale
 
 
-// Can't register renderers for primitive types.
+// Can't register attrRenderers for primitive types.
 class FloatWrapper(val f: Float)
 
 /** Tests for STGroup class
@@ -14,19 +14,13 @@ class STGroupFileSpec extends BaseSpec {
   val TemplateGroup1 = TemplateGroupFileData(
     path = "foo.stg",
     groupString = s"""|delimiters "%", "%"
-                      |import "parens.st"
                       |import "foo.st"
                       |""".stripMargin,
     templates = Seq(
       TemplateData(
         path = "foo.st",
-        templateString = """foo(names, values) ::= <<
-                           |%names, values:{ n,v | %parens([n, v])%}; separator=" "%
-                           |>>""".stripMargin
-      ),
-      TemplateData(path = "parens.st",
-        templateString  = """parens(args) ::= <<
-                            |(%args; separator=","%)
+        templateString = """|foo(names, values) ::= <<
+                            |%names,values: {n,v | %n%-%v%}; separator=","%
                             |>>""".stripMargin
       )
     )
@@ -107,7 +101,7 @@ class STGroupFileSpec extends BaseSpec {
     withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val stGroup2 = stGroup.registerRenderer(newRenderer)
       stGroup2 should not be theSameInstanceAs (stGroup)
-      stGroup2.renderers should not be theSameInstanceAs (stGroup.renderers)
+      stGroup2.attrRenderers should not be theSameInstanceAs (stGroup.attrRenderers)
     }
   }
 
@@ -120,7 +114,7 @@ class STGroupFileSpec extends BaseSpec {
 
   it should "succeed when attempting to find a valid template" in {
     withTemplateGroupFile(TemplateGroup1) { stGroup =>
-      val tTemplate = stGroup.instanceOf("foo")
+      val tTemplate = stGroup.instanceOf("/foo")
       tTemplate shouldBe 'success
     }
   }
@@ -128,23 +122,20 @@ class STGroupFileSpec extends BaseSpec {
   it should "properly render a template in the group" in {
     withTemplateGroupFile(TemplateGroup1) { stGroup =>
       val template = stGroup.instanceOf("foo").get
-      // TODO: Fix me
-      template.addAttributes(Map(
+      val template2 = template.addAttributes(Map(
         "names" -> List("a", "b", "c"),
         "values" -> List("1", "2", "3")
       ))
-
-      template.render() shouldBe "(a,1) (b,2) (c,3)"
+      template2.render() shouldBe "a-1,b-2,c-3"
     }
   }
 
   it should "properly handle an alternate encoding" in {
     withTemplateGroupFile(TemplateGroup2, "UTF-8") { stGroup =>
       val template = stGroup.instanceOf("bar").get
-      // TODO: Fix me
       val args = Seq("one", "two")
-      template.addAttributes(Map("args" -> args))
-      template.render() shouldBe args.mkString("\u2014")
+      val template2 = template.addAttributes(Map("args" -> args))
+      template2.render() shouldBe args.mkString("\u2014")
     }
   }
 
@@ -154,10 +145,9 @@ class STGroupFileSpec extends BaseSpec {
         val t = stGroup.instanceOf(name)
         t shouldBe 'success
         val template = t.get
-        // TODO: Fix me
         val args = Seq("one", "two", "three")
-        template.addAttributes(Map("args" -> args))
-        template.render() shouldBe args.mkString(sep)
+        val template2 = template.addAttributes(Map("args" -> args))
+        template2.render() shouldBe args.mkString(sep)
       }
     }
   }

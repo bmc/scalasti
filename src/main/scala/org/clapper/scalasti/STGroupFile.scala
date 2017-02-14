@@ -13,11 +13,11 @@ import org.stringtemplate.v4.misc.ErrorManager
   * methods on the companion object.
   */
 class STGroupFile private[scalasti](native: _STGroupFile)
-  extends STGroup(nativeOpt = Some(native)) {
+  extends STGroup(native = native) {
 
   /** Create a new underlying StringTemplate object, applying whatever
     * constructor parameters were used with the current object. Does not
-    * apply the renderers.
+    * apply the attrRenderers.
     *
     * Subclasses should override this method.
     *

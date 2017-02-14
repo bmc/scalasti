@@ -64,11 +64,10 @@ class STGroupDirSpec extends BaseSpec {
   it should "properly render a template in the group" in {
     withTemplateGroupDir(TemplateGroupDir) { grp =>
       val template = grp.instanceOf("foo").get
-      // TODO: Fix me
       val args = Seq("lkjasdf", "dkldka asdl", "foobar", "dkkdkkdkkd")
-      template.addAttributes(Map("args" -> args))
+      val template2 = template.addAttributes(Map("args" -> args))
 
-      template.render() shouldBe args.mkString("-")
+      template2.render() shouldBe args.mkString("-")
     }
   }
 }

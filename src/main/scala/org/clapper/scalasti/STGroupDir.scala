@@ -14,11 +14,11 @@ import scala.util.{Failure, Success, Try}
   * the companion object.
   */
 class STGroupDir private[scalasti](native: _STGroupDir)
-  extends STGroup(nativeOpt = Some(native)) {
+  extends STGroup(native = native) {
 
   /** Create a new underlying StringTemplate object, applying whatever
     * constructor parameters were used with the current object. Does not
-    * apply the renderers.
+    * apply the attrRenderers.
     *
     * Subclasses should override this method.
     *
@@ -30,7 +30,6 @@ class STGroupDir private[scalasti](native: _STGroupDir)
                     native.delimiterStartChar,
                     native.delimiterStopChar)
   }
-
 
   /** Force a load. Templates are normally loaded on demand; this method
     * attempts to load them up front. '''Note''': Even though this method

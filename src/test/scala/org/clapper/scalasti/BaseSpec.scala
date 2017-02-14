@@ -114,7 +114,6 @@ abstract class BaseSpec extends FlatSpec with Matchers {
       require(! (template.path startsWith File.separator))
       val templatePath = new File(joinPath(parentDir.getPath, template.path))
       withResource(openTextFileForWrite(templatePath, encoding)) { out =>
-println(s"creating $templatePath in $parentDir")
         out.println(template.templateString)
       }
     }

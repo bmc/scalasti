@@ -39,19 +39,15 @@ package org.clapper.scalasti
 
 import org.clapper.classutil.{MapToBean, ScalaObjectToBean}
 
-import scala.collection.mutable.{Map => MutableMap}
 import scala.reflect.runtime.{universe => ru}
 import scala.reflect.runtime.universe.runtimeMirror
+import org.stringtemplate.v4.{STWriter, ST => _ST}
+import java.util.{Locale, ArrayList => JArrayList, HashMap => JHashMap, List => JList, Map => JMap}
 
-import org.stringtemplate.v4.{ST => _ST, STWriter, STGroup => _STGroup}
-
-import java.util.{List      => JList,
-                  Map       => JMap,
-                  HashMap   => JHashMap,
-                  ArrayList => JArrayList,
-                  Locale}
-
+import scala.annotation.tailrec
 import scala.util.Try
+
+import TypeAliases._
 
 /** A Scala interface to a StringTemplate `ST` template. objet Note that this
   * interface does not directly expose all the underlying ST methods. In
@@ -95,9 +91,17 @@ import scala.util.Try
   * you might not want the automatic Bean-wrapper behavior; see the
   * `[[add]]` method for more details.
   */
-class ST private[scalasti] (private val native: _ST) {
+case class ST private[scalasti] (private[scalasti] val native: _ST,
+                                 private[scalasti] val template: String,
+                                 private[scalasti] val attributeMap: AttrMap) {
 
-  private val attributeMap = MutableMap.empty[String, Any]
+  /** The delimiter start character.
+    */
+  val delimiterStartChar = native.groupThatCreatedThisInstance.delimiterStartChar
+
+  /** The delimiter stop character.
+    */
+  val delimiterStopChar = native.groupThatCreatedThisInstance.delimiterStopChar
 
   /** Add an attribute to the template. Sequences, iterators and maps are
     * converted (copied) to their Java equivalents, with their contents
@@ -124,18 +128,11 @@ class ST private[scalasti] (private val native: _ST) {
     * @param raw    `false` (the default) to wrap the value in a Java Bean.
     *               `true` to add it, as is.
     *
-    * @return this object, for chaining
+    * @return a new, updated object. This object remains unchanged.
     */
   def add(name: String, value: Any, raw: Boolean = false): ST = {
-    val v = value match {
-      case Some(x)          => anyToJava(x, raw)
-      case None             => null
-      case x : Any          => anyToJava(x, raw)
-    }
-
-    attributeMap += name -> v
-    native.add(name, v)
-    this
+    val newAttrs = this.attributeMap + (name -> mapValue(value, raw))
+    this.copy(native = newUnderlying(newAttrs))
   }
 
   /** Set an attribute in the template, clearing any existing attribute of
@@ -148,11 +145,11 @@ class ST private[scalasti] (private val native: _ST) {
     * @param raw    `false` (the default) to wrap the value in a Java Bean.
     *               `true` to add it, as is.
     *
-    * @return this object, for chaining
+    * @return a new, updated object. This object remains unchanged.
     */
   def set(name: String, value: Any, raw: Boolean = false): ST = {
-    remove(name)
-    add(name, value, raw)
+    val newAttrs = (this.attributeMap - name) + (name -> mapValue(value, raw))
+    this.copy(native = newUnderlying(newAttrs))
   }
 
   /** Add a map of objects (key=value pairs) to the template.
@@ -161,14 +158,11 @@ class ST private[scalasti] (private val native: _ST) {
     * @param raw    `false` (the default) to wrap all values in Java Beans.
     *               `true` to add it, as is.
     *
-    * @return this object, for chaining
+    * @return a new, updated object. This object remains unchanged.
     */
   def addAttributes(attrs: Map[String, Any], raw: Boolean = true): ST = {
-    for ((name, value) <- attrs) {
-      add(name, value, raw)
-    }
-
-    this
+    val newAttrs = this.attributeMap ++ mapAttributes(attrs, raw)
+    this.copy(native = newUnderlying(newAttrs), attributeMap = newAttrs)
   }
 
   /** Clear all existing attributes from the template, and add a new map
@@ -178,27 +172,32 @@ class ST private[scalasti] (private val native: _ST) {
     * @param raw    `false` (the default) to wrap all values in Java Beans.
     *               `true` to add it, as is.
     *
-    * @return this object, for chaining
+    * @return a new, updated object. This object remains unchanged.
     */
   def setAttributes(attrs: Map[String, Any], raw: Boolean = true): ST = {
-    attributeMap.clear()
-    addAttributes(attrs, raw)
+    this.copy(native = newUnderlying(mapAttributes(attrs, raw)))
   }
 
   /** Remove an attribute from the template.
     *
     * @param name  the name of the attribute to remove
+    *
+    * @return a new object with the specified attribute removed
     */
-  def remove(name: String): Unit = {
-    native.remove(name)
-    attributeMap.remove(name)
+  def remove(name: String): ST = {
+    if (this.attributeMap contains name)
+      this.copy(native = newUnderlying(attributeMap - name))
+    else
+      this
   }
 
   /** Retrieve an attribute from the map.
     *
-    * @param name
-    * @tparam T
-    * @return
+    * @param name  the name of the attribute to retrieve
+    *
+    * @tparam T    the attribute's expected type
+    *
+    * @return `Some(result)` if found, or `None` if not.
     */
   def attribute[T: ru.TypeTag](name: String): Option[T] = {
     def mapClass(v: Any): Class[_] = {
@@ -207,16 +206,16 @@ class ST private[scalasti] (private val native: _ST) {
       // getClass() returns primitives for primitives. So, we have to map
       // them.
       v match {
-        case i: Int     => classOf[Int]
-        case f: Float   => classOf[Float]
-        case d: Double  => classOf[Double]
-        case b: Boolean => classOf[Boolean]
+        case _: Int     => classOf[Int]
+        case _: Float   => classOf[Float]
+        case _: Double  => classOf[Double]
+        case _: Boolean => classOf[Boolean]
         case _: AnyRef  => v.getClass
       }
     }
 
     attributeMap.get(name).flatMap { v =>
-      Option(v).flatMap { o =>
+      Option(v).flatMap { _ =>
         val tpe         = ru.typeTag[T].tpe
         val classLoader = this.getClass.getClassLoader
         val cls         = runtimeMirror(classLoader).runtimeClass(tpe)
@@ -232,15 +231,15 @@ class ST private[scalasti] (private val native: _ST) {
 
   /** Get a map of the attributes in the template.
     *
-    * @return a copy of the internal attributes
+    * @return the internal attributes
     */
-  def attributes: Map[String, Any] = attributeMap.toMap
+  def attributes: Map[String, Any] = attributeMap
 
   /** Get the template's name.
     *
     * @return  the name, which will always be non-null
     */
-  def name = native.getName
+  def name: String = native.getName
 
   /** Determine whether this template is an anonymous sub-template. See
     * the StringTemplate documents for details.
@@ -319,12 +318,13 @@ class ST private[scalasti] (private val native: _ST) {
     * @param values    one or more values. The values are treated as discrete;
     *                  that is, lists are not supported.
     *
-    * @return this object, for convenience
+    * @return a new object, with the new aggregate
     */
   def addAggregate(aggrSpec: String, values: Any*): ST = {
-    val valuesAsObjects = values.map(transform(_))
-    native.addAggr(aggrSpec, valuesAsObjects.toArray: _*)
-    this
+    val valuesAsObjects = values.map(transform)
+    val newNative = newUnderlying(this.attributeMap)
+    newNative.addAggr(aggrSpec, valuesAsObjects.toArray: _*)
+    this.copy(native = newNative)
   }
 
   /** Create a "mapped aggregate". The supplied map's keys are used as the
@@ -370,20 +370,28 @@ class ST private[scalasti] (private val native: _ST) {
     * @param attrName  the attribute's name (i.e., the outermost name)
     * @param valueMap  the map of attribute fields
     *
-    * @return this object, for convenience
+    * @return a new object, if the value map has something in it; this object,
+    *         if not.
     */
   def addMappedAggregate(attrName: String,
                          valueMap: Map[String, Any]): ST = {
-    if (! valueMap.isEmpty)
+    if (valueMap.nonEmpty)
       add(attrName, MapToBean(valueMap))
-    this
+    else
+      this
   }
+
+  /** Get the original template.
+    *
+    * @return the original template
+    */
+  def originalTemplate: String = template
 
   /** Get the underlying native StringTemplate API template.
     *
     * @return the template
     */
-  def nativeTemplate = native
+  def nativeTemplate: _ST = native
 
   /** Return a string representation of the template. '''NOTE''': As of
     * StringTemplate 4, the `toString()` method no longer renders the
@@ -391,11 +399,73 @@ class ST private[scalasti] (private val native: _ST) {
     *
     * @return the rendered template.
     */
-  override def toString = native.toString
+  override def toString: String = native.toString
 
   // ----------------------------------------------------------------------
   // Private Methods
   // ----------------------------------------------------------------------
+
+  /** Map an entire map of attributes, producing a new map.
+    *
+    * @param attrMap  the Scala attribute map
+    * @param raw      whether the mapping is "raw" or not
+    *
+    * @return the Java-compatible attribute map
+    */
+  private def mapAttributes(attrMap: Map[String, Any],
+                            raw:     Boolean): Map[String, Any] = {
+    @tailrec
+    def mapNext(attrsLeft: List[(String, Any)],
+                attrMap:   Map[String, Any]): Map[String, Any] = {
+      attrsLeft match {
+        case Nil =>
+          attrMap
+        case (name, value) :: rest =>
+          mapNext(rest, attrMap + (name -> mapValue(value, raw)))
+      }
+    }
+
+    mapNext(attrMap.toList, Map.empty[String, Any])
+  }
+
+  /** Map a value for use in a template.
+    *
+    * @param value the value
+    * @param raw   whether or not the value is raw
+    *
+    * @return the mapped value
+    */
+  private def mapValue(value: Any, raw: Boolean): Any = {
+    value match {
+      case Some(x) => anyToJava(x, raw)
+      case None    => null
+      case x : Any => anyToJava(x, raw)
+    }
+  }
+
+  /** Create a new underlying `StringTemplate.ST` object, with the same
+    * parameters is the one in this object.
+    *
+    * @param attrMap an attribute map. Defaults to this object's map. The
+    *                map must already be mapped to Java-compatible objects.
+    */
+  private def newUnderlying(attrMap: AttrMap = this.attributeMap) = {
+    val st = new _ST(template, delimiterStartChar, delimiterStopChar)
+    applyAttributes(st, attrMap)
+  }
+
+  /** Apply the attributes in the specified attribute map a (presumably new)
+    * underlying ST.
+    *
+    * @param underlying  the underlying ST
+    * @param attrMap     the attribute map
+    *
+    * @return `underlying`, for convenience
+    */
+  private def applyAttributes(underlying: _ST, attrMap: AttrMap): _ST = {
+    for ((k, v) <- attrMap) underlying.add(k, transform(v))
+    underlying
+  }
 
   /** Transform a value for use in a template.
     *
@@ -405,7 +475,6 @@ class ST private[scalasti] (private val native: _ST) {
     */
   private def transform(v: Any) = {
     val v2  = v match {
-      case l: List[_]     => seqToJava(l)
       case s: Seq[_]      => seqToJava(s)
       case i: Iterator[_] => iterToJava(i)
       case _              => v
@@ -422,13 +491,12 @@ class ST private[scalasti] (private val native: _ST) {
     */
   private def anyToJava(v: Any, raw: Boolean = false) = {
     v match {
-      case list: List[_]    => seqToJava(list)
       case seq: Seq[_]      => seqToJava(seq)
       case it:  Iterator[_] => iterToJava(it)
       case map: Map[_, _]   => mapToJava(map.asInstanceOf[Map[String, Any]])
-      case s: String        => v
-      case n: Number        => v
-      case o: Any           => if (raw) v else ScalaObjectToBean(v)
+      case _: String        => v
+      case _: Number        => v
+      case _: Any           => if (raw) v else ScalaObjectToBean(v)
     }
   }
 
@@ -448,7 +516,7 @@ class ST private[scalasti] (private val native: _ST) {
     *
     * @return the Java map
     */
-  private def mapToJava(map: Map[String, Any]): JMap[String, Object] = {
+  private def mapToJava(map: AttrMap): JMap[String, Object] = {
     val result = new JHashMap[String, Object]
 
     map.foreach(kv => result.put(kv._1, transform(kv._2)))
@@ -496,6 +564,10 @@ object ST {
   def apply(template:           String,
             delimiterStartChar: Char = Constants.DefaultStartChar,
             delimiterStopChar:  Char = Constants.DefaultStopChar): ST = {
-    new ST(new _ST(template, delimiterStartChar, delimiterStopChar))
+    new ST(template           = template,
+           attributeMap       = EmptyAttrMap,
+           native             = new _ST(template,
+                                        delimiterStartChar,
+                                        delimiterStopChar))
   }
 }

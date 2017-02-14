@@ -45,7 +45,7 @@ import java.lang.{Object => JObject}
 
 /**
   * A more Scala-like ST attribute renderer. Objects that implement this
-  * trait can be registered as attribute attrRenderers with an STGroupString.
+  * trait can be registered as attribute attrRenderers with an `STGroup`.
   *
   * @tparam T  the type (class) for which the renderer can render values.
   */

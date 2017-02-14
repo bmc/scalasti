@@ -4,7 +4,7 @@ import org.stringtemplate.v4.misc.STMessage
 
 /** An error listener that throws any errors it gets as exceptions.
   */
-class ThrowExceptionErrorListener extends STErrorListener {
+private[scalasti] class ThrowExceptionErrorListener extends STErrorListener {
 
   def compileTimeError(msg: STMessage): Unit = {
     throw new Exception(msg.toString)

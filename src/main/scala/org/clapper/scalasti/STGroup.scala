@@ -1,40 +1,3 @@
-/*
-  ---------------------------------------------------------------------------
-  This software is released under a BSD license, adapted from
-  http://opensource.org/licenses/bsd-license.php
-
-  Copyright (c) 2010-2014 Brian M. Clapper
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
-
-   * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
-   * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-   * Neither the names "clapper.org" nor the names of its contributors may
-    be used to endorse or promote products derived from this software
-    without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-  IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  ---------------------------------------------------------------------------
-*/
-
 package org.clapper.scalasti
 
 import org.stringtemplate.v4.{AttributeRenderer => _STAttrRenderer, STGroup => _STGroup}
@@ -59,6 +22,14 @@ import scala.util.control.NonFatal
   * StringTemplate API. If you need access to the full Java StringTemplate API,
   * you can retrieve the underlying `STGroup` by calling the `nativeGroup`
   * method.
+  *
+  * '''WARNING''': This API presents an ''immutable'' view of the
+  * StringTemplate API. Calling update functions (like [[load]](),
+  * [[unload]](), [[registerRenderer]](), etc.) copy both the Scalasti
+  * object ''and'' the underlying StringTemplate object it wraps. Dropping down
+  * to * the native StringTemplate, while supported, bypasses all immutability
+  * protections. It also means you're now interacting with the StringTemplate
+  * library, which expects objects with Java semantics, not Scala semantics.
   */
 case class STGroup(
   delimiterStartChar: Char = Constants.DefaultStartChar,
@@ -81,7 +52,7 @@ case class STGroup(
   def nativeGroup: _STGroup = native
 
   /** Get the template names defined by the group. This function calls
-    * `[[Load()]]`, if it hasn't already been called. Thus, calling this
+    * `[[load]]()`, if it hasn't already been called. Thus, calling this
     * function on an unloaded group causes a temporary, loaded group to be
     * created, then thrown away.
     *
@@ -207,10 +178,10 @@ case class STGroup(
   def registerRenderer[T: ru.TypeTag](r: AttributeRenderer[T]): STGroup = {
     val tpe = ru.typeTag[T].tpe
     val cls = runtimeMirror(r.getClass.getClassLoader).runtimeClass(tpe)
-    val renderers = this.attrRenderers + (cls -> r.stRenderer)
-    val newUnderlying = cloneUnderlying(renderers)
+    val newRenderers = this.attrRenderers + (cls -> r.stRenderer)
+    val newUnderlying = cloneUnderlying(newRenderers)
     this.copy(native        = newUnderlying,
-              attrRenderers = renderers,
+              attrRenderers = newRenderers,
               loaded        = this.loaded)
   }
 

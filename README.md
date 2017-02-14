@@ -9,6 +9,27 @@ Scalasti: A Scala interface to the Java StringTemplate Library
 This is Scalasti, a [Scala][] interface to the [StringTemplate][] Java template
 library.
 
+Scalasti provides a (useful) subset of the StringTemplate API's
+features, with a more Scala-friendly syntax.
+
+Scalasti's additional features include:
+
+- **Immutability**. As of version 3.0.0, Scalasti objects are immutable, 
+  unlike the StringTemplate objects. Modifier methods always create new 
+  objects; they never modify objects in place.
+
+- **Error-handling**. Where possible, Scalasti propagates errors
+  via `scala.util.Try` objects, instead of via a StringTemplate
+  listener.
+
+- **Scala object support**. Scalasti supports Scala objects, meaning
+  you don't have to use `@BeanProperty` on your Scala classes before you
+  can pass them into a template. This feature also allows you to use
+  instances of third-party Scala classes directly with Scalasti.
+
+- **Stronger type safety**. You should _never_ need to cast objects
+  you receive from the Scalast API.
+
 For complete information, see the [Scalasti home page][].
 
 ## Copyright and license

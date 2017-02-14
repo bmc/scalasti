@@ -42,4 +42,4 @@ import org.stringtemplate.v4.{STErrorListener => _STErrorListener}
 /** A Scala version of the String Template library's
   * `StringTemplateErrorListener` class.
   */
-trait STErrorListener extends _STErrorListener
+private[scalasti] trait STErrorListener extends _STErrorListener

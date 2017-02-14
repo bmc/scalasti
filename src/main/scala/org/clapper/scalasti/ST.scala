@@ -46,10 +46,10 @@ import java.util.{Locale, ArrayList => JArrayList, HashMap => JHashMap, List => 
 
 import scala.annotation.tailrec
 import scala.util.Try
-
 import TypeAliases._
+import org.stringtemplate.v4.misc.ErrorManager
 
-/** A Scala interface to a StringTemplate `ST` template. objet Note that this
+/** A Scala interface to a StringTemplate `ST` template. Note that this
   * interface does not directly expose all the underlying ST methods. In
   * particular, this Scala interface is geared primarily toward reading and
   * rendering external templates, not toward generating templates in code.
@@ -60,9 +60,15 @@ import TypeAliases._
   * Because of the way the ST API instantiates templates, this class cannot
   * easily subclass the real ST class. So, it wraps the underlying string
   * template object and stores it internally. You can retrieve the wrapped
-  * template object via the `nativeST` method. You are free to call methods
-  * directly on `template`, though they will use Java semantics, rather than
-  * Scala semantics.
+  * template object via the `[[nativeTemplate]]` method.
+  *
+  * '''WARNING''': This API presents an ''immutable'' view of the
+  * StringTemplate API. Calling update functions (like [[add]](),
+  * [[set]](), [[addAttributes]](), etc.) copy both the Scalasti object
+  * ''and'' the underlying StringTemplate object it wraps. Dropping down to
+  * the native StringTemplate, while supported, bypasses all immutability
+  * protections. It also means you're now interacting with the StringTemplate
+  * library, which expects objects with Java semantics, not Scala semantics.
   *
   * Note that this class explicitly handles mapping the following types of
   * values in an attribute map:
@@ -94,6 +100,8 @@ import TypeAliases._
 case class ST private[scalasti] (private[scalasti] val native: _ST,
                                  private[scalasti] val template: String,
                                  private[scalasti] val attributeMap: AttrMap) {
+
+  makeErrorsExceptions(native)
 
   /** The delimiter start character.
     */
@@ -132,7 +140,7 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     */
   def add(name: String, value: Any, raw: Boolean = false): ST = {
     val newAttrs = this.attributeMap + (name -> mapValue(value, raw))
-    this.copy(native = newUnderlying(newAttrs))
+    this.copy(native = newUnderlying(newAttrs), attributeMap = newAttrs)
   }
 
   /** Set an attribute in the template, clearing any existing attribute of
@@ -149,7 +157,7 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     */
   def set(name: String, value: Any, raw: Boolean = false): ST = {
     val newAttrs = (this.attributeMap - name) + (name -> mapValue(value, raw))
-    this.copy(native = newUnderlying(newAttrs))
+    this.copy(native = newUnderlying(newAttrs), attributeMap = newAttrs)
   }
 
   /** Add a map of objects (key=value pairs) to the template.
@@ -185,10 +193,13 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     * @return a new object with the specified attribute removed
     */
   def remove(name: String): ST = {
-    if (this.attributeMap contains name)
-      this.copy(native = newUnderlying(attributeMap - name))
-    else
+    if (this.attributeMap contains name) {
+      val newAttrs = attributeMap - name
+      this.copy(native = newUnderlying(newAttrs), attributeMap = newAttrs)
+    }
+    else {
       this
+    }
   }
 
   /** Retrieve an attribute from the map.
@@ -256,20 +267,13 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     *
     * @param out       the `STWriter`
     * @param locale    the locale
-    * @param listener  an implementation of the StringTemplate's
-    *                  `STErrorListener` interface, to receive an errors that
-    *                  occur during the write
     *
     * @return `Success(total)`, with the total number of characters written;
     *         or `Failure(exception)` on error.
     */
-  def write(out:      STWriter,
-            locale:   Locale = Locale.getDefault,
-            listener: Option[STErrorListener] = None): Try[Int] = {
+  def write(out: STWriter, locale: Locale = Locale.getDefault): Try[Int] = {
     Try {
-      val res = listener.map { l => native.write(out, locale, l) }
-                        .getOrElse { native.write(out, locale) }
-      res
+      native.write(out, locale)
     }
   }
 
@@ -373,8 +377,7 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     * @return a new object, if the value map has something in it; this object,
     *         if not.
     */
-  def addMappedAggregate(attrName: String,
-                         valueMap: Map[String, Any]): ST = {
+  def addMappedAggregate(attrName: String, valueMap: Map[String, Any]): ST = {
     if (valueMap.nonEmpty)
       add(attrName, MapToBean(valueMap))
     else
@@ -405,6 +408,17 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
   // Private Methods
   // ----------------------------------------------------------------------
 
+  /** Ensure that any errors that occur during template processing result
+    * in a thrown exception that can be captured in a `Try`.
+    *
+    * @param underlying the native `STGroup` object whose error handling is to
+    *                   be changed
+    */
+  private def makeErrorsExceptions(underlying: _ST): Unit = {
+    underlying.groupThatCreatedThisInstance.errMgr =
+      new ErrorManager(new ThrowExceptionErrorListener)
+  }
+
   /** Map an entire map of attributes, producing a new map.
     *
     * @param attrMap  the Scala attribute map
@@ -412,8 +426,7 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     *
     * @return the Java-compatible attribute map
     */
-  private def mapAttributes(attrMap: Map[String, Any],
-                            raw:     Boolean): Map[String, Any] = {
+  private def mapAttributes(attrMap: AttrMap, raw: Boolean): AttrMap = {
     @tailrec
     def mapNext(attrsLeft: List[(String, Any)],
                 attrMap:   Map[String, Any]): Map[String, Any] = {
@@ -425,7 +438,7 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
       }
     }
 
-    mapNext(attrMap.toList, Map.empty[String, Any])
+    mapNext(attrMap.toList, EmptyAttrMap)
   }
 
   /** Map a value for use in a template.
@@ -450,7 +463,13 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     *                map must already be mapped to Java-compatible objects.
     */
   private def newUnderlying(attrMap: AttrMap = this.attributeMap) = {
-    val st = new _ST(template, delimiterStartChar, delimiterStopChar)
+    // It's absolutely critical that the parent group (i.e., the group
+    // inside the existing underlying) be copied into the new template.
+    // There is a copy constructor, but it doesn't appear to work properly.
+    // This is manual, and it appears to work, for now.
+    val st = new _ST(native.groupThatCreatedThisInstance, template)
+    //val st = new _ST(native)
+    makeErrorsExceptions(st)
     applyAttributes(st, attrMap)
   }
 
@@ -509,8 +528,6 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     *   underlying ST library.
     * - A Scala iterator is also mapped to a `java.util.List`.
     * - Anything else is treated as a single-valued object.
-    *
-    * To enhance how these mappings are done, override this method.
     *
     * @param map  The Scala map to convert.
     *

@@ -96,11 +96,40 @@ use Scala objects you can annotate with the Scala `@BeanProperty` annotation.
 All other objects (e.g., those from APIs you do not control) must be manually
 wrapped in Java Beans.
 
-The Scalasti wrapper library alleviates those pain points. It automatically maps
-Scala collections to their underlying Java counterparts, and it automatically
-wraps Scala objects in dynamically generated Java Beans. If you use Scalasti,
-you can use StringTemplate with Scala objects and collections, without wrapping
-them yourself.
+You can certainly use StringTemplate
+[attribute renderers](https://github.com/antlr/stringtemplate4/blob/master/doc/renderers.md)
+to address the problem, but you'll need to write an attribute renderer for
+every Scala class that can't be coerced into a Java Bean.
+ 
+You can also write a Scala object 
+[model adapter](https://github.com/antlr/stringtemplate4/blob/master/doc/adaptors.md),
+using the approach outlined 
+[here](https://github.com/antlr/stringtemplate4/blob/master/doc/faq/object-models.md).
+That approach will work, but it uses runtime reflection on each reference,
+which is likely to be slower than the approach Scalasti uses. 
+
+The Scalasti wrapper library attempts to alleviate those pain points. Scalasti 
+builds on-the-fly wrappers for Scala objects, using a combination of Java 
+`Proxy` objects, (minimal) reflection, and bytecode generation.
+If you use Scalasti, you can use StringTemplate with Scala objects and 
+collections, without wrapping them yourself and without writing complicated
+model adapters.
+
+# Restrictions
+
+Scalasti provides a subset of the functionality in StringTemplate. In the
+author's opinion, Scalasti provides the most _useful_ subset, but it does lack
+certain features available directly in StringTemplate. For instance:
+
+* Scalasti provides no API for using the StringTemplate compiler.
+* Scalasti lacks the equivalent of StringTemplate's `inspect()` methods.
+* Scalasti does not expose StringTemplate's event API.
+* Scalasti does not expose the StringTemplate interpreter.
+
+You can easily access those (more advanced) StringTemplate features by
+dropping down to the StringTemplate API; Scalasti makes it easy for you to
+gain access to the underlying wrapped StringTemplate objects. See
+[Using Scalasti](#using-scalasti) for further details.
 
 # Installation
 

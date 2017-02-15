@@ -660,7 +660,7 @@ request. Along with any patch you send:
   under a [BSD License][].
 
 [API documentation]: api/
-[BSD License]: license.html
+[BSD License]: https://github.com/bmc/scalasti/blob/master/LICENSE.md
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
 [StringTemplate documentation]: https://github.com/antlr/stringtemplate4/blob/master/doc/index.md

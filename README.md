@@ -34,7 +34,7 @@ For complete information, see the [Scalasti home page][].
 
 ## Copyright and license
 
-[Scalasti][] is copyright &copy; 2010-2012 [Brian M. Clapper][] and is
+[Scalasti][] is copyright &copy; 2010-2017 [Brian M. Clapper][] and is
 released under a BSD license. See the accompanying license file for
 details.
 

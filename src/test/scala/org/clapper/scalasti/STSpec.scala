@@ -5,6 +5,7 @@ import java.util.Locale
 
 import grizzled.file.util.{joinPath, withTemporaryDirectory}
 import grizzled.util._
+import org.scalatest.Assertion
 import org.stringtemplate.v4.NoIndentWriter
 
 import scala.io.Source
@@ -42,11 +43,10 @@ class STSpec extends BaseSpec {
        """This is a foo template: moe, larry, curley""")
     )
 
-    for((attributes, expected) <- data)
-      assertResult(expected, "render template on: " + attributes) {
-        val st = ST(template).setAttributes(attributes)
-        st.render()
-      }
+    for((attributes, expected) <- data) {
+      val st = ST(template).setAttributes(attributes)
+      st should renderSuccessfullyAs (expected)
+    }
   }
 
   it should "render a template with '$' delimiters" in {
@@ -58,11 +58,10 @@ class STSpec extends BaseSpec {
        """This is a true template: a, b, c""")
     )
 
-    for((attributes, expected) <- data)
-      assertResult(expected, "render template on: " + attributes) {
-        val st = ST(template, '$', '$').setAttributes(attributes)
-        st.render()
-      }
+    for((attributes, expected) <- data) {
+      val st = ST(template, '$', '$').setAttributes(attributes)
+      st should renderSuccessfullyAs (expected)
+    }
   }
 
   it should "allow a custom ValueRenderer" in {
@@ -96,7 +95,7 @@ class STSpec extends BaseSpec {
 
     for ((expected, aggrSpec, args) <- data) {
       val st = ST(template, '$', '$').addAggregate(aggrSpec, args: _*)
-      st.render() shouldBe expected
+      st should renderSuccessfullyAs (expected)
     }
   }
 
@@ -113,7 +112,7 @@ class STSpec extends BaseSpec {
     val expected = "an inner string BARSKI 42 something else OKAY"
     val st = ST(template).addMappedAggregate("thing", thingMap)
                          .addMappedAggregate("foo", fooMap)
-    st.render() shouldBe expected
+    st should renderSuccessfullyAs (expected)
   }
 
   it should "handle multivalue attributes" in {
@@ -126,15 +125,18 @@ class STSpec extends BaseSpec {
     val users = u1 :: u2 :: Nil
 
     val t1 = "Hi, <user.firstName> <user.lastName>."
-    ST(t1).add("user", u1).render() shouldBe "Hi, Elvis Presley."
+    val ts = ST(t1).add("user", u1).render()
+    ts shouldBe 'success
+    ts.get shouldBe "Hi, Elvis Presley."
 
     val t2 = "<users; separator=\", \">"
-    ST(t2).add("users", users).render() shouldBe "Elvis Presley, Frank Sinatra"
+    val st2 = ST(t2).add("users", users)
+    st2 should renderSuccessfullyAs ("Elvis Presley, Frank Sinatra")
   }
 
   it should "handle None-typed attribute retrieval" in {
     val st = ST("<s>").add("s", None)
-    st.render() shouldBe ""
+    st should renderSuccessfullyAs ("")
     st.attribute[AnyRef]("s") shouldBe None
     st.attribute[String]("s") shouldBe None
   }
@@ -148,7 +150,7 @@ class STSpec extends BaseSpec {
     val st = tST.get
     val v = Value("foo")
     val st2 = st.add("x", v, raw=true)
-    st2.render() shouldBe "This is a foo template"
+    st2 should renderSuccessfullyAs ("This is a foo template")
   }
 
   it should "properly substitute from a Some and a None" in {
@@ -157,30 +159,42 @@ class STSpec extends BaseSpec {
     def add(label: String, o: Option[Int]) = st.add(label, o)
 
     val st2 = add("x", Some(10)).add("y", None)
-    st2.render() shouldBe "x=10, y="
+    st2 should renderSuccessfullyAs ("x=10, y=")
   }
 
   it should "render with a ScalaBean with one level of indirection" in {
     case class Test(s: String)
 
-    ST("<obj.s>").add("obj", Test("hello")).render() shouldBe "hello"
+    val st = ST("<obj.s>").add("obj", Test("hello"))
+    st should renderSuccessfullyAs ("hello")
   }
 
   it should "render with a ScalaBean with two levels of indirection" in {
     case class Inner(s: String)
     case class Outer(i: Inner)
 
-    ST("<o.i.s>").add("o", Outer(Inner("foo"))).render() shouldBe "foo"
+    val st = ST("<o.i.s>").add("o", Outer(Inner("foo")))
+    st should renderSuccessfullyAs ("foo")
   }
 
   it should "render with a Scala Map" in {
     val m = Map("foo" -> 10, "bar" -> 20)
     val templateString = """<keys:{key|<m.(key)>};separator=",">"""
 
-    ST(templateString)
+    val st = ST(templateString)
       .add("m", m)
       .add("keys", m.keySet.toSeq)
-      .render() shouldBe "10,20"
+
+    st should renderSuccessfullyAs ("10,20")
+  }
+
+  it should "handle a multivalued attribute" in {
+    val templateString = """<values;separator=" ">"""
+    val ts = ST(templateString)
+      .add("values", "a" :: "b" :: "c" :: Nil)
+      .render()
+    ts shouldBe 'success
+    ts.get shouldBe "a b c"
   }
 
   "attribute()" should "handle numeric typed attribute retrieval" in {
@@ -192,19 +206,18 @@ class STSpec extends BaseSpec {
     st.attribute[Int]("y") shouldBe Some(20)
     st.attribute[Double]("x") shouldBe None
     st.attribute[Double]("y") shouldBe None
-    st.render() shouldBe "Point = (10, 20)"
+
+    st should renderSuccessfullyAs ("Point = (10, 20)")
   }
 
   it should "handle string typed attribute retrieval" in {
     val st = ST("<s>").add("s", "foo")
-    st.render() shouldBe "foo"
     st.attribute[String]("s") shouldBe Some("foo")
     st.attribute[Int]("s") shouldBe None
   }
 
   it should "handle optional String typed attribute retrieval" in {
     val st = ST("<s>").add("s", Some("foo"))
-    st.render() shouldBe "foo"
     st.attribute[String]("s") shouldBe Some("foo")
   }
 
@@ -232,7 +245,7 @@ class STSpec extends BaseSpec {
     val st = ST("abc=<abc>")
     val st2 = st.add("abc", "def")
 
-    st2.render() shouldBe "abc=def"
+    st2 should renderSuccessfullyAs ("abc=def")
     st2.native should not be theSameInstanceAs (st.native)
     st2 should not be theSameInstanceAs (st)
     st2.attribute[String]("abc") shouldBe Some("def")
@@ -245,8 +258,8 @@ class STSpec extends BaseSpec {
     val st = ST("x=<x>, y=<y>, z=<z>").addAttributes(attrs)
     val st2 = st.add("x", 10)
 
-    st2.render() shouldBe "x=10, y=2, z=3"
-    st.render() shouldBe "x=1, y=2, z=3"
+    st should renderSuccessfullyAs ("x=1, y=2, z=3")
+    st2 should renderSuccessfullyAs ("x=10, y=2, z=3")
   }
 
   "set()" should "be immutable" in {
@@ -254,11 +267,10 @@ class STSpec extends BaseSpec {
     val st2 = st.set("abc", "def")
     val st3 = st2.set("abc", "123")
 
-    st2.render() shouldBe "abc=def"
-    st3.render() shouldBe "abc=123"
-    intercept[Exception] {
-      st.render()
-    }
+    st2 should renderSuccessfullyAs ("abc=def")
+    st3 should renderSuccessfullyAs ("abc=123")
+    st.render() shouldBe 'failure
+
     st2.native should not be theSameInstanceAs (st.native)
     st3.native should not be theSameInstanceAs (st2.native)
     st2 should not be theSameInstanceAs (st)
@@ -273,8 +285,8 @@ class STSpec extends BaseSpec {
     val st = ST("x=<x>, y=<y>, z=<z>").addAttributes(attrs)
     val st2 = st.set("x", 10)
 
-    st2.render() shouldBe "x=10, y=2, z=3"
-    st.render() shouldBe "x=1, y=2, z=3"
+    st2 should renderSuccessfullyAs ("x=10, y=2, z=3")
+    st should renderSuccessfullyAs ("x=1, y=2, z=3")
   }
 
   "addAttributes()" should "be immutable" in {
@@ -282,7 +294,7 @@ class STSpec extends BaseSpec {
     val attrs = Map("x" -> 1, "y" -> 2, "z" -> 3)
     val st2 = st.addAttributes(attrs)
 
-    st2.render() shouldBe "x=1, y=2, z=3"
+    st2 should renderSuccessfullyAs ("x=1, y=2, z=3")
     st2.native should not be theSameInstanceAs (st.native)
     st2 should not be theSameInstanceAs (st)
     st.attributes should not be st2.attributes
@@ -300,8 +312,8 @@ class STSpec extends BaseSpec {
     val st2 = st.add("x", 10).add("y", 20).add("z", 30)
     val st3 = st2.addAttributes(attrs)
 
-    st2.render() shouldBe "x=10, y=20, z=30"
-    st3.render() shouldBe "x=1, y=2, z=3"
+    st2 should renderSuccessfullyAs ("x=10, y=20, z=30")
+    st3 should renderSuccessfullyAs ("x=1, y=2, z=3")
   }
 
   "setAttributes()" should "be immutable" in {
@@ -309,8 +321,8 @@ class STSpec extends BaseSpec {
     val st = ST("x=<x>, y=<y>, z=<z>").addAttributes(attrs)
     val st2 = st.addAttributes(attrs.mapValues(_ * 10))
 
-    st.render() shouldBe "x=1, y=2, z=3"
-    st2.render() shouldBe "x=10, y=20, z=30"
+    st should renderSuccessfullyAs ("x=1, y=2, z=3")
+    st2 should renderSuccessfullyAs ("x=10, y=20, z=30")
     st2.native should not be theSameInstanceAs (st.native)
     st2 should not be theSameInstanceAs (st)
     st.attributes should not be st2.attributes
@@ -321,10 +333,8 @@ class STSpec extends BaseSpec {
     val st = ST("x=<x>, y=<y>").addAttributes(attrs)
     val st2 = st.remove("y")
 
-    st.render() shouldBe "x=1, y=2"
-    intercept[Exception] {
-      st2.render()
-    }
+    st should renderSuccessfullyAs ("x=1, y=2")
+    st2.render() shouldBe 'failure
 
     st2.native should not be theSameInstanceAs (st.native)
     st2 should not be theSameInstanceAs (st)
@@ -336,9 +346,7 @@ class STSpec extends BaseSpec {
     val st = ST("x=<x>, y=<y>").addAttributes(attrs)
     val st2 = st.remove("not-there")
 
-    st.render() shouldBe "x=1, y=2"
-    st2.render() shouldBe st.render()
-
+    st should renderSuccessfullyAs ("x=1, y=2")
 
     st2.native should be theSameInstanceAs st.native
     st2 should be theSameInstanceAs st

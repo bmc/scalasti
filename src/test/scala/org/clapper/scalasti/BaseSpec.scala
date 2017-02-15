@@ -1,12 +1,12 @@
 package org.clapper.scalasti
 
 import org.scalatest.{FlatSpec, Matchers}
-
 import java.io._
 
-import grizzled.file.util.{joinPath, withTemporaryDirectory, dirname}
+import grizzled.file.util.{dirname, joinPath, withTemporaryDirectory}
 import grizzled.util.withResource
 import grizzled.util.CanReleaseResource.Implicits.CanReleaseCloseable
+
 
 case class TemplateData(path: String, templateString: String)
 case class TemplateGroupFileData(path:        String,
@@ -16,7 +16,7 @@ case class TemplateGroupDirData(path: String, templates: Seq[TemplateData])
 
 /** Base class for testers
   */
-abstract class BaseSpec extends FlatSpec with Matchers {
+abstract class BaseSpec extends FlatSpec with Matchers with CustomMatchers {
 
   /** Open a text file for writing, with the specified encoding.
     *

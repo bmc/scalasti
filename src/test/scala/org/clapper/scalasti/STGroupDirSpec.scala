@@ -67,7 +67,7 @@ class STGroupDirSpec extends BaseSpec {
       val args = Seq("lkjasdf", "dkldka asdl", "foobar", "dkkdkkdkkd")
       val template2 = template.addAttributes(Map("args" -> args))
 
-      template2.render() shouldBe args.mkString("-")
+      template2 should renderSuccessfullyAs (args.mkString("-"))
     }
   }
 }

@@ -45,6 +45,6 @@ class STGroupStringSpec extends BaseSpec {
     val args = Seq("lkjasdf", "dkldka asdl", "foobar", "dkkdkkdkkd")
     val template2 = template.addAttributes(Map("args" -> args))
 
-    template2.render() shouldBe s"FOO='${args.mkString(",")}'"
+    template2 should renderSuccessfullyAs (s"FOO='${args.mkString(",")}'")
   }
 }

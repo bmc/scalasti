@@ -126,7 +126,10 @@ class STGroupFileSpec extends BaseSpec {
         "names" -> List("a", "b", "c"),
         "values" -> List("1", "2", "3")
       ))
-      template2.render() shouldBe "a-1,b-2,c-3"
+
+      val ts = template2.render()
+      ts shouldBe 'success
+      ts.get shouldBe "a-1,b-2,c-3"
     }
   }
 
@@ -134,8 +137,11 @@ class STGroupFileSpec extends BaseSpec {
     withTemplateGroupFile(TemplateGroup2, "UTF-8") { stGroup =>
       val template = stGroup.instanceOf("bar").get
       val args = Seq("one", "two")
+
       val template2 = template.addAttributes(Map("args" -> args))
-      template2.render() shouldBe args.mkString("\u2014")
+      val ts = template2.render()
+      ts shouldBe 'success
+      ts.get shouldBe args.mkString("\u2014")
     }
   }
 
@@ -147,7 +153,9 @@ class STGroupFileSpec extends BaseSpec {
         val template = t.get
         val args = Seq("one", "two", "three")
         val template2 = template.addAttributes(Map("args" -> args))
-        template2.render() shouldBe args.mkString(sep)
+        val ts = template2.render()
+        ts shouldBe 'success
+        ts.get shouldBe args.mkString(sep)
       }
     }
   }

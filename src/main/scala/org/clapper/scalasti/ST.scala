@@ -284,10 +284,14 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
     * @param locale    The locale to use
     * @param lineWidth The line width
     *
-    * @return The rendered string
+    * @return A `Success` containing the rendered string, or a `Failure`
+    *         on error.
     */
-  def render(locale: Locale = Locale.getDefault, lineWidth: Int = 80): String = {
-    native.render(locale, lineWidth)
+  def render(locale:    Locale = Locale.getDefault,
+             lineWidth: Int = 80): Try[String] = {
+    Try {
+      native.render(locale, lineWidth)
+    }
   }
 
   /** Set an automatic aggregate from the specified arguments. An
@@ -581,8 +585,8 @@ object ST {
     * @return the template
     */
   def apply(template:           String,
-            startDelimiter: Char = Constants.DefaultStartChar,
-            endDelimiter:  Char = Constants.DefaultStopChar): ST = {
+            startDelimiter:     Char = Constants.DefaultStartChar,
+            endDelimiter:       Char = Constants.DefaultStopChar): ST = {
     new ST(template           = template,
            attributeMap       = EmptyAttrMap,
            native             = new _ST(template,

@@ -30,10 +30,23 @@ import scala.util.control.NonFatal
   * to * the native StringTemplate, while supported, bypasses all immutability
   * protections. It also means you're now interacting with the StringTemplate
   * library, which expects objects with Java semantics, not Scala semantics.
+  *
+  * @param startDelimiter the starting substitution delimiter for all templates
+  *                       in this group. Corresponds to `delimiterStartChar`
+  *                       in the underlying StringTemplate API.
+  * @param endDelimiter   the ending substitution delimiter for all templates
+  *                       in this group. Corresponds to `delimiterStopChar`
+  *                       in the underlying StringTemplate API.
+  * @param native         the underlying StringTemplate `STGroup` that this
+  *                       object wraps.
+  * @param attrRenderers  the map of attribute renderers, to be applied to the
+  *                       underlying native `STGroup`.
+  * @param loaded         whether the underlying `STGroup` is known to be
+  *                       loaded or not.
   */
 case class STGroup(
-  delimiterStartChar: Char = Constants.DefaultStartChar,
-  delimiterStopChar:  Char = Constants.DefaultStopChar,
+  startDelimiter: Char = Constants.DefaultStartChar,
+  endDelimiter:  Char = Constants.DefaultStopChar,
   private[scalasti] val native: _STGroup,
   private[scalasti] val attrRenderers: Map[Class[_], _STAttrRenderer] =
     Map.empty[Class[_], _STAttrRenderer],
@@ -206,7 +219,7 @@ case class STGroup(
     * @return the new underlying object
     */
   protected[this] def newUnderlying: _STGroup = {
-    new _STGroup(delimiterStartChar, delimiterStopChar)
+    new _STGroup(startDelimiter, endDelimiter)
   }
 
   // --------------------------------------------------------------------------

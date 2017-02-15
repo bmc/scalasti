@@ -60,8 +60,8 @@ class STGroupDir private[scalasti](native: _STGroupDir)
         Success(file)
     }
 
-    for { file <- checkRoot
-          grp  <- super.load() }
+    for { _   <- checkRoot
+          grp <- super.load() }
     yield grp
   }
 }
@@ -78,21 +78,21 @@ object STGroupDir {
     *
     * @param root                the root URL
     * @param encoding            the encoding
-    * @param delimiterStartChar  the starting delimiter character
-    * @param delimiterStopChar   the ending delimiter character
+    * @param startDelimiter  the starting delimiter character
+    * @param endDelimiter   the ending delimiter character
     *
     * @return the group
     */
   def apply(root:               URL,
             encoding:           String = Constants.DefaultEncoding,
-            delimiterStartChar: Char   = Constants.DefaultStartChar,
-            delimiterStopChar:  Char   = Constants.DefaultStopChar):
+            startDelimiter: Char   = Constants.DefaultStartChar,
+            endDelimiter:  Char   = Constants.DefaultStopChar):
     STGroupDir = {
 
     val native = new _STGroupDir(root,
                                  encoding,
-                                 delimiterStartChar,
-                                 delimiterStopChar)
+                                 startDelimiter,
+                                 endDelimiter)
     new STGroupDir(native)
   }
 
@@ -119,19 +119,19 @@ object STGroupDir {
     *
     * @param path               the path to the root directory
     * @param encoding           the encoding to assume
-    * @param delimiterStartChar the starting delimiter character
-    * @param delimiterStopChar  the ending delimiter character
+    * @param startDelimiter the starting delimiter character
+    * @param endDelimiter  the ending delimiter character
     *
     * @return the group
     */
   def apply(path:               String,
             encoding:           String,
-            delimiterStartChar: Char,
-            delimiterStopChar:  Char): STGroupDir = {
+            startDelimiter: Char,
+            endDelimiter:  Char): STGroupDir = {
 
     apply(new File(path).toURI.toURL,
           encoding,
-          delimiterStartChar,
-          delimiterStopChar)
+          startDelimiter,
+          endDelimiter)
   }
 }

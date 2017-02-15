@@ -122,19 +122,19 @@ object STGroupFile {
     *
     * @param path                the path of the file
     * @param encoding            the encoding
-    * @param delimiterStartChar  the starting delimiter character
-    * @param delimiterStopChar   the ending delimiter character
+    * @param startDelimiter  the starting delimiter character
+    * @param endDelimiter   the ending delimiter character
     *
     * @return the group
     */
   def apply(path:               String,
             encoding:           String,
-            delimiterStartChar: Char,
-            delimiterStopChar:  Char): STGroupFile = {
+            startDelimiter: Char,
+            endDelimiter:  Char): STGroupFile = {
     val native = new _STGroupFile(path,
                                   encoding,
-                                  delimiterStartChar,
-                                  delimiterStopChar)
+                                  startDelimiter,
+                                  endDelimiter)
     new STGroupFile(native)
   }
 }

@@ -37,21 +37,21 @@ object STGroupString {
     *
     * @param text                the text of the template group
     * @param sourceName          the name to assign the group, if any
-    * @param delimiterStartChar  the starting delimiter character
-    * @param delimiterStopChar   the ending delimiter character
+    * @param startDelimiter  the starting delimiter character
+    * @param endDelimiter   the ending delimiter character
     *
     * @return the group
     */
   def apply(text:               String,
             sourceName:         String = "<string>",
-            delimiterStartChar: Char = Constants.DefaultStartChar,
-            delimiterStopChar:  Char = Constants.DefaultStopChar):
+            startDelimiter: Char = Constants.DefaultStartChar,
+            endDelimiter:  Char = Constants.DefaultStopChar):
     STGroupString = {
 
     val native = new _STGroupString(sourceName,
                                     text,
-                                    delimiterStartChar,
-                                    delimiterStopChar)
+                                    startDelimiter,
+                                    endDelimiter)
     new STGroupString(native)
   }
 }

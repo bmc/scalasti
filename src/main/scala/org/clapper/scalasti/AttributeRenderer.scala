@@ -38,8 +38,6 @@
 package org.clapper.scalasti
 
 import org.stringtemplate.v4.{AttributeRenderer => _AttributeRenderer}
-import scala.collection.mutable.{Map => MutableMap}
-import scala.reflect.runtime.{universe => ru}
 import java.util.{Date, Locale}
 import java.lang.{Object => JObject}
 

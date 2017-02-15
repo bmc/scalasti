@@ -103,13 +103,15 @@ case class ST private[scalasti] (private[scalasti] val native: _ST,
 
   makeErrorsExceptions(native)
 
-  /** The delimiter start character.
+  /** The delimiter start character for template substitutions. Corresponds
+    * to `delimiterStartChar` in the underlying StringTemplate API.
     */
-  val delimiterStartChar = native.groupThatCreatedThisInstance.delimiterStartChar
+  val startDelimiter = native.groupThatCreatedThisInstance.delimiterStartChar
 
-  /** The delimiter stop character.
+  /** The delimiter stop character for template substitutions. Corresponds
+    * to `delimiterStopChar` in the underlying StringTemplate API.
     */
-  val delimiterStopChar = native.groupThatCreatedThisInstance.delimiterStopChar
+  val endDelimiter = native.groupThatCreatedThisInstance.delimiterStopChar
 
   /** Add an attribute to the template. Sequences, iterators and maps are
     * converted (copied) to their Java equivalents, with their contents
@@ -573,18 +575,18 @@ object ST {
     * string.
     *
     * @param template            the template string
-    * @param delimiterStartChar  the starting delimiter character
-    * @param delimiterStopChar   the ending delimiter character
+    * @param startDelimiter  the starting delimiter character
+    * @param endDelimiter   the ending delimiter character
     *
     * @return the template
     */
   def apply(template:           String,
-            delimiterStartChar: Char = Constants.DefaultStartChar,
-            delimiterStopChar:  Char = Constants.DefaultStopChar): ST = {
+            startDelimiter: Char = Constants.DefaultStartChar,
+            endDelimiter:  Char = Constants.DefaultStopChar): ST = {
     new ST(template           = template,
            attributeMap       = EmptyAttrMap,
            native             = new _ST(template,
-                                        delimiterStartChar,
-                                        delimiterStopChar))
+                                        startDelimiter,
+                                        endDelimiter))
   }
 }

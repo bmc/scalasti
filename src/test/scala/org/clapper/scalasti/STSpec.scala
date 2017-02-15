@@ -5,8 +5,6 @@ import java.util.Locale
 
 import grizzled.file.util.{joinPath, withTemporaryDirectory}
 import grizzled.util._
-import grizzled.util.CanReleaseResource.Implicits.CanReleaseAutoCloseable
-import grizzled.util.CanReleaseResource.Implicits.CanReleaseSource
 import org.stringtemplate.v4.NoIndentWriter
 
 import scala.io.Source
@@ -134,7 +132,58 @@ class STSpec extends BaseSpec {
     ST(t2).add("users", users).render() shouldBe "Elvis Presley, Frank Sinatra"
   }
 
-  it should "handle numeric typed attribute retrieval" in {
+  it should "handle None-typed attribute retrieval" in {
+    val st = ST("<s>").add("s", None)
+    st.render() shouldBe ""
+    st.attribute[AnyRef]("s") shouldBe None
+    st.attribute[String]("s") shouldBe None
+  }
+
+  it should "render properly with a custom renderer" in {
+    val group = STGroupString(TemplateGroupString)
+    val group2 = group.registerRenderer(ValueRenderer)
+    val tST = group2.instanceOf("template")
+    tST shouldBe 'success
+
+    val st = tST.get
+    val v = Value("foo")
+    val st2 = st.add("x", v, raw=true)
+    st2.render() shouldBe "This is a foo template"
+  }
+
+  it should "properly substitute from a Some and a None" in {
+    val st = ST("x=<x>, y=<y>")
+
+    def add(label: String, o: Option[Int]) = st.add(label, o)
+
+    val st2 = add("x", Some(10)).add("y", None)
+    st2.render() shouldBe "x=10, y="
+  }
+
+  it should "render with a ScalaBean with one level of indirection" in {
+    case class Test(s: String)
+
+    ST("<obj.s>").add("obj", Test("hello")).render() shouldBe "hello"
+  }
+
+  it should "render with a ScalaBean with two levels of indirection" in {
+    case class Inner(s: String)
+    case class Outer(i: Inner)
+
+    ST("<o.i.s>").add("o", Outer(Inner("foo"))).render() shouldBe "foo"
+  }
+
+  it should "render with a Scala Map" in {
+    val m = Map("foo" -> 10, "bar" -> 20)
+    val templateString = """<keys:{key|<m.(key)>};separator=",">"""
+
+    ST(templateString)
+      .add("m", m)
+      .add("keys", m.keySet.toSeq)
+      .render() shouldBe "10,20"
+  }
+
+  "attribute()" should "handle numeric typed attribute retrieval" in {
     val st = ST("Point = (<x>, <y>)")
       .add("x", 10)
       .add("y", 20)
@@ -159,13 +208,6 @@ class STSpec extends BaseSpec {
     st.attribute[String]("s") shouldBe Some("foo")
   }
 
-  it should "handle None-typed attribute retrieval" in {
-    val st = ST("<s>").add("s", None)
-    st.render() shouldBe ""
-    st.attribute[AnyRef]("s") shouldBe None
-    st.attribute[String]("s") shouldBe None
-  }
-
   it should "handle custom typed attribute retrieval" in {
     val groupString =
       """
@@ -184,27 +226,6 @@ class STSpec extends BaseSpec {
     val vOpt = st2.attribute[Value]("x")
     vOpt shouldBe 'defined
     vOpt.get shouldEqual v
-  }
-
-  it should "render properly with a custom renderer" in {
-    val group = STGroupString(TemplateGroupString)
-    val group2 = group.registerRenderer(ValueRenderer)
-    val tST = group2.instanceOf("template")
-    tST shouldBe 'success
-
-    val st = tST.get
-    val v = Value("foo")
-    val st2 = st.add("x", v, raw=true)
-    st2.render() shouldBe "This is a foo template"
-  }
-
-  it should "properly substitute from a Some and a None" in {
-    val st = ST("x=<x>, y=<y>")
-
-    def add(label: String, o: Option[Int]) = st.add(label, o)
-
-    val st2 = add("x", Some(10)).add("y", None)
-    st2.render() shouldBe "x=10, y="
   }
 
   "add()" should "be immutable" in {
@@ -327,21 +348,33 @@ class STSpec extends BaseSpec {
   "write()" should "write the template to a file" in {
 
     withTemporaryDirectory("scalasti") { dir =>
+
       val filePath = joinPath(dir.getPath, "out.txt")
-      withResource(new FileWriter(filePath)) { out =>
-        val w = new NoIndentWriter(out)
-        val group = STGroupString(TemplateGroupString)
-        val tST = group.instanceOf("template")
-        tST shouldBe 'success
-        val template = tST.get.add("x", "foobar")
-        val tWrite = template.write(w)
-        tWrite shouldBe 'success
-        tWrite.get shouldBe > (0)
+
+      def createFile(): Unit = {
+        import grizzled.util.CanReleaseResource.Implicits.CanReleaseAutoCloseable
+        withResource(new FileWriter(filePath)) { out =>
+          val w = new NoIndentWriter(out)
+          val group = STGroupString(TemplateGroupString)
+          val tST = group.instanceOf("template")
+          tST shouldBe 'success
+          val template = tST.get.add("x", "foobar")
+          val tWrite = template.write(w)
+          tWrite shouldBe 'success
+          tWrite.get shouldBe > (0)
+        }
       }
 
-      withResource(Source.fromFile(filePath)) { src =>
-        src.getLines.mkString("\n") shouldBe "This is a foobar template"
+      def testFileContents: Unit = {
+        import grizzled.util.CanReleaseResource.Implicits.CanReleaseSource
+
+        withResource(Source.fromFile(filePath)) { src =>
+          src.getLines.mkString("\n") shouldBe "This is a foobar template"
+        }
       }
+
+      createFile()
+      testFileContents
     }
   }
 

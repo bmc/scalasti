@@ -772,9 +772,9 @@ the StringTemplate documents for details.
       <p class="shortcomment cmt">Remove an attribute from the template.</p><div class="fullcomment"><div class="comment cmt"><p>Remove an attribute from the template.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the name of the attribute to remove</p></dd><dt>returns</dt><dd class="cmt"><p>a new object with the specified attribute removed</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#render" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="render(locale:java.util.Locale,lineWidth:Int):String"></a><a id="render(Locale,Int):String"></a>
+      <a id="render(locale:java.util.Locale,lineWidth:Int):scala.util.Try[String]"></a><a id="render(Locale,Int):Try[String]"></a>
       <span class="permalink">
-      <a href="../../../org/clapper/scalasti/ST.html#render(locale:java.util.Locale,lineWidth:Int):String" title="Permalink">
+      <a href="../../../org/clapper/scalasti/ST.html#render(locale:java.util.Locale,lineWidth:Int):scala.util.Try[String]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -783,11 +783,12 @@ the StringTemplate documents for details.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">render</span><span class="params">(<span name="locale">locale: <span class="extype" name="java.util.Locale">Locale</span> = <span class="symbol">Locale.getDefault</span></span>, <span name="lineWidth">lineWidth: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">80</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">render</span><span class="params">(<span name="locale">locale: <span class="extype" name="java.util.Locale">Locale</span> = <span class="symbol">Locale.getDefault</span></span>, <span name="lineWidth">lineWidth: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">80</span></span>)</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       <p class="shortcomment cmt">Render the template to a string.</p><div class="fullcomment"><div class="comment cmt"><p>Render the template to a string.
-</p></div><dl class="paramcmts block"><dt class="param">locale</dt><dd class="cmt"><p>The locale to use</p></dd><dt class="param">lineWidth</dt><dd class="cmt"><p>The line width</p></dd><dt>returns</dt><dd class="cmt"><p>The rendered string</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="param">locale</dt><dd class="cmt"><p>The locale to use</p></dd><dt class="param">lineWidth</dt><dd class="cmt"><p>The line width</p></dd><dt>returns</dt><dd class="cmt"><p>A <code>Success</code> containing the rendered string, or a <code>Failure</code>
+        on error.</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#set" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="set(name:String,value:Any,raw:Boolean):org.clapper.scalasti.ST"></a><a id="set(String,Any,Boolean):ST"></a>
       <span class="permalink">
@@ -881,7 +882,7 @@ to <code>delimiterStartChar</code> in the underlying StringTemplate API.
       
       <p class="shortcomment cmt">Return a string representation of the template.</p><div class="fullcomment"><div class="comment cmt"><p>Return a string representation of the template. <b>NOTE</b>: As of
 StringTemplate 4, the <code>toString()</code> method no longer renders the
-template. Use the <code><a href="#render(locale:java.util.Locale,lineWidth:Int):String" class="extmbr" name="org.clapper.scalasti.ST#render">render</a></code> method for that.
+template. Use the <code><a href="#render(locale:java.util.Locale,lineWidth:Int):scala.util.Try[String]" class="extmbr" name="org.clapper.scalasti.ST#render">render</a></code> method for that.
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the rendered template.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.clapper.scalasti.ST">ST</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>

@@ -118,8 +118,8 @@ The Scalasti wrapper library attempts to alleviate those pain points. Scalasti
 builds on-the-fly wrappers for Scala objects, using a combination of Java 
 `Proxy` objects, (minimal) reflection, and bytecode generation.
 If you use Scalasti, you can use StringTemplate with Scala objects and 
-collections, without wrapping them yourself and without writing complicated
-model adapters.
+collections, without wrapping them yourself and without writing either 
+attribute renderers or complicated model adapters.
 
 # Restrictions
 

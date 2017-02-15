@@ -139,7 +139,7 @@ Scalasti is published to the
 [Bintray Maven repository](https://bintray.com/bmc/maven), which is
 automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
-automatically sync'd with the [Maven Central Repository][].
+automatically sync'd with the [Maven Central Repository][].)
 
 * Version 3.0.0 supports Scala 2.12, 2.11 and 2.10 
   **and makes radical changes to the API, to support immutability.**

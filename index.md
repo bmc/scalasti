@@ -608,9 +608,9 @@ st.render().map { str =>
 Also, because `render()` returns a `Try`, and `Try` supports `map()`,
 `flatMap()`, and `withFilter()`, you can use it in a `for` comprehension.
 
-### No more listeners
+### No more error listeners
 
-StringTemplate has this notion of listeners: With the `STGroup`-derived
+StringTemplate has the notion of listeners: With the `STGroup`-derived
 classes, you can register a listener that will be notified of various
 types of processing errors via callbacks.
 

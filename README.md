@@ -16,11 +16,12 @@ Scalasti's additional features include:
 
 - **Immutability**. As of version 3.0.0, Scalasti objects are immutable, 
   unlike the StringTemplate objects. Modifier methods always create new 
-  objects; they never modify objects in place.
+  objects; they never modify objects in place. Immutability is more functional
+  and more idiomatic to Scala, and an immutable Scalasti API was long overdue.
 
 - **Error-handling**. Where possible, Scalasti propagates errors
   via `scala.util.Try` objects, instead of via a StringTemplate
-  listener.
+  listener. This approach is also more idiomatic to Scala.
 
 - **Scala object support**. Scalasti supports Scala objects, meaning
   you don't have to use `@BeanProperty` on your Scala classes before you

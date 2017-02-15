@@ -27,6 +27,9 @@ Scalasti's additional features include:
 - **Stronger type safety**. You should _never_ need to cast objects
   you receive from the Scalast API.
 
+- **Mapped aggregates** provide the ability to add maps (which can be
+  nested) as template attributes, which you can then deference within the
+  template via dot-notation.
 
 **If you're upgrading from Scalasti 2.x, see the
 [Upgrading](#upgrading-from-scalasti-version-2)

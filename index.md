@@ -34,7 +34,7 @@ Scalasti's additional features include:
 
 **If you're upgrading from Scalasti 2.x**, see the
 [Upgrading](#upgrading-from-scalasti-version-2)
-section, below.**
+section, below.
 
 If you're just looking for the API docs, you can
 [jump straight to that section](#api-documentation).

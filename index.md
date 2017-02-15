@@ -31,9 +31,12 @@ Scalasti's additional features include:
   nested) as template attributes, which you can then deference within the
   template via dot-notation.
 
-**If you're upgrading from Scalasti 2.x, see the
+**If you're upgrading from Scalasti 2.x**, see the
 [Upgrading](#upgrading-from-scalasti-version-2)
 section, below.**
+
+If you're just looking for the API docs, you can
+[jump straight to that section](#api-documentation).
 
 # Rationale
 

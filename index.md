@@ -120,8 +120,8 @@ model adapters.
 # Restrictions
 
 Scalasti provides a subset of the functionality in StringTemplate. In the
-author's opinion, Scalasti provides the most _useful_ subset, but it does lack
-certain features available directly in StringTemplate. For instance:
+author's opinion, Scalasti provides the most _commonly used_ subset, but it does 
+lack certain features available directly in StringTemplate. For instance:
 
 * Scalasti provides no API for using the StringTemplate compiler.
 * Scalasti lacks the equivalent of StringTemplate's `inspect()` methods.

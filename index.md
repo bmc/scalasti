@@ -525,6 +525,7 @@ In Scalasti 2.x, you could create a template and then add attributes to it,
 as shown here:
 
 ```scala
+// Scalasti 2.x
 val st = ST("...")
 st.add("foo", 10)
 st.add("bar", "This is awesome.")
@@ -536,15 +537,18 @@ _new_ object; the object on which you call `add()` remains unchanged. The
 long form solution looks something like this:
 
 ```scala
+// Scalasti 3.x
 val st = ST("...")
 val st2 = st.add("foo", 10)
 val st3 = st2.add("bar", "This is awesome.")
 st3.render()
 ```
 
-Of course, chaining the calls, where your logic permits, is much cleaner:
+Of course, as with 2.x, you can chain the calls, where your logic permits, 
+which is much cleaner:
 
 ```scala
+// Scalasti 2.x and 3.x
 val st = ST("...").add("foo", 10).add("bar", "This is awesome.")
 st.render()
 ```
@@ -557,8 +561,9 @@ several such methods, but the most common is `ST.render()`.
 In Scalasti 2.x, you could do this:
 
 ```scala
+// Scalasti 2.x
 val st = ST("...").add("foo", 10).add("bar", "This is awesome.")
-println(st.render()) // ST.render() returned a String in 2.x
+println(st.render()) // render() returned a String (or threw an exception) in 2.x
 ```
 
 If the `render()` call failed—for instance, because it couldn't find a
@@ -573,6 +578,8 @@ There are several ways to handle this return result, shown in the snippet
 below:
 
 ```scala
+// Scalasti 3.x
+
 // Ugh
 val t = st.render()
 if (t.isSuccess) {

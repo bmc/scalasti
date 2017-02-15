@@ -333,69 +333,73 @@ easy to group data via a concept called _aggregates_.
 
 In the StringTemplate API, you use the `addAggr()` method to add an automatic 
 aggregate. In Scalasti, you use the `ST.addAggregate()` method:
-fields in one shot:
 
 ```scala
 val st = ST("<page.title>\n\n<page.body>\n")
 st.addAggregate("page.{title,body}", title, body)
 ```
 
-`addAggregate()` handles automatic aggregates. The automatic aggregates mirrors,
-almost exactly, what the underlying StringTemplate library does:
+Here's the declaration of `addAggregate()`:
 
 ```scala
 def addAggregate(aggrSpec: String, values: Any*): ST
 ```
 
-It sets an automatic aggregate from the specified arguments, returning a
-new template. (The original template remains unchanged.)
+`addAggregate()` mirrors, almost exactly, what the underlying StringTemplate 
+library does. It sets an automatic aggregate from the specified arguments, 
+returning a new template. (Because Scalasti's `ST` is immutable, the original 
+template remains unchanged.)
 
 An automatic aggregate looks like an object from within a template, but it 
-isn't backed by a bean. Instead, you specify the aggregate with a special 
-syntax. For example, the following code defines an aggregate attribute called 
-`name`, with two fields, `first` and `last`. Those fields can be interpolated 
-within a template via `<name.first>` and `<name.last>`.
+isn't backed by a JavaBean. Instead, there's special logic within StringTemplate
+specific to automatic aggregates.
+
+You specify the aggregate with a special syntax. As another example, the
+following code defines an aggregate attribute called `name`, with two fields,
+`first` and `last`. The values in the brackets will be satisfied from the
+remaining arguments to `addAggregate()`. In other words, assuming the template
+start and stop characters are both "$", `$name.first$` will be replaced with 
+"Jeff", and `$name.last$` will be replaced by "Lebowski".
 
 ```scala
 val st = ST( ... )
-st.setAggregate("name.{first,last}", "Moe", "Howard")
+st.setAggregate("name.{first,last}", "Jeff", "Lebowski")
 ```
 
-That aggregate permits the following template references:
-
-```
-<name.first>
-<name.last>
-```
-
-Note, however, that this syntax does not support nested aggregates. That is,
-there is no way, using automatic aggregates, to produce an attribute that
-can be referenced like this:
+**Note**: This syntax does not support nested aggregates. That is, there is no
+way, using automatic aggregates, to produce an attribute that can be
+interpolated like this:
 
 ```
 <foo.outer.inner>
 ```
 
-For that capability, you need _mapped aggregates_. (See next section.)
+For that capability, you need Scalasti's _mapped aggregates_. 
 
 ### Mapped Aggregates
 
-Scalasti adds another form of aggregate attribute called a "mapped
-aggregate". Mapped aggregates are simply aggregate attributes created from
-Scala maps. The supplied map's keys are used as the fields of the
-aggregate. The mapped aggregates feature allows you to create a map that
-you can access with dot-notation. Here's a complete example:
+Scalasti adds another form of aggregate attribute called a "mapped aggregate".
+Mapped aggregates are a Scalasti-only feature; they are not supported in the
+underlying StringTemplate API.
+ 
+A mapped aggregate is, simply put, a way to create StringTemplate attributes 
+from Scala maps. The supplied map's keys are used as the fields of the
+aggregate. And mapped aggregation supports nested maps.
+
+The mapped aggregates feature allows you to create a map (or a nested maps)
+that you can access with dot-notation within a template. Here's a complete 
+example:
 
 ```scala
 val st = ST("<foo.bar.baz> <foo.x.y.z>")
   .addMappedAggregate("foo", Map("bar" -> Map("baz" -> 1),
                                  "x"   -> Map("y" -> Map("z" -> "hello"))))
 
-st.render()
 ```
 
-That `render` call will produce `Success("1 hello")`. When StringTemplate
-resolves `<foo.bar.baz>`, it'll behave more or less like the following code:
+When rendered, the template will produce the string "1 hello".
+When StringTemplate resolves `<foo.bar.baz>`, it'll behave like the following 
+code:
 
 ```scala
 val foo = Map("bar" -> Map("baz" -> 1),
@@ -403,8 +407,8 @@ val foo = Map("bar" -> Map("baz" -> 1),
 foo("bar")("baz")
 ```
 
-The supplied map must use string keys; under the covers, the values in the map 
-are mapped, recursively, to Java objects, in a similar way as `add()` maps 
+The supplied map _must_ use string keys; under the covers, the values in the 
+map are mapped, recursively, to Java objects, in a similar way as `add()` maps 
 values. (See below.)
 
 ### Scala Bean Aggregates

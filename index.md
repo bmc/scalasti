@@ -95,20 +95,24 @@ Worse, by default, StringTemplate uses Java Bean semantics to access object fiel
 While Java Bean semantics are great for Java objects, they're not so good for
 Scala objects. With an API that only supports Java Bean semantics, you can only
 use Scala objects you can annotate with the Scala `@BeanProperty` annotation.
-All other objects (e.g., those from APIs you do not control) must be manually
-wrapped in Java Beans.
 
-You can certainly use StringTemplate
-[attribute renderers](https://github.com/antlr/stringtemplate4/blob/master/doc/renderers.md)
-to address the problem, but you'll need to write an attribute renderer for
-every Scala class that can't be coerced into a Java Bean.
+All other objects (e.g., those from APIs you do not control) must be handled
+in one of several ways:
  
-You can also write a Scala object 
-[model adapter](https://github.com/antlr/stringtemplate4/blob/master/doc/adaptors.md),
-using the approach outlined 
-[here](https://github.com/antlr/stringtemplate4/blob/master/doc/faq/object-models.md).
-That approach will work, but it uses runtime reflection on each reference,
-which is likely to be slower than the approach Scalasti uses. 
+* You can manually wrap each Scala object in a Java Bean-compliant object.
+  This approach is tedious, as it can require a new wrapper class for each
+  Scala class you wish to pass to StringTemplate.
+* You can write an 
+  [attribute renderer](https://github.com/antlr/stringtemplate4/blob/master/doc/renderers.md)
+  for each such Scala class (and Scalasti provides a clean interface for
+  creating attribute renderers). Again, though, you generally need to write
+  a renderer for each Scala class you wish to use.
+* You can write a Scala object 
+  [model adapter](https://github.com/antlr/stringtemplate4/blob/master/doc/adaptors.md),
+  using the approach outlined 
+  [here](https://github.com/antlr/stringtemplate4/blob/master/doc/faq/object-models.md).
+  That approach will work, but it uses runtime reflection on each reference,
+  which is likely to be slower than the approach Scalasti uses. 
 
 The Scalasti wrapper library attempts to alleviate those pain points. Scalasti 
 builds on-the-fly wrappers for Scala objects, using a combination of Java 

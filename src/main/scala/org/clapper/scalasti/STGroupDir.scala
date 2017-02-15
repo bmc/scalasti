@@ -78,15 +78,15 @@ object STGroupDir {
     *
     * @param root                the root URL
     * @param encoding            the encoding
-    * @param startDelimiter  the starting delimiter character
-    * @param endDelimiter   the ending delimiter character
+    * @param startDelimiter      the starting delimiter character
+    * @param endDelimiter        the ending delimiter character
     *
     * @return the group
     */
   def apply(root:               URL,
             encoding:           String = Constants.DefaultEncoding,
-            startDelimiter: Char   = Constants.DefaultStartChar,
-            endDelimiter:  Char   = Constants.DefaultStopChar):
+            startDelimiter:     Char   = Constants.DefaultStartChar,
+            endDelimiter:       Char   = Constants.DefaultStopChar):
     STGroupDir = {
 
     val native = new _STGroupDir(root,
@@ -96,15 +96,15 @@ object STGroupDir {
     new STGroupDir(native)
   }
 
-/** Create an `STGroupDir` that reads its templates and groups from the
-  * the specified directory rooted at the specified URL. Note that this
-  * constructor throws no errors. Instead, the errors are caught when templates
-  * are later instantiated via `instanceOf()`.
-  *
-  * @param path the path to the root directory
-  *
-  * @return the group
-  */
+  /** Create an `STGroupDir` that reads its templates and groups from the
+    * the specified directory rooted at the specified URL. Note that this
+    * constructor throws no errors. Instead, the errors are caught when templates
+    * are later instantiated via `instanceOf()`.
+    *
+    * @param path the path to the root directory
+    *
+    * @return the group
+    */
   def apply(path: String): STGroupDir = {
     apply(path,
           Constants.DefaultEncoding,

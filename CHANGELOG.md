@@ -1,5 +1,9 @@
 # Change Log: Scalasti, a Scala interface to the StringTemplate library
 
+Version 3.0.1 (not yet released)
+
+* Added more unit tests.
+
 Version 3.0.0 (**Breaking API Change**)
 
 * Reworked Scalasti API to be immutable. See the [Scalasti home page][]

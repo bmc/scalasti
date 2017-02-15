@@ -17,6 +17,13 @@ class STGroupDirSpec extends BaseSpec {
     )
   )
 
+  "apply()" should "be able to load a directory from a URL" in {
+    val url = getClass.getClassLoader.getResource("t1")
+    val grp = STGroupDir(url)
+    val tST = grp.instanceOf("template2")
+    tST shouldBe 'success
+  }
+
   "load()" should "fail on a nonexistent directory" in {
     val grp = STGroupDir("/tmp/foo/bar/baz")
     grp.load() shouldBe 'failure

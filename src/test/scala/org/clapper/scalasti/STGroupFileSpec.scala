@@ -159,4 +159,37 @@ class STGroupFileSpec extends BaseSpec {
       }
     }
   }
+
+  "apply()" should "be able to read a group from a URL" in {
+    // Assumes existence of resources under src/test/resources
+
+    val resourceURL = getClass.getClassLoader.getResource("t1/group1.stg")
+    val grp = STGroupFile(resourceURL)
+    val tST = grp.instanceOf("template1")
+    tST shouldBe 'success
+    val st = tST.get.add("s", "Foo")
+    st.render() shouldBe 'success
+  }
+
+  it should "handle imported templates from a URL" in {
+    // Assumes that src/test/resources/t1/group1.stg does an import of
+    // template2.st
+
+    val resourceURL = getClass.getClassLoader.getResource("t1/group1.stg")
+    val grp = STGroupFile(resourceURL)
+    val tST = grp.instanceOf("template2")
+    tST shouldBe 'success
+    val st = tST.get.add("s", "Foo")
+    st.render() shouldBe 'success
+  }
+
+  it should "find a file in the classpath, if a local file isn't found" in {
+    // Assumes existence of resources under src/test/resources
+
+    val grp = STGroupFile("t1/group1.stg")
+    val tST = grp.instanceOf("template2")
+    tST shouldBe 'success
+    val st = tST.get.add("s", "Foo")
+    st.render() shouldBe 'success
+  }
 }

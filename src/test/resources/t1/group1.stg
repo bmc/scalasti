@@ -1,0 +1,5 @@
+delimiters "$", "$"
+
+import "template2.st"
+
+template1(s) ::= "Hello, <s>."

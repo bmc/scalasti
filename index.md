@@ -614,14 +614,14 @@ StringTemplate has the notion of listeners: With the `STGroup`-derived
 classes, you can register a listener that will be notified of various
 types of processing errors via callbacks.
 
-Because Scalasti now returns results as `Try` objects, when a failure could
-occur, this listener interface isn't necesary. And, besides, it's not
+Because Scalasti now returns results as `Try` objects when a failure could
+occur, this listener interface isn't necessary. And, besides, it's not
 exactly idiomatic Scala.
 
 Under the covers, Scalasti now registers its own listeners that throw
-exceptions on errors; Scalasti then catches any such exceptions and returns
-them in a `Failure` object. This approach is much cleaner and much more
-functional.
+exceptions on errors; Scalasti then catches any thrown exception and returns
+it in a `Failure` object. This approach is cleaner, more functional, and 
+more idiomatic.
 
 ## API Documentation
 

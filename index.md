@@ -663,7 +663,7 @@ request. Along with any patch you send:
 [BSD License]: license.html
 [Scala]: http://www.scala-lang.org/
 [StringTemplate]: http://www.stringtemplate.org/
-[StringTemplate documentation]: http://www.antlr.org/wiki/display/ST/StringTemplate+Documentation
+[StringTemplate documentation]: https://github.com/antlr/stringtemplate4/blob/master/doc/index.md
 [Scalasti]: http://software.clapper.org/scalasti
 [Scalasti home page]: http://software.clapper.org/scalasti
 [repo]: http://github.com/bmc/scalasti

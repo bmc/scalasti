@@ -668,7 +668,7 @@ request. Along with any patch you send:
 [Scalasti home page]: http://software.clapper.org/scalasti
 [repo]: http://github.com/bmc/scalasti
 [Brian M. Clapper]: mailto:bmc@clapper.org
-[Google's Closure Templates]: http://code.google.com/closure/templates/index.html
+[Google's Closure Templates]: https://developers.google.com/closure/templates/
 [Velocity]: http://velocity.apache.org/
 [FreeMarker]: http://www.freemarker.org/
 [Scalate]: http://scalate.fusesource.org/

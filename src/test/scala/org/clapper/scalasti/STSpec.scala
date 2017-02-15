@@ -197,6 +197,26 @@ class STSpec extends BaseSpec {
     ts.get shouldBe "a b c"
   }
 
+  "addAggregate()" should "just work" in {
+    val Title = "My Title"
+    val Body = "My Body"
+    val st = ST("<page.title>\n\n<page.body>\n")
+      .addAggregate("page.{title,body}", Title, Body)
+
+    st should renderSuccessfullyAs (s"$Title\n\n$Body\n")
+  }
+
+  "mappedAggregate()" should "just work" in {
+    val st = ST("<foo.bar.baz> <foo.x.y.z>")
+    .addMappedAggregate("foo",
+      Map("bar" -> Map("baz" -> 1),
+          "x"   -> Map("y" -> Map("z" -> "hello")))
+    )
+
+    st should renderSuccessfullyAs ("1 hello")
+
+  }
+
   "attribute()" should "handle numeric typed attribute retrieval" in {
     val st = ST("Point = (<x>, <y>)")
       .add("x", 10)

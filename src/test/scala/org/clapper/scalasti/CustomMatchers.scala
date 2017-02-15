@@ -8,21 +8,28 @@ import scala.util.control.NonFatal
 /** Various custom ScalaTest matchers
   */
 trait CustomMatchers {
-  class SuccessfulRenderMatcher(expectedValue: String) extends Matcher[ST] {
+  class SuccessfulRenderMatcher(expected: String) extends Matcher[ST] {
+    private val OkMessage = "Template rendered superbly."
+
     def apply(template: ST): MatchResult = {
-      val ok = template
+      template
         .render()
-        .map { _ => true }
+        .map { s =>
+          MatchResult(
+            s == expected,
+            s"""Template rendered to "$s". Expected "$expected".""",
+            OkMessage
+          )
+        }
         .recover {
-          case NonFatal(e) => false
+          case NonFatal(e) =>
+            MatchResult(
+              false,
+              s"""render() failed: ${e.getMessage}""",
+              OkMessage
+            )
         }
         .get
-
-      MatchResult(
-        ok,
-        "Template did not render properly",
-        "Template rendered properly"
-      )
     }
   }
 

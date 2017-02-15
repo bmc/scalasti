@@ -9,8 +9,27 @@ Scalasti is a [Scala][] interface to the [StringTemplate][] Java template
 library. It provides a subset of the features of [StringTemplate][], using
 a more Scala-friendly syntax.
 
-**If you're upgrading from Scalasti 1.0.0 and StringTemplate 3, see the
-[Upgrading](#upgrading-from-scalasti-version-1-and-stringtemplate-3)
+Scalasti's additional features include:
+
+- **Immutability**. As of version 3.0.0, Scalasti objects are immutable, 
+  unlike the StringTemplate objects. Modifier methods always create new 
+  objects; they never modify objects in place.
+
+- **Error-handling**. Where possible, Scalasti propagates errors
+  via `scala.util.Try` objects, instead of via a StringTemplate
+  listener.
+
+- **Scala object support**. Scalasti supports Scala objects, meaning
+  you don't have to use `@BeanProperty` on your Scala classes before you
+  can pass them into a template. This feature also allows you to use
+  instances of third-party Scala classes directly with Scalasti.
+
+- **Stronger type safety**. You should _never_ need to cast objects
+  you receive from the Scalast API.
+
+
+**If you're upgrading from Scalasti 2.x, see the
+[Upgrading](#upgrading-from-scalasti-version-2)
 section, below.**
 
 # Rationale
@@ -63,7 +82,7 @@ StringTemplate provides a solid template language that is:
 However, StringTemplate's API is Java-centric. It relies on
 `java.util.Collection` classes, such as `java.util.Map` and `java.util.List`;
 these classes are clumsy to use in Scala, compared to their Scala counterparts.
-Worse, StringTemplate uses Java Bean semantics to access object field values.
+Worse, by default, StringTemplate uses Java Bean semantics to access object field values.
 While Java Bean semantics are great for Java objects, they're not so good for
 Scala objects. With an API that only supports Java Bean semantics, you can only
 use Scala objects you can annotate with the Scala `@BeanProperty` annotation.
@@ -84,6 +103,9 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].
 
+* Version 3.0.0 supports Scala 2.12, 2.11 and 2.10 
+  **and makes radical changes to the API, to support immutability.**
+* Versions from 2.1.0 on support Scala 2.12, 2.11 and 2.10.
 * Version 2.0.0 (for StringTemplate version 4) supports Scala 2.11 and 2.10.
 * Version 1.0.0 (for StringTemplate version 3) supports Scala 2.10.
 * Version 0.5.8 (for StringTemplate version 3) supports Scala 2.9.1-1, 2.9.1,
@@ -95,16 +117,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `scalasti_2.10` or `scalasti_2.11`
-* Version: `1.0.0` or `2.0.0`
+* Artifact ID: `scalasti_2.10`, `scalasti_2.11`, `scalasti_2.12`
+* Version: `3.0.0`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>scalasti_2.10</artifactId>
-      <version>2.0.0</version>
+      <artifactId>scalasti_2.11</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -112,43 +134,9 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 ## Using with SBT
 
-#### 0.11.x/0.12.x
+Just add:
 
-If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
-following line in your build.sbt file (for Quick Configuration).
-
-    repositories += "JCenter" at "http://jcenter.bintray.com/"
-
-    libraryDependencies += "org.clapper" %% "scalasti" % "2.0.0"
-
-You only need the `repositories` line if the artifact cannot be resolved (e.g.,
-has not, for some reason, been pushed to Maven Central yet).
-
-#### 0.13.x
-
-With SBT 0.13.x, you can just use [Doug Tangren's](https://github.com/softprops/)
-`bintray-sbt` plugin. In your `project/plugins.sbt` file, add:
-
-    resolvers += Resolver.url(
-      "bintray-sbt-plugin-releases",
-      url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-        Resolver.ivyStylePatterns)
-
-    addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
-
-Then, in your `build.sbt` file, add:
-
-    bintrayResolverSettings
-
-That automatically adds the appropriate Bintray repositories. Finally, add:
-
-    libraryDependencies += "org.clapper" %% "scalasti" % "2.0.0"
-
-Scalasti is also registered with [Doug Tangren][]'s excellent
-[ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
-Scalasti with
-
-    sbt> ls-install scalasti
+    libraryDependencies += "org.clapper" %% "scalasti" % "3.0.0"
 
 # Building from Source
 
@@ -161,21 +149,30 @@ clone the repository, run this command:
 
 ## Build Requirements
 
-Building the Scalasti library requires [SBT][] 0.10.1 or better. Install
-SBT, as described at the SBT web site.
+Building the Scalasti library requires [SBT][] 0.13.x or better. 
+
+* If you're on a Mac or Unix system, you can just use the `bin/activator`
+  script, supplied with the source code. It'll download the appropriate
+  version of SBT (if necessary) and fire it up for you.
+* On Windows, you'll have to install SBT, as described at the SBT web site.
 
 ## Building Scalasti
 
-Assuming you have an `sbt` shell script (or .BAT file, for *\[shudder\]*
-Windows), first run:
+If you're using Activator:
 
-    sbt compile test package
+```
+bin/activator compile test package
+```
 
-The resulting jar file will be in the top-level `target` directory.
+If you're using SBT directly:
+
+```
+sbt compile test package
+```
 
 # Runtime Requirements
 
-Scalasti 2.0.0 requires the following libraries to be available at runtime, for
+Scalasti 3 requires the following libraries to be available at runtime, for
 some, or all, of its methods.
 
 * The main [ASM][] library (version 4), e.g., `asm-4.2.jar`
@@ -205,87 +202,108 @@ directly with it.
 Create a template group that will read templates from a directory, and load
 a template from the group:
 
-    val group = STGroupDir("/home/bmc/templates")
-    val templateTry = group.instanceOf("mytemplate")
+```scala
+val group = STGroupDir("/home/bmc/templates")
+val templateTry = group.instanceOf("mytemplate")
 
-    // instanceOf returns a scala.util.Try.
-    if (t.isSuccess) {
-      ...
-    }
+// instanceOf returns a scala.util.Try.
+t.map { template =>
+  template.render()
+}
+.recover {
+  case e: Exception => // handle error
+}
+```
 
 Create a template group whose contents are in a string, and retrieve a template:
 
-    val templateString =
-      """
-      |foo(firstName, lastName) ::= <<
-      |This is a test template. It spans multiple lines, and it interpolates
-      |a first name (<firstName>) and a last name (<lastName>).
-      """.stripMargin
+```scala
+val templateString =
+  """
+  |foo(firstName, lastName) ::= <<
+  |This is a test template. It spans multiple lines, and it interpolates
+  |a first name (<firstName>) and a last name (<lastName>).
+  """.stripMargin
 
-    val group = STGroupString(templateString)
-    val template = group.instanceOf("foo")
-
-    // instanceOf returns a scala.util.Try.
-    if (t.isSuccess) {
-      ...
-    }
+val group = STGroupString(templateString)
+group.instanceOf("foo").map { template =>
+  // do something with the template
+}
+.recover {
+  case e: Exception => // handle error
+}
+```
 
 Read a template group from a single file, and retrieve a template:
 
-    val group = STGroupFile("/home/bmc/templates/foo.stg")
-    val template = group.instanceOf("foo")
-
-    // instanceOf returns a scala.util.Try.
-    if (t.isSuccess) {
-      ...
-    }
+```scala
+val group = STGroupFile("/home/bmc/templates/foo.stg")
+val template = group.instanceOf("foo")
+```
 
 Read a template group from a URL, and retrieve a template:
 
-    import java.net.URL
+```scala
+import java.net.URL
 
-    val group = STGroupFile(new URL("http://localhost/~bmc/templates/foo.stg")
-    val template = group.instanceOf("foo")
-
-    // instanceOf returns a scala.util.Try.
-    if (t.isSuccess) {
-      ...
-    }
+val group = STGroupFile(new URL("http://localhost/~bmc/templates/foo.stg")
+val template = group.instanceOf("foo")
+```
 
 Create a template on the fly:
 
-    val template = ST("Test template. <firstName> <lastName>")
+```
+val template = ST("Test template. <firstName> <lastName>")
+```
 
-Set attribute values one by one:
+Set attribute values one by one. Note that, since `ST` is immutable, each call
+to `add()` returns a _new_ `ST` object; the original is unchanged.
 
-    // A single-valued attribute:
-    template.add("firstName", "Moe")
-    template.add("lastName", "Howard")
+```scala
+
+val filledTemplate = template
+  .add("firstName", "Moe")                         // single-valued attribute
+  .add("lastName", "Howard")                       // single-valued attribute
+  .add("employees", Seq("Moe", "Larry", "Curley")) // multi-valued attribute    
     
-    // A multi-valued attribute:
-    template.setAttribute("employees", "Moe", "Larry", "Curley")
+println(filledTemplate.render())
+```
 
 Set attribute values all at once:
 
-    template.addAttributes(Map("firstName" -> "Moe", "lastName" -> "Howard"))
+```scala
+val filledTemplate = template.addAttributes(Map("firstName" -> "Moe", "lastName" -> "Howard"))
+```
 
-Change how an attribute is rendered:
+Change how an attribute (class) is rendered. Note that this does _not_ work
+on primitives (i.e., subclasses of `AnyVal`).
 
-    class HexValue(l: long)
-    class HexValueRenderer extends AttributeRenderer[HexValue] {
-      def toString(v: HexValue, format: String, locale: Locale) = {
-        "0x" + v.toHexString
-      }
-    }
+```scala
+case class HexValue(n: Long)
+class HexValueRenderer extends AttributeRenderer[HexValue] {
+  def toString(v: HexValue, format: String, locale: Locale) = {
+    f"0x${v.n}%x"
+  }
+}
 
-    val memoryLocation: Long = ...
-    template.add("hex", new HexValue(memoryLocation))
-    template.add("decimal", memoryLocation)
-    template.registerRenderer(new HexValueRenderer)
+val memoryLocation: Long = 91234871234987l
+val group = STGroupString(
+  """|delimiters "$", "$"
+     |hex(n) ::= <<$n$>>""".stripMargin
+).registerRenderer(new HexValueRenderer)
 
+val template = group.instanceOf("hex")
+val filledTemplate = template.add("hex", HexValue(memoryLocation))
+```
 Render a template with its current set of attributes:
 
-    println(template.render())
+```scala
+template.render() match {
+  case Failure(ex) => // handle failure
+  case Success(str) => println(str)
+}
+```
+
 
 ## Support for Aggregates
 
@@ -311,99 +329,121 @@ There are two forms of the `setAggregate()` method, as described below.
 To paraphrase the older StringTemplate documentation,
 creating one-off data aggregates is a pain; you have to define a new
 class just to associate two pieces of data. `StringTemplate` makes it
-easy to group data via a concept called _aggregates_. Using the
-`ST.addAggregate()` method, you can associate a group of values with
+easy to group data via a concept called _aggregates_. 
+
+In the StringTemplate API, you use the `addAggr()` method to add an automatic 
+aggregate. In Scalasti, you use the `ST.addAggregate()` method:
 fields in one shot:
 
-    val st = ST("<page.title>\n\n<page.body>\n")
-    st.addAggregate("page.{title,body}", title, body)
-
-Scalasti provides support for these automatic aggregates, though, for clarity,
-Scalasti names the method `addAggregate()`, instead of StringTemplate's
-`addAggr()`.
+```scala
+val st = ST("<page.title>\n\n<page.body>\n")
+st.addAggregate("page.{title,body}", title, body)
+```
 
 `addAggregate()` handles automatic aggregates. The automatic aggregates mirrors,
 almost exactly, what the underlying StringTemplate library does:
 
-    def addAggregate(aggrSpec: String, values: Any*): ST
+```scala
+def addAggregate(aggrSpec: String, values: Any*): ST
+```
 
-It sets an automatic aggregate from the specified arguments, returning the
-template, for convenience. An automatic aggregate looks like an object from
-within a template, but it isn't backed by a bean. Instead, you specify the
-aggregate with a special syntax. For example, the following code defines
-an aggregate attribute called `name`, with two fields, `first` and `last`.
-Those fields can be interpolated within a template via `<name.first>` and
-`<name.last>`.
+It sets an automatic aggregate from the specified arguments, returning a
+new template. (The original template remains unchanged.)
 
-    val st = new StringTemplate( ... )
-    st.setAggregate("name.{first,last}", "Moe", "Howard")
+An automatic aggregate looks like an object from within a template, but it 
+isn't backed by a bean. Instead, you specify the aggregate with a special 
+syntax. For example, the following code defines an aggregate attribute called 
+`name`, with two fields, `first` and `last`. Those fields can be interpolated 
+within a template via `<name.first>` and `<name.last>`.
+
+```scala
+val st = ST( ... )
+st.setAggregate("name.{first,last}", "Moe", "Howard")
+```
 
 That aggregate permits the following template references:
 
-    <name.first>
-    <name.last>
+```
+<name.first>
+<name.last>
+```
 
 Note, however, that this syntax does not support nested aggregates. That is,
 there is no way, using automatic aggregates, to produce an attribute that
 can be referenced like this:
 
-    <foo.outer.inner>
+```
+<foo.outer.inner>
+```
 
-For that capability, you need mapped aggregates. (See next section.)
+For that capability, you need _mapped aggregates_. (See next section.)
 
 ### Mapped Aggregates
 
 Scalasti adds another form of aggregate attribute called a "mapped
 aggregate". Mapped aggregates are simply aggregate attributes created from
 Scala maps. The supplied map's keys are used as the fields of the
-aggregate. The mapped aggregates feature allows you to create a map, like
-this:
+aggregate. The mapped aggregates feature allows you to create a map that
+you can access with dot-notation. Here's a complete example:
 
-    st.addMappedAggregate("myfield", Map("foo" -> List(1, 2), "bar" -> "barski"))
+```scala
+val st = ST("<foo.bar.baz> <foo.x.y.z>")
+  .addMappedAggregate("foo", Map("bar" -> Map("baz" -> 1),
+                                 "x"   -> Map("y" -> Map("z" -> "hello"))))
 
-and then access it in the template like this:
+st.render()
+```
 
-    $myfield.bar$
-    <ul>
-      $myfield.foo:{ item | <li>$item$</li>$\n$}$
-    </ul>
+That `render` call will produce `Success("1 hello")`. When StringTemplate
+resolves `<foo.bar.baz>`, it'll behave more or less like the following code:
 
-This example assumes that the `ST` object was created with a start and stop
-delimiter of '$', instead of the default '<' and '>'.
+```scala
+val foo = Map("bar" -> Map("baz" -> 1),
+              "x"   -> Map("y" -> Map("z" -> "hello")))
+foo("bar")("baz")
+```
 
-The supplied map must use string keys; the values are mapped to Java objects
-in a similar way as `add()` maps values. (See below.)
+The supplied map must use string keys; under the covers, the values in the map 
+are mapped, recursively, to Java objects, in a similar way as `add()` maps 
+values. (See below.)
 
 ### Scala Bean Aggregates
 
 Normally, StringTemplate expects non-primitive attributes to be either
-collections or Java Beans. In Scala, you can force a class to have Java Bean
-getters and setters by marking fields with the `@BeanProperty` annotation.
+Java collections or Java Beans. In Scala, you can force a class to have Java 
+Bean getters and setters by marking fields with the `@BeanProperty` annotation.
 However, sometimes that's annoying or even impossible. For example, if you
 have an instance of a final Scala class from some third party API, you
 can't necessarily change that class to add `@BeanProperty` to the fields
 you want StringTemplate to see; writing a wrapper class is usually your
-only option. Similarly, if you have a Scala case class, often expressed in
-a single line of code, extending it to multiple lines of code, just to add
-`@BeanProperty`, is annoying.
+only option.
 
-To solve this problem, Scalasti automatically converts attributes to Java
-Beans, using the [ClassUtil][] library.
+To solve this problem, Scalasti automatically wraps Scala attribute values in
+Java Beans, using the [ClassUtil][] library. 
 
-Sometimes, however, you don't want that automatic wrapping. If you're adding
-an object that already supports Java Bean semantics, that extra wrapping is
-pointless. Also, if you're using an `AttributeRenderer` to control how values
-of a particular type are converted to string, this automatic wrapping will
-get in the way. With an `AttributeRenderer`, StringTemplate matches the values
-to the attributes by matching classes; the automatic Bean-wrapping breaks that
+Sometimes, however, you don't want that automatic wrapping. For instance,
+you don't want Scalasti to generate a Java Bean wrapper:
+
+* if you're adding a primitive (e.g., an `Int`) value
+* if you're adding an object that already supports Java Bean semantics
+* if you're adding a value for which you have registered an
+  `AttributeRenderer`
+
+In the first two cases, the extra wrapping is pointless.
+
+In the `AttributeRenderer` case, it would actually break the renderer lookup.
+With an `AttributeRenderer`, StringTemplate matches the values to the
+attributes by matching classes; the automatic Bean-wrapping breaks that
 matching.
 
-To get around that problem, you can add _raw_ attributes to a template, by
-specifying a special third `raw` parameter to the `add()` method. The parameter
-defaults to `false`.
+In these cases, you simply add _raw_ attributes to a template, by
+specifying a special third `raw` parameter to the `add()` methods. 
+The parameter defaults to `false`.
 
-    st.add("foo", foo)           // foo gets wrapped in a Java Bean
-    st.add("bar", bar, raw=true) // bar gets added without wrapping
+```scala
+st.add("foo", foo)           // foo gets wrapped in a generated Java Bean
+st.add("bar", bar, raw=true) // bar gets added without wrapping
+```
 
 **NOTE**: The wrapping capability requires the presence of the ASM byte code
 generation library at runtime.
@@ -413,144 +453,133 @@ generation library at runtime.
 At any point, you can retrieve the underlying [StringTemplate][] API's
 `StringTemplate` object, via a call to the `nativeTemplate` method:
 
-    val st = ST(template).add("thing", thing).add("foo", foo)
-    val nativeTemplate = st.nativeTemplate
+```scala
+val st = ST(template).add("thing", thing).add("foo", foo)
+val nativeTemplate = st.nativeTemplate
+```
 
 Once you have the native template, you can interact with it using the
 methods it exposes (i.e., the [StringTemplate][] Java API methods).
 
-## Upgrading from Scalasti version 1 (and StringTemplate 3)
+**WARNING**: Scalasti presents an _immutable_ view of the StringTemplate API.
+Calling Scalasti update functions (like `ST.add()`, `ST.set()`,
+`ST.addAttributes()`, etc.) copy both the Scalasti object _and_ the underlying
+StringTemplate object it wraps. Dropping down to the native StringTemplate,
+while supported, bypasses all immutability protections. It also means you're
+now interacting with the StringTemplate library, which expects objects with
+Java semantics, not Scala semantics.
 
-As of version 2.0.0, Scalasti is based on [StringTemplate][] 4. Scalasti has
-been entirely rewritten for StringTemplate 4. While it retains the same basic
-functionality as Scalasti 1.0.0, the Scalasti 2.0.0 mimics the StringTemplate 4
-API, which is significantly different from StringTemplate 3.
+## Upgrading from Scalasti version 2
+
+As of version 3.0.0, Scalasti objects are _immutable_. Prior to 3.0.0,
+Scalasti offered a mutable interface, consistent with StringTemplate.
+The newly immutable API works differently than the 2.x API.
 
 Here are some of the specific differences:
 
-### Class Names
+### Mutator methods return new objects
 
-Scalasti 1.0.0:
+In Scalasti 2.x, you could create a template and then add attributes to it,
+as shown here:
 
-    StringTemplate      // a string template
-    StringTemplateGroup // a string template group
+```scala
+val st = ST("...")
+st.add("foo", 10)
+st.add("bar", "This is awesome.")
+st.render()
+```
 
-Scalasti 2.0.0
+In Scalasti 3.x, that won't work, because each call to `add()` returns a
+_new_ object; the object on which you call `add()` remains unchanged. The
+long form solution looks something like this:
 
-    ST                  // a string template
-    STGroup             // base string template group class
-    STGroupString       // template group created from a string
-    STGroupDir          // template group(s) created from a directory tree
-    STGroupFile         // template group created from a file
+```scala
+val st = ST("...")
+val st2 = st.add("foo", 10)
+val st3 = st2.add("bar", "This is awesome.")
+st3.render()
+```
 
-### Creating template groups
+Of course, chaining the calls, where your logic permits, is much cleaner:
 
-Scalasti 1 provided a `StringTemplateGroup` class, which could be directly
-instantiated. Scalasti 2 provides several template group classes, which are
-instantiated via companion object `apply()` methods.
+```scala
+val st = ST("...").add("foo", 10).add("bar", "This is awesome.")
+st.render()
+```
 
-#### Load a template from a director or directory tree
+### Methods no longer throw exceptions
 
-Instead of:
+Any method that _could_ fail now returns a `scala.util.Try`. There are
+several such methods, but the most common is `ST.render()`.
 
-    // Load a template group hierarchy
-    val grp = new StringTemplateGroup("name", new File("/home/bmc/templates"))
+In Scalasti 2.x, you could do this:
 
-use:
-    // Load a template group hierarchy
-    val group = STGroupDir("/home/bmc/templates")
+```scala
+val st = ST("...").add("foo", 10).add("bar", "This is awesome.")
+println(st.render()) // ST.render() returned a String in 2.x
+```
 
-#### Load a template from a file
+If the `render()` call failed—for instance, because it couldn't find a
+referenced attribute—it would simply throw an exception.
 
-Instead of:
+In Scalasti 3.x, however, `render()` returns a `Try[String]`. If the
+render operation works, you'll get back a `Success` object that contains
+the rendered template. If it fails, you'll get a `Failure` object that
+contains an exception.
 
-    val grp = new StringTemplateGroup("name", new File("/home/bmc/templates/test.stg"))
+There are several ways to handle this return result, shown in the snippet
+below:
 
-use:
+```scala
+// Ugh
+val t = st.render()
+if (t.isSuccess) {
+   println(t.get)
+}
+else {
+   // handle failure, which will look kind of ugly, no matter how you do it
+}
 
-    val grp = STGroupFile("/home/bmc/templates/test.stg")
+// Pattern matching is a little better.
+st.render() match {
+  case Failure(ex) => // handle failure
+  case Success(str) => println(str)
+}
 
-#### Load a template from the CLASSPATH
+// And, of course, you can map over the `Try`
+import scala.util.control.NonFatal
+st.render().map { str =>
+  println(str)
+}
+.recover {
+  case NonFatal(ex) => // handle failure
+}
+```
 
-Instead of:
+Also, because `render()` returns a `Try`, and `Try` supports `map()`,
+`flatMap()`, and `withFilter()`, you can use it in a `for` comprehension.
 
-    val grp = new StringTemplateGroup("name")
-    val template = grp.template("org/clapper/templates/mytemplate")
+### No more listeners
 
-use:
+StringTemplate has this notion of listeners: With the `STGroup`-derived
+classes, you can register a listener that will be notified of various
+types of processing errors via callbacks.
 
-    val grp = STGroupFile("org/clapper/templates/mytemplate.stg")
+Because Scalasti now returns results as `Try` objects, when a failure could
+occur, this listener interface isn't necesary. And, besides, it's not
+exactly idiomatic Scala.
 
-Note that, in this case, `STGroupFile` will attempt to find (relative) file
-"org/clapper/templates/mytemplate.stg"; if it cannot find the file, it will
-search the CLASSPATH for a corresponding resource.
-
-### Instantiating a template
-
-#### Creating a template from a string
-
-Instead of:
-
-    val st = new StringTemplate("...")
-
-use:
-
-    val st = ST("...")
-
-#### Instantiating a named template from a group
-
-Instead of:
-
-    val st = group.template("org/clapper/templates/foo")
-
-use:
-
-     val st = group.instanceOf("org/clapper/templates/foo")
-
-### Setting attributes on a template
-
-Scalasti 1.0.0 (and StringTemplate 3) overloaded the `setAttribute()` method
-to set various kinds of attributes. Scalasti 2.0.0 and StringTemplate 4
-use different methods. Among other things, the `makeBeanAttribute()` methods
-are no longer available; the capability has been rolled directly into the
-`add()` method.
-
-Summary of changes:
-
-* Scalasti 2's `setAttribute()` method has been replaced by `add()` and
-  `set()`.
-* `makeBeanAttribute()` is now built into the `add()` method, and the behavior
-  can be disabled by specifying `raw=true`.
-* `registerRenderer()` now takes the type that the renderer is to render.
-* The group `template()` method, to retrieve a template from a group, has
-  been replaced by `instanceOf()`.
-* `toString()` on a template no longer renders the template. Use the new
-  `render()` method, instead.
-* `setAggregate()` has been replaced by `addAggregate()`.
-
-Some specific examples:
-
-     val st = group.instanceOf("...")
-
-    // Add an attribute, wrapping it in a Java Bean if necessary
-    st.add("foo", new MyValue(...))
-    st.add("num", 10)
-    st.add("name", "Brian")
-
-    // Add an attribute, forcing Scalasti not to wrap it in a Java Bean.
-    // Necessary for use with AttributeRenderers
-    st.add("foo", new MyValue(...), raw=true)
-
-    // Display the rendered template.
-    println(st.render())
+Under the covers, Scalasti now registers its own listeners that throw
+exceptions on errors; Scalasti then catches any such exceptions and returns
+them in a `Failure` object. This approach is much cleaner and much more
+functional.
 
 ## API Documentation
 
-For full details, see the [API Documentation][].
+For full details, see the API documentation:
 
-In addition, you can generate your own version with:
-
-    sbt doc
+* [Current version (3.x)](api/3.x):
+* [Scalasti 2.x](api/2.x)
 
 ## Additional Documentation
 
@@ -568,7 +597,7 @@ If you have suggestions or contributions, feel free to fork the
 
 # Copyright and License
 
-Scalasti is copyright &copy; 2010-2014 Brian M. Clapper and is released
+Scalasti is copyright &copy; 2010-2017 Brian M. Clapper and is released
 under a [BSD License][].
 
 # Patches

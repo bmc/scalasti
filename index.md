@@ -44,8 +44,8 @@ If you're just looking for the API docs, you can
 [StringTemplate][] is a Java-based template engines, comparable in
 functionality to APIs like [Google's Closure Templates][], [FreeMarker][]
 and [Velocity][]. There are also Scala-based template engines, such as
-[Scalate][] (a powerful template language that bills itself as being "like
-JSP without the crap, but with added Scala coolness.")
+[Scalate][], which provides templating in a variety of popular template 
+syntaxes.
 
 The problem with most template languages, though, is that they're a little
 (or a lot) too powerful. As Terence Parr, creator of StringTemplate, wrote,
@@ -671,7 +671,7 @@ request. Along with any patch you send:
 [Google's Closure Templates]: https://developers.google.com/closure/templates/
 [Velocity]: http://velocity.apache.org/
 [FreeMarker]: http://www.freemarker.org/
-[Scalate]: http://scalate.fusesource.org/
+[Scalate]: https://scalate.github.io/scalate/
 [*Enforcing Strict Model-View Separation in Template Engines*]: http://www.cs.usfca.edu/~parrt/papers/mvc.templates.pdf
 [SBT]: http://code.google.com/p/simple-build-tool
 [Maven]: http://maven.apache.org/

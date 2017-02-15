@@ -2,9 +2,10 @@
 
 Version 3.0.0 (**Breaking API Change**)
 
-* Reworked Scalasti API to be immutable.
-* Updated ScalaTest dependency to 3.0.1
-* Added more unit tests
+* Reworked Scalasti API to be immutable. See the [Scalasti home page][]
+  for full details.
+* Updated ScalaTest dependency to 3.0.1.
+* Added _many_ more unit tests.
 
 Version 2.1.4
 
@@ -203,3 +204,5 @@ Version 0.2:
 Version 0.1:
 
 * Initial release
+
+[Scalasti home page]: http://software.clapper.org/scalasti/

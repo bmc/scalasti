@@ -86,7 +86,9 @@ StringTemplate provides a solid template language that is:
 * reduces or eliminates the temptation to put business logic in the
   template.
 
-However, StringTemplate's API is Java-centric. It relies on
+## Why Scalasti?
+
+StringTemplate's API is Java-centric. It relies on
 `java.util.Collection` classes, such as `java.util.Map` and `java.util.List`;
 these classes are clumsy to use in Scala, compared to their Scala counterparts.
 Worse, by default, StringTemplate uses Java Bean semantics to access object field values.

@@ -395,7 +395,8 @@ rendered concatenated, in some cases. If you want to ensure that it
 is set &quot;clean&quot;, use the <code><a href="#set(name:String,value:Any,raw:Boolean):org.clapper.scalasti.ST" class="extmbr" name="org.clapper.scalasti.ST#set">set</a></code> method, which clears any existing
 attribute first.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the name to associate with the attribute. This is the name
-              by which the attribute can be referenced in the template</p></dd><dt class="param">value</dt><dd class="cmt"><p>the value of the attribute</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap the value in a Java Bean.
+              by which the attribute can be referenced in the template</p></dd><dt class="param">value</dt><dd class="cmt"><p>the value of the attribute. The value must not be null.
+              Use <code>None</code>, if that's what you want.</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap the value in a Java Bean.
               <code>true</code> to add it, as is.</p></dd><dt>returns</dt><dd class="cmt"><p>a new, updated object. This object remains unchanged.</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#addAggregate" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addAggregate(aggrSpec:String,values:Any*):org.clapper.scalasti.ST"></a><a id="addAggregate(String,Any*):ST"></a>
@@ -445,7 +446,8 @@ for more information.
       </span>
       
       <p class="shortcomment cmt">Add a map of objects (key=value pairs) to the template.</p><div class="fullcomment"><div class="comment cmt"><p>Add a map of objects (key=value pairs) to the template.
-</p></div><dl class="paramcmts block"><dt class="param">attrs</dt><dd class="cmt"><p>the attributes to add</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap all values in Java Beans.
+</p></div><dl class="paramcmts block"><dt class="param">attrs</dt><dd class="cmt"><p>the attributes to add. The map must contain no null values.
+              Use <code>None</code> if you want to signify null.</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap all values in Java Beans.
               <code>true</code> to add it, as is.</p></dd><dt>returns</dt><dd class="cmt"><p>a new, updated object. This object remains unchanged.</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#addMappedAggregate" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="addMappedAggregate(attrName:String,valueMap:Map[String,Any]):org.clapper.scalasti.ST"></a><a id="addMappedAggregate(String,Map[String,Any]):ST"></a>
@@ -809,7 +811,8 @@ the same name first.</p><div class="fullcomment"><div class="comment cmt"><p>Set
 the same name first. Calling this method is the same as calling
 <code><a href="#remove(name:String):org.clapper.scalasti.ST" class="extmbr" name="org.clapper.scalasti.ST#remove">remove</a></code>, followed by <code><a href="#add(name:String,value:Any,raw:Boolean):org.clapper.scalasti.ST" class="extmbr" name="org.clapper.scalasti.ST#add">add</a></code>.
 </p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>the name to associate with the attribute. This is the name
-              by which the attribute can be referenced in the template</p></dd><dt class="param">value</dt><dd class="cmt"><p>the value of the attribute</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap the value in a Java Bean.
+              by which the attribute can be referenced in the template</p></dd><dt class="param">value</dt><dd class="cmt"><p>the value of the attribute. The value must not be null.
+              Use <code>None</code>, if that's what you want.</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap the value in a Java Bean.
               <code>true</code> to add it, as is.</p></dd><dt>returns</dt><dd class="cmt"><p>a new, updated object. This object remains unchanged.</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#setAttributes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="setAttributes(attrs:Map[String,Any],raw:Boolean):org.clapper.scalasti.ST"></a><a id="setAttributes(Map[String,Any],Boolean):ST"></a>
@@ -823,13 +826,14 @@ the same name first. Calling this method is the same as calling
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setAttributes</span><span class="params">(<span name="attrs">attrs: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>, <span name="raw">raw: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.ST">ST</a></span>
+        <span class="name">setAttributes</span><span class="params">(<span name="attrs">attrs: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>, <span name="raw">raw: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <a href="" class="extype" name="org.clapper.scalasti.ST">ST</a></span>
       </span>
       
       <p class="shortcomment cmt">Clear all existing attributes from the template, and add a new map
 of objects (key=value pairs) to the template.</p><div class="fullcomment"><div class="comment cmt"><p>Clear all existing attributes from the template, and add a new map
 of objects (key=value pairs) to the template.
-</p></div><dl class="paramcmts block"><dt class="param">attrs</dt><dd class="cmt"><p>the attributes to add</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap all values in Java Beans.
+</p></div><dl class="paramcmts block"><dt class="param">attrs</dt><dd class="cmt"><p>the attributes to set. The map must contain no null values.
+              Use <code>None</code> if you want to signify null.</p></dd><dt class="param">raw</dt><dd class="cmt"><p><code>false</code> (the default) to wrap all values in Java Beans.
               <code>true</code> to add it, as is.</p></dd><dt>returns</dt><dd class="cmt"><p>a new, updated object. This object remains unchanged.</p></dd></dl></div>
     </li><li name="org.clapper.scalasti.ST#startDelimiter" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="startDelimiter:Char"></a>

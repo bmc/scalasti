@@ -145,6 +145,7 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].)
 
+* Version 3.0.1 is a bug fix release, and it supports Scala 2.12, 2.11 and 2.10.
 * Version 3.0.0 supports Scala 2.12, 2.11 and 2.10 
   **and makes radical changes to the API, to support immutability.**
 * Versions from 2.1.0 on support Scala 2.12, 2.11 and 2.10.
@@ -158,7 +159,7 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `scalasti_2.10`, `scalasti_2.11`, `scalasti_2.12`
-* Version: `3.0.0`
+* Version: `3.0.1`
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
@@ -166,7 +167,7 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>scalasti_2.11</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -176,7 +177,7 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 Just add:
 
-    libraryDependencies += "org.clapper" %% "scalasti" % "3.0.0"
+    libraryDependencies += "org.clapper" %% "scalasti" % "3.0.1"
 
 # Building from Source
 

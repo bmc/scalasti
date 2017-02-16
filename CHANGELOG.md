@@ -2,6 +2,8 @@
 
 Version 3.0.1 (not yet released)
 
+* Fixed [Issue #11](https://github.com/bmc/scalasti/issues/11), which required
+  some internal refactoring and led to some code cleanup.
 * Added more unit tests.
 
 Version 3.0.0 (**Breaking API Change**)

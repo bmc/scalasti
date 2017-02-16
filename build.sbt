@@ -3,7 +3,7 @@
 
 name         := "scalasti"
 organization := "org.clapper"
-version      := "3.0.1-SNAPSHOT"
+version      := "3.0.1"
 
 licenses := Seq(
   "BSD" -> url("http://software.clapper.org/scalasti/license.html")
@@ -43,7 +43,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
     "org.clapper"    %% "grizzled-scala" % "4.2.0",
-    "org.clapper"    %% "classutil"      % "1.1.1",
+    "org.clapper"    %% "classutil"      % "1.1.2",
     "org.antlr"       % "ST4"            % "4.0.8"
 )
 

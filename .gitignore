@@ -9,3 +9,4 @@ target/
 *.sublime-*
 atlassian*xml
 .idea*
+tmp/

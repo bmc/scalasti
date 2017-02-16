@@ -5,7 +5,6 @@ import java.util.Locale
 
 import grizzled.file.util.{joinPath, withTemporaryDirectory}
 import grizzled.util._
-import org.scalatest.Assertion
 import org.stringtemplate.v4.NoIndentWriter
 
 import scala.io.Source
@@ -195,6 +194,35 @@ class STSpec extends BaseSpec {
       .render()
     ts shouldBe 'success
     ts.get shouldBe "a b c"
+  }
+
+  it should "not fail because of Issue #11" in {
+    // See https://github.com/bmc/scalasti/issues/11
+
+    val _templateString =
+      """|<data.one>
+         |<data.two>
+         |<dataList:{d | <d.one>}>
+         |<dataList:{d | <d>}>
+         |""".stripMargin
+
+    val templateString =
+      """|<data.one>
+         |<data.two>
+         |<dataList:{d | <d.one>}>
+         |<dataList:{d | <d>}>
+         |""".stripMargin
+
+    case class Data(one: Int, two: Int)
+
+    val dataItems = Seq(Data(1, 2), Data(3, 4))
+
+    val template = ST(templateString)
+      .add("data", dataItems.head)
+      .add("dataList", dataItems)
+
+    template.render()
+    template should renderSuccessfullyAs ("1\n2\n13\nData(1,2)Data(3,4)\n")
   }
 
   "addAggregate()" should "just work" in {

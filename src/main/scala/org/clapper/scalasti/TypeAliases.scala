@@ -7,15 +7,23 @@ import org.stringtemplate.v4.{AttributeRenderer => _STAttrRenderer}
   */
 object TypeAliases {
 
+  /** An attribute to be mapped when applied to an underlying template.
+    *
+    * @param value  the attribute value
+    * @param raw    whether it's a raw value to be applied as is, or a value
+    *               to be mapped to a JavaBean
+    */
+  case class Attribute(value: Any, raw: Boolean)
+
   /** An attribute renderer, as stored internally within StringTemplate.
     */
   type AttrRenderers = Map[Class[_], _STAttrRenderer]
 
   /** An attribute map, used within a template.
     */
-  type AttrMap = Map[String, Any]
+  type AttrMap = Map[String, Attribute]
 
   /** An empty attribute map.
     */
-  val EmptyAttrMap = Map.empty[String, Any]
+  val EmptyAttrMap = Map.empty[String, Attribute]
 }

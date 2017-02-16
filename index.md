@@ -150,8 +150,6 @@ automatically sync'd with the [Maven Central Repository][].)
 * Versions from 2.1.0 on support Scala 2.12, 2.11 and 2.10.
 * Version 2.0.0 (for StringTemplate version 4) supports Scala 2.11 and 2.10.
 * Version 1.0.0 (for StringTemplate version 3) supports Scala 2.10.
-* Version 0.5.8 (for StringTemplate version 3) supports Scala 2.9.1-1, 2.9.1,
-  2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
 ## Installing for Maven
 
@@ -217,8 +215,8 @@ sbt compile test package
 Scalasti 3 requires the following libraries to be available at runtime, for
 some, or all, of its methods.
 
-* The main [ASM][] library (version 4), e.g., `asm-4.2.jar`
-* The [ASM][] commons library (version 4), e.g., `asm-commons-4.2.jar`
+* The main [ASM][] library (version 5)
+* The [ASM][] commons library (version 5)
 * The [ClassUtil][] library
 * The [Grizzled Scala][] library
 * The [Grizzled SLF4J][] library, for logging

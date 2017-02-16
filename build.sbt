@@ -28,7 +28,8 @@ incOptions := incOptions.value.withNameHashing(true)
 // Additional repositories
 
 resolvers ++= Seq(
-    "Java.net Maven 2 Repo" at "http://download.java.net/maven/2"
+    "Java.net Maven 2 Repo" at "http://download.java.net/maven/2",
+    "Bintray bmc" at "https://dl.bintray.com/bmc/maven"
 )
 
 // ---------------------------------------------------------------------------

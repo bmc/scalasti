@@ -41,8 +41,7 @@ import org.stringtemplate.v4.{AttributeRenderer => _AttributeRenderer}
 import java.util.{Date, Locale}
 import java.lang.{Object => JObject}
 
-/**
-  * A more Scala-like ST attribute renderer. Objects that implement this
+/** A more Scala-like ST attribute renderer. Objects that implement this
   * trait can be registered as attribute attrRenderers with an `STGroup`.
   *
   * @tparam T  the type (class) for which the renderer can render values.

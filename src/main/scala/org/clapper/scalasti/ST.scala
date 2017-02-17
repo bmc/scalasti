@@ -44,7 +44,6 @@ import scala.reflect.runtime.universe.runtimeMirror
 import org.stringtemplate.v4.{STWriter, ST => _ST}
 import java.util.Locale
 
-import scala.annotation.tailrec
 import scala.util.Try
 import TypeAliases._
 import org.stringtemplate.v4.misc.ErrorManager

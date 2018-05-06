@@ -13,7 +13,7 @@ homepage := Some(url("http://software.clapper.org/scalasti/"))
 
 description := "A Scala-friendly wrapper for Terence Parr's ST library"
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
+crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.6")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -36,7 +36,7 @@ resolvers ++= Seq(
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 )
 
 // ---------------------------------------------------------------------------

@@ -6,7 +6,7 @@ This software is released under BSD license, adapted from
 
 ---
 
-Copyright © 2010-2017, Brian M. Clapper.
+Copyright © 2010-2018, Brian M. Clapper.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

@@ -48,9 +48,7 @@ libraryDependencies ++= Seq(
     "org.antlr"       % "ST4"            % "4.0.8"
 )
 
-libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-  deps :+ "org.scala-lang" % "scala-reflect" % sv
-}
+libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
 // ---------------------------------------------------------------------------
 // Publishing criteria

@@ -3,7 +3,6 @@ package org.clapper.scalasti
 import org.stringtemplate.v4.{STGroup => _STGroup, STGroupFile => _STGroupFile}
 import java.net.URL
 
-import org.stringtemplate.v4.misc.ErrorManager
 
 /** `STGroupFile` wraps the StringTemplate API's `STGroupFile` class.
   * An `STGroupFile` object reads a template group from a file. See the

@@ -47,4 +47,12 @@ class STGroupStringSpec extends BaseSpec {
 
     template2 should renderSuccessfullyAs (s"FOO='${args.mkString(",")}'")
   }
+
+  it should "allow adding multiple attribute renderers without losing templates" in {
+    val grp = STGroupString(TemplateGroup1)
+      .registerRenderer(floatRenderer)
+      .registerRenderer(intRenderer)
+
+    grp.instanceOf("foo") shouldBe 'success
+  }
 }

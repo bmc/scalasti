@@ -39,6 +39,9 @@ import scala.util.control.NonFatal
   *                       in the underlying StringTemplate API.
   * @param native         the underlying StringTemplate `STGroup` that this
   *                       object wraps.
+  * @param newUnderlying  Create a new underlying StringTemplate object, applying
+  *                       whatever constructor parameters were used with the
+  *                       original object. Does not apply the attrRenderers.
   * @param attrRenderers  the map of attribute renderers, to be applied to the
   *                       underlying native `STGroup`.
   * @param loaded         whether the underlying `STGroup` is known to be
@@ -48,6 +51,7 @@ case class STGroup(
   startDelimiter: Char = Constants.DefaultStartChar,
   endDelimiter:  Char = Constants.DefaultStopChar,
   private[scalasti] val native: _STGroup,
+  newUnderlying: () => _STGroup,
   private[scalasti] val attrRenderers: Map[Class[_], _STAttrRenderer] =
     Map.empty[Class[_], _STAttrRenderer],
   private[scalasti] val loaded: Boolean = false
@@ -192,8 +196,8 @@ case class STGroup(
     val tpe = ru.typeTag[T].tpe
     val cls = runtimeMirror(r.getClass.getClassLoader).runtimeClass(tpe)
     val newRenderers = this.attrRenderers + (cls -> r.stRenderer)
-    val newUnderlying = cloneUnderlying(newRenderers)
-    this.copy(native        = newUnderlying,
+    val clonedUnderlying = cloneUnderlying(newRenderers)
+    this.copy(native        = clonedUnderlying,
               attrRenderers = newRenderers,
               loaded        = this.loaded)
   }
@@ -205,22 +209,6 @@ case class STGroup(
     * @return A map of the attribute renders, which might be empty
     */
   def renderers: Map[Class[_], _STAttrRenderer] = attrRenderers
-
-  // --------------------------------------------------------------------------
-  // Protected methods
-  // --------------------------------------------------------------------------
-
-  /** Create a new underlying StringTemplate object, applying whatever
-    * constructor parameters were used with the current object. Does not
-    * apply the attrRenderers.
-    *
-    * Subclasses should override this method.
-    *
-    * @return the new underlying object
-    */
-  protected[this] def newUnderlying: _STGroup = {
-    new _STGroup(startDelimiter, endDelimiter)
-  }
 
   // --------------------------------------------------------------------------
   // Private methods
@@ -236,7 +224,7 @@ case class STGroup(
   private def cloneUnderlying(renderers: AttrRenderers = this.attrRenderers):
     _STGroup = {
 
-    val underlying = newUnderlying
+    val underlying = newUnderlying()
     makeErrorsExceptions(underlying)
     applyRenderers(underlying, renderers)
     underlying

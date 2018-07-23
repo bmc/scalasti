@@ -14,22 +14,7 @@ import scala.util.{Failure, Success, Try}
   * the companion object.
   */
 class STGroupDir private[scalasti](native: _STGroupDir)
-  extends STGroup(native = native) {
-
-  /** Create a new underlying StringTemplate object, applying whatever
-    * constructor parameters were used with the current object. Does not
-    * apply the attrRenderers.
-    *
-    * Subclasses should override this method.
-    *
-    * @return the new underlying object
-    */
-  override protected[this] def newUnderlying: _STGroupDir = {
-    new _STGroupDir(native.root,
-                    native.encoding,
-                    native.delimiterStartChar,
-                    native.delimiterStopChar)
-  }
+  extends STGroup(native = native, newUnderlying = STGroupDir.newUnderlying(native)) {
 
   /** Force a load. Templates are normally loaded on demand; this method
     * attempts to load them up front. '''Note''': Even though this method
@@ -134,4 +119,17 @@ object STGroupDir {
           startDelimiter,
           endDelimiter)
   }
+
+  /** Create a new underlying StringTemplate object, applying whatever
+    * constructor parameters were used with the current object. Does not
+    * apply the attrRenderers.
+    *
+    * @return the new underlying object
+    */
+  private[scalasti] def newUnderlying(native: _STGroupDir): () => _STGroupDir =
+    () => new _STGroupDir(
+      native.root,
+      native.encoding,
+      native.delimiterStartChar,
+      native.delimiterStopChar)
 }

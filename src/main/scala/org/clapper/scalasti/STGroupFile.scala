@@ -13,23 +13,7 @@ import org.stringtemplate.v4.misc.ErrorManager
   * methods on the companion object.
   */
 class STGroupFile private[scalasti](native: _STGroupFile)
-  extends STGroup(native = native) {
-
-  /** Create a new underlying StringTemplate object, applying whatever
-    * constructor parameters were used with the current object. Does not
-    * apply the attrRenderers.
-    *
-    * Subclasses should override this method.
-    *
-    * @return the new underlying object
-    */
-  override protected[this] def newUnderlying: _STGroup = {
-    new _STGroupFile(native.url,
-                     native.encoding,
-                     native.delimiterStartChar,
-                     native.delimiterStopChar)
-  }
-}
+  extends STGroup(native = native, newUnderlying = STGroupFile.newUnderlying(native))
 
 /** Companion object for `STGroupFile`. This object provides `apply()`
   * methods for instantiating `STGroupFile` objects.
@@ -137,4 +121,17 @@ object STGroupFile {
                                   endDelimiter)
     new STGroupFile(native)
   }
+
+  /** Create a new underlying StringTemplate object, applying whatever
+    * constructor parameters were used with the current object. Does not
+    * apply the attrRenderers.
+    *
+    * @return the new underlying object
+    */
+  private[scalasti] def newUnderlying(native: _STGroupFile): () => _STGroupFile =
+    () => new _STGroupFile(
+      native.url,
+      native.encoding,
+      native.delimiterStartChar,
+      native.delimiterStopChar)
 }

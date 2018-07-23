@@ -61,6 +61,19 @@ class STGroupDirSpec extends BaseSpec {
     }
   }
 
+  it should "allow adding multiple attribute renderers without losing templates" in {
+    withTemplateGroupDir(TemplateGroupDir) { grp =>
+      val t = grp.load()
+      t shouldBe 'success
+      val grp2 = grp
+        .registerRenderer(floatRenderer)
+        .registerRenderer(intRenderer)
+
+      grp2.instanceOf("foo") shouldBe 'success
+      grp2.fileName shouldBe grp.fileName
+    }
+  }
+
   it should "succeed when attempting to find a valid template" in {
     withTemplateGroupDir(TemplateGroupDir) { grp =>
       val tTemplate = grp.instanceOf("foo")

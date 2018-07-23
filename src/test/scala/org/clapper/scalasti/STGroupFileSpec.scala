@@ -1,11 +1,7 @@
 package org.clapper.scalasti
 
 import java.net.URL
-import java.util.Locale
 
-
-// Can't register attrRenderers for primitive types.
-class FloatWrapper(val f: Float)
 
 /** Tests for STGroup class
   */
@@ -92,16 +88,21 @@ class STGroupFileSpec extends BaseSpec {
   }
 
   "registerRenderer()" should "be immutable" in {
-    val newRenderer = new AttributeRenderer[FloatWrapper] {
-      def toString(o: FloatWrapper, formatString: String, local: Locale): String = {
-        o.f.toString
-      }
-    }
-
     withTemplateGroupFile(TemplateGroup1) { stGroup =>
-      val stGroup2 = stGroup.registerRenderer(newRenderer)
+      val stGroup2 = stGroup.registerRenderer(floatRenderer)
       stGroup2 should not be theSameInstanceAs (stGroup)
       stGroup2.attrRenderers should not be theSameInstanceAs (stGroup.attrRenderers)
+    }
+  }
+
+  "registerRenderer()" should "not lose templates on multiple calls" in {
+    withTemplateGroupFile(TemplateGroup1) { stGroup =>
+      val stGroup2 = stGroup
+        .registerRenderer(floatRenderer)
+        .registerRenderer(intRenderer)
+
+      stGroup2.instanceOf("foo") shouldBe 'success
+      stGroup2.fileName shouldBe stGroup.fileName
     }
   }
 

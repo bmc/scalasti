@@ -2,6 +2,7 @@ package org.clapper.scalasti
 
 import org.scalatest.{FlatSpec, Matchers}
 import java.io._
+import java.util.Locale
 
 import grizzled.file.util.{dirname, joinPath, withTemporaryDirectory}
 import grizzled.util.withResource
@@ -13,6 +14,11 @@ case class TemplateGroupFileData(path:        String,
                                  groupString: String,
                                  templates:   Seq[TemplateData])
 case class TemplateGroupDirData(path: String, templates: Seq[TemplateData])
+
+// Can't register attrRenderers for primitive types.
+class FloatWrapper(val f: Float)
+class IntWrapper(val i: Int)
+
 
 /** Base class for testers
   */
@@ -102,6 +108,19 @@ abstract class BaseSpec extends FlatSpec with Matchers with CustomMatchers {
       code(STGroupDir(groupPath.getPath))
     }
   }
+
+  val floatRenderer = new AttributeRenderer[FloatWrapper] {
+    def toString(o: FloatWrapper, formatString: String, local: Locale): String = {
+      o.f.toString
+    }
+  }
+
+  val intRenderer = new AttributeRenderer[IntWrapper] {
+    def toString(o: IntWrapper, formatString: String, local: Locale): String = {
+      o.i.toString
+    }
+  }
+
 
   // --------------------------------------------------------------------------
   // Private methods

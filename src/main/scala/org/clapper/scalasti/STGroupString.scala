@@ -10,23 +10,7 @@ import org.stringtemplate.v4.{STGroupString => _STGroupString}
   * methods on the companion object.
   */
 class STGroupString private[scalasti](native: _STGroupString)
-  extends STGroup(native = native) {
-
-  /** Create a new underlying StringTemplate object, applying whatever
-    * constructor parameters were used with the current object. Does not
-    * apply the attrRenderers.
-    *
-    * Subclasses should override this method.
-    *
-    * @return the new underlying object
-    */
-  override protected[this] def newUnderlying: _STGroupString = {
-    new _STGroupString(native.sourceName,
-                       native.text,
-                       native.delimiterStartChar,
-                       native.delimiterStopChar)
-  }
-}
+  extends STGroup(native = native, newUnderlying = STGroupString.newUnderlying(native))
 
 /** Companion object for `STGroupString`. This object provides `apply()`
   * methods for instantiating `STGroupString` objects.
@@ -54,4 +38,17 @@ object STGroupString {
                                     endDelimiter)
     new STGroupString(native)
   }
+
+  /** Create a new underlying StringTemplate object, applying whatever
+    * constructor parameters were used with the current object. Does not
+    * apply the attrRenderers.
+    *
+    * @return the new underlying object
+    */
+  private[scalasti] def newUnderlying(native: _STGroupString): () => _STGroupString =
+    () => new _STGroupString(
+      native.sourceName,
+      native.text,
+      native.delimiterStartChar,
+      native.delimiterStopChar)
 }
